@@ -1,6 +1,38 @@
+// Initialize Google Map
+function initMap() {
+    const map = new google.maps.Map(document.getElementById('map'), {
+        center: { lat: 49.8951, lng: -97.1384 }, // Winnipeg coordinates
+        zoom: 12,
+        styles: [
+            {
+                "featureType": "all",
+                "elementType": "geometry",
+                "stylers": [{ "color": "#224193" }] // Azure base
+            },
+            {
+                "featureType": "water",
+                "elementType": "geometry",
+                "stylers": [{ "color": "#6F9BD1" }] // Powder blue water
+            },
+            {
+                "featureType": "poi",
+                "elementType": "geometry",
+                "stylers": [{ "color": "#DF3C5F" }] // Electric pink points of interest
+            }
+        ]
+    });
+
+    // Add a marker
+    new google.maps.Marker({
+        position: { lat: 49.8951, lng: -97.1384 },
+        map: map,
+        title: "Quiz Location"
+    });
+}
+
 async function fetchQuestions() {
-  const res = await fetch('/api/questions');
-  return res.json();
+    const res = await fetch('/api/questions');
+    return res.json();
 }
 
 function $(s) { return document.querySelector(s); }
@@ -8,6 +40,9 @@ function $(s) { return document.querySelector(s); }
 let questions = [];
 let index = 0;
 let score = 0;
+
+// Initialize map when page loads
+window.onload = initMap;
 
 $('#start').addEventListener('click', async () => {
   const name = $('#name').value.trim();
