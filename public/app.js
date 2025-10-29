@@ -4,29 +4,95 @@ const SCALE_STEP = 0.2;
 const MIN_SCALE = 0.5;
 const MAX_SCALE = 3;
 
+// Drawing state
+let isDrawing = false;
+let isDragging = false;
+let currentX;
+let currentY;
+let initialX;
+let initialY;
+
 function initMap() {
     const map = $('#map');
-    let isDragging = false;
-    let currentX;
-    let currentY;
-    let initialX;
-    let initialY;
+    const canvas = $('#drawCanvas');
+    const ctx = canvas.getContext('2d');
+    const mapImage = $('#mapImage');
 
-    map.addEventListener('mousedown', startDragging);
-    document.addEventListener('mousemove', drag);
-    document.addEventListener('mouseup', stopDragging);
+    // Set canvas size to match the container
+    function resizeCanvas() {
+        canvas.width = map.clientWidth;
+        canvas.height = map.clientHeight;
+        ctx.lineJoin = 'round';
+        ctx.lineCap = 'round';
+    }
+
+    // Initial resize and bind to window resize
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    // Drawing functions
+    function startDrawing(e) {
+        if (e.shiftKey) { // Hold shift to draw
+            isDrawing = true;
+            isDragging = false;
+            ctx.beginPath();
+            const rect = canvas.getBoundingClientRect();
+            ctx.moveTo(
+                (e.clientX - rect.left) / scale,
+                (e.clientY - rect.top) / scale
+            );
+            e.preventDefault();
+        } else {
+            isDragging = true;
+            isDrawing = false;
+            initialX = e.clientX - currentX;
+            initialY = e.clientY - currentY;
+        }
+    }
+
+    function draw(e) {
+        if (isDrawing) {
+            const rect = canvas.getBoundingClientRect();
+            ctx.strokeStyle = $('#draw-color').value;
+            ctx.lineWidth = $('#brush-size').value / scale;
+            ctx.lineTo(
+                (e.clientX - rect.left) / scale,
+                (e.clientY - rect.top) / scale
+            );
+            ctx.stroke();
+        } else if (isDragging) {
+            currentX = e.clientX - initialX;
+            currentY = e.clientY - initialY;
+            updateMapPosition();
+        }
+    }
+
+    function stopDrawing() {
+        isDrawing = false;
+        isDragging = false;
+    }
+
+    // Mouse events
+    map.addEventListener('mousedown', startDrawing);
+    document.addEventListener('mousemove', draw);
+    document.addEventListener('mouseup', stopDrawing);
     
     // Touch events
     map.addEventListener('touchstart', e => {
         const touch = e.touches[0];
-        startDragging(touch);
+        startDrawing(touch);
     });
     document.addEventListener('touchmove', e => {
         e.preventDefault();
         const touch = e.touches[0];
-        drag(touch);
+        draw(touch);
     });
-    document.addEventListener('touchend', stopDragging);
+    document.addEventListener('touchend', stopDrawing);
+
+    // Clear drawing
+    $('#clear-drawing').addEventListener('click', () => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    });
 
     function startDragging(e) {
         initialX = e.clientX - currentX;
