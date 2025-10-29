@@ -7,7 +7,9 @@
   </head>
   <body>
     <div class="top-image">
-      <img src="image.png" alt="Banner Image">
+      <div class="image-container" id="imageContainer">
+        <img src="image.png" alt="Banner Image" id="panZoomImage" draggable="false">
+      </div>
     </div>
 
     <div class="content">
@@ -22,5 +24,76 @@
       <button class="wide-button">Button 9</button>
       <button class="wide-button">Button 10</button>
     </div>
+    <script>
+      const container = document.getElementById('imageContainer');
+      const image = document.getElementById('panZoomImage');
+      
+      let isZoomed = false;
+      let isDragging = false;
+      let startX, startY, translateX = 0, translateY = 0;
+      let scale = 1;
+      
+      // Double click to zoom in/out
+      container.addEventListener('dblclick', (e) => {
+        e.preventDefault();
+        if (!isZoomed) {
+          scale = 2;
+          isZoomed = true;
+        } else {
+          scale = 1;
+          translateX = 0;
+          translateY = 0;
+          isZoomed = false;
+        }
+        updateTransform();
+      });
+
+      // Mouse wheel to zoom in/out
+      container.addEventListener('wheel', (e) => {
+        e.preventDefault();
+        const delta = e.deltaY > 0 ? -0.1 : 0.1;
+        scale = Math.min(Math.max(1, scale + delta), 3);
+        isZoomed = scale > 1;
+        updateTransform();
+      });
+
+      // Pan functionality
+      container.addEventListener('mousedown', (e) => {
+        if (scale > 1) {
+          isDragging = true;
+          startX = e.clientX - translateX;
+          startY = e.clientY - translateY;
+          container.style.cursor = 'grabbing';
+        }
+      });
+
+      container.addEventListener('mousemove', (e) => {
+        if (isDragging) {
+          translateX = e.clientX - startX;
+          translateY = e.clientY - startY;
+          
+          // Limit panning
+          const maxTranslate = (scale - 1) * container.offsetWidth;
+          translateX = Math.min(Math.max(translateX, -maxTranslate), maxTranslate);
+          translateY = Math.min(Math.max(translateY, -maxTranslate), maxTranslate);
+          
+          updateTransform();
+        }
+      });
+
+      container.addEventListener('mouseup', () => {
+        isDragging = false;
+        container.style.cursor = 'grab';
+      });
+
+      container.addEventListener('mouseleave', () => {
+        isDragging = false;
+        container.style.cursor = 'grab';
+      });
+
+      function updateTransform() {
+        container.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
+      }
+    </script>
   </body>
 </html>
