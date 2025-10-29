@@ -11,43 +11,47 @@ async function fetchBuildings() {
 }
 
 function createBuildingElement(building) {
+    // Build a full-width row-style button with an image on the left,
+    // centered star rating, and building name on the left of the content area.
     const button = document.createElement('button');
-    button.className = 'wide-button';
-    
-    // Create name and hours container
-    const nameContainer = document.createElement('div');
-    nameContainer.className = 'building-info';
-    
-    const nameSpan = document.createElement('div');
-    nameSpan.className = 'building-name';
-    nameSpan.textContent = building.name;
-    
-    const hoursSpan = document.createElement('div');
-    hoursSpan.className = 'building-hours';
-    hoursSpan.textContent = building.hours;
-    
-    nameContainer.appendChild(nameSpan);
-    nameContainer.appendChild(hoursSpan);
-    
-    // Create rating container
-    const ratingContainer = document.createElement('div');
-    ratingContainer.className = 'rating-container';
-    
-    const ratingSpan = document.createElement('div');
-    ratingSpan.className = 'building-rating';
-    addStarRating(ratingSpan, building.rating);
-    
-    const statusSpan = document.createElement('div');
-    statusSpan.className = `building-status ${building.isOpen ? 'status-open' : 'status-closed'}`;
-    statusSpan.textContent = building.isOpen ? 'Open' : 'Closed';
-    
-    ratingContainer.appendChild(ratingSpan);
-    ratingContainer.appendChild(statusSpan);
-    
-    // Add all elements to the button
-    button.appendChild(nameContainer);
-    button.appendChild(ratingContainer);
-    
+    button.className = 'building-row-button';
+
+    // Left image area (30-40% width)
+    const imgWrap = document.createElement('div');
+    imgWrap.className = 'button-image';
+    const img = document.createElement('img');
+    img.src = 'cutout.jpg';
+    img.alt = building.name || 'building image';
+    img.className = 'button-img';
+    imgWrap.appendChild(img);
+
+    // Gradient overlay (optional separate element for clarity)
+    const gradient = document.createElement('div');
+    gradient.className = 'button-image-gradient';
+    imgWrap.appendChild(gradient);
+
+    // Content area
+    const content = document.createElement('div');
+    content.className = 'button-content';
+
+    // Building name (left aligned inside content area)
+    const nameDiv = document.createElement('div');
+    nameDiv.className = 'button-name';
+    nameDiv.textContent = building.name;
+
+    // Rating (we'll center this within the content area)
+    const ratingDiv = document.createElement('div');
+    ratingDiv.className = 'button-rating';
+    addStarRating(ratingDiv, building.rating || 0);
+
+    // Append name and rating to content
+    content.appendChild(nameDiv);
+    content.appendChild(ratingDiv);
+
+    // Append everything to button
+    button.appendChild(imgWrap);
+    button.appendChild(content);
+
     return button;
 }
 
