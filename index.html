@@ -2,8 +2,11 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8">
-    <title>Fixed Top Image</title>
+    <title>UM Campus Map</title>
     <link rel="stylesheet" href="style.css">
+    <script src="menu.js"></script>
+    <script src="map.js"></script>
+    <script src="buildings.js"></script>
   </head>
   <body>
 
@@ -101,6 +104,8 @@
     <!-- Add overlay div for the menu background -->
     <div class="menu-overlay" id="menuOverlay"></div>
 
+    <!-- Load external JavaScript files -->
+    <script src="js/buildings.js"></script>
     <script type="text/javascript">
       // Buildings list functionality
       async function loadBuildings() {
@@ -258,8 +263,8 @@
         });
       });
     </script>
-      // Initialize buildings list
-      async function loadBuildings() {
+      // Initialize everything when DOM is loaded
+      document.addEventListener('DOMContentLoaded', () => {
         try {
           const response = await fetch('data/buildings.json');
           const data = await response.json();
@@ -444,24 +449,5 @@
           // Apply limits
           translateX = Math.min(Math.max(translateX, -maxTranslateX), maxTranslateX);
           translateY = Math.min(Math.max(translateY, -maxTranslateY), maxTranslateY);
-          updateTransform();
-        }
-      });
-
-      container.addEventListener('mouseup', () => {
-        isDragging = false;
-        container.style.cursor = 'grab';
-      });
-
-      container.addEventListener('mouseleave', () => {
-        isDragging = false;
-        container.style.cursor = 'grab';
-      });
-
-      function updateTransform() {
-        container.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
-      }
-      });
-    </script>
-  </body>
+      </body>
 </html>
