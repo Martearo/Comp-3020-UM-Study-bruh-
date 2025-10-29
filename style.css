@@ -722,13 +722,14 @@ body {
   border-radius: 12px;
   overflow: hidden;
   cursor: pointer;
-  min-height: 90px;
+  /* reduce height to ~35% of previous visual size (was 90px) */
+  min-height: 34px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.06);
 }
 
 .button-image {
   width: 35%; /* 30-40% as requested */
-  min-width: 140px;
+  min-width: 120px;
   height: 100%;
   position: relative;
   flex-shrink: 0;
@@ -749,7 +750,8 @@ body {
   top: 0;
   bottom: 0;
   right: 0;
-  background: linear-gradient(to right, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.25) 30%, rgba(0,0,0,0.0) 100%);
+  /* stronger left-to-right fade that becomes fully transparent on the right */
+  background: linear-gradient(to right, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.35) 25%, rgba(0,0,0,0.05) 60%, rgba(0,0,0,0.0) 100%);
   pointer-events: none;
 }
 
@@ -758,21 +760,29 @@ body {
   position: relative;
   display: flex;
   align-items: center;
-  padding: 16px 20px;
+  padding: 10px 20px;
+  /* reserve central space so centered stars don't overlap the name */
+  padding-right: 160px;
 }
 
 .button-name {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 600;
   color: var(--deep-black);
   flex: 1;
   z-index: 2;
+  /* prevent name from colliding with centered rating */
+  max-width: calc(100% - 180px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .button-rating {
   position: absolute;
   left: 50%;
-  transform: translateX(-50%);
+  top: 50%;
+  transform: translate(-50%, -50%);
   display: flex;
   gap: 6px;
   z-index: 3;
