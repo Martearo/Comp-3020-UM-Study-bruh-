@@ -6,9 +6,25 @@ async function fetchBuildings() {
         return data.buildings;
     } catch (error) {
         console.error('Error fetching buildings:', error);
-        return [];
+        // Fallback: return an embedded dataset so the UI still works when
+        // the page is opened via file:// or no HTTP server is running.
+        return FALLBACK_BUILDINGS.slice();
     }
 }
+
+// Embedded fallback data (keeps the UI usable without a server)
+const FALLBACK_BUILDINGS = [
+    { "name": "Engineering & Information Technology Complex (EITC)", "rating": 4.5, "isOpen": true, "hours": "7:00 AM - 11:00 PM" },
+    { "name": "Elizabeth Dafoe Library", "rating": 4.8, "isOpen": true, "hours": "8:00 AM - 10:00 PM" },
+    { "name": "University Centre", "rating": 4.2, "isOpen": true, "hours": "7:00 AM - 11:00 PM" },
+    { "name": "Frank Kennedy Centre", "rating": 3.9, "isOpen": false, "hours": "6:00 AM - 9:00 PM" },
+    { "name": "Drake Centre (Asper School of Business)", "rating": 4.3, "isOpen": true, "hours": "7:30 AM - 10:00 PM" },
+    { "name": "Sciences & Technology Library", "rating": 4.6, "isOpen": false, "hours": "8:00 AM - 9:00 PM" },
+    { "name": "Tier Building", "rating": 3.7, "isOpen": true, "hours": "7:00 AM - 6:00 PM" },
+    { "name": "Allen Building (Administration)", "rating": 4.0, "isOpen": false, "hours": "8:30 AM - 4:30 PM" },
+    { "name": "ARTlab", "rating": 4.7, "isOpen": true, "hours": "8:00 AM - 10:00 PM" },
+    { "name": "Max Bell Centre", "rating": 4.1, "isOpen": true, "hours": "6:00 AM - 11:00 PM" }
+];
 
 function createBuildingElement(building) {
     // Build a full-width row-style button with an image on the left,
