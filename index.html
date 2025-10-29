@@ -101,9 +101,238 @@
     <!-- Add overlay div for the menu background -->
     <div class="menu-overlay" id="menuOverlay"></div>
 
-    <script src="js/buildings.js"></script>
-    <script>
-      // Menu functionality
+    <script type="text/javascript">
+      // Buildings list functionality
+      async function loadBuildings() {
+        try {
+          const response = await fetch('data/buildings.json');
+          const data = await response.json();
+          const buildingsContainer = document.getElementById('buildingsList');
+          
+          // Clear any existing content
+          buildingsContainer.innerHTML = '';
+
+          data.buildings.forEach(building => {
+            const button = document.createElement('button');
+            button.className = 'wide-button';
+            
+            // Create the building name element
+            const nameSpan = document.createElement('span');
+            nameSpan.className = 'building-name';
+            nameSpan.textContent = building.name;
+            
+            // Create the star rating element
+            const ratingSpan = document.createElement('span');
+            ratingSpan.className = 'building-rating';
+            const fullStars = Math.floor(building.rating);
+            const hasHalfStar = building.rating % 1 >= 0.5;
+            
+            // Add full stars
+            for (let i = 0; i < fullStars; i++) {
+              const star = document.createElement('span');
+              star.className = 'star';
+              star.textContent = '★';
+              ratingSpan.appendChild(star);
+            }
+            
+            // Add half star if needed
+            if (hasHalfStar) {
+              const halfStar = document.createElement('span');
+              halfStar.className = 'star half-star';
+              halfStar.textContent = '★';
+              ratingSpan.appendChild(halfStar);
+            }
+
+            // Add empty stars to make total of 5
+            const emptyStars = 5 - Math.ceil(building.rating);
+            for (let i = 0; i < emptyStars; i++) {
+              const emptyStar = document.createElement('span');
+              emptyStar.className = 'star';
+              emptyStar.textContent = '☆';
+              ratingSpan.appendChild(emptyStar);
+            }
+
+            // Create status element
+            const statusSpan = document.createElement('span');
+            statusSpan.className = `building-status ${building.isOpen ? 'status-open' : 'status-closed'}`;
+            statusSpan.textContent = building.isOpen ? 'Open' : 'Closed';
+            
+            // Add all elements to the button
+            button.appendChild(nameSpan);
+            button.appendChild(ratingSpan);
+            button.appendChild(statusSpan);
+            
+            buildingsContainer.appendChild(button);
+          });
+        } catch (error) {
+          console.error('Error loading buildings:', error);
+        }
+      }
+
+      // Initialize everything when DOM is loaded
+      document.addEventListener('DOMContentLoaded', () => {
+        // Load buildings
+        loadBuildings();
+
+        // Menu functionality
+        const hamburger = document.querySelector('.hamburger');
+        const sideMenu = document.getElementById('sideMenu');
+        const closeMenu = document.getElementById('closeMenu');
+        const menuOverlay = document.getElementById('menuOverlay');
+
+        function openMenu() {
+          sideMenu.classList.add('open');
+          menuOverlay.classList.add('visible');
+          document.body.style.overflow = 'hidden';
+        }
+
+        function closeMenuHandler() {
+          sideMenu.classList.remove('open');
+          menuOverlay.classList.remove('visible');
+          document.body.style.overflow = '';
+        }
+
+        hamburger.addEventListener('click', openMenu);
+        closeMenu.addEventListener('click', closeMenuHandler);
+        menuOverlay.addEventListener('click', closeMenuHandler);
+
+        // Map functionality
+        const container = document.getElementById('imageContainer');
+        const image = document.getElementById('panZoomImage');
+        let isDragging = false;
+        let startX, startY, translateX = 0, translateY = 0;
+        let scale = 1.0;
+        let minScale = 0.5;
+        let maxScale = 3.0;
+
+        function updateTransform() {
+          container.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
+        }
+
+        // Zoom controls
+        document.getElementById('zoomIn').addEventListener('click', () => {
+          if (scale < maxScale) {
+            scale = Math.min(scale * 1.2, maxScale);
+            updateTransform();
+          }
+        });
+
+        document.getElementById('zoomOut').addEventListener('click', () => {
+          if (scale > minScale) {
+            scale = Math.max(scale / 1.2, minScale);
+            updateTransform();
+          }
+        });
+
+        document.getElementById('resetView').addEventListener('click', () => {
+          scale = 1.0;
+          translateX = 0;
+          translateY = 0;
+          updateTransform();
+        });
+
+        // Pan functionality
+        container.addEventListener('mousedown', (e) => {
+          isDragging = true;
+          startX = e.clientX - translateX;
+          startY = e.clientY - translateY;
+          container.style.cursor = 'grabbing';
+        });
+
+        container.addEventListener('mousemove', (e) => {
+          if (isDragging) {
+            translateX = e.clientX - startX;
+            translateY = e.clientY - startY;
+            updateTransform();
+          }
+        });
+
+        container.addEventListener('mouseup', () => {
+          isDragging = false;
+          container.style.cursor = 'grab';
+        });
+
+        container.addEventListener('mouseleave', () => {
+          isDragging = false;
+          container.style.cursor = 'grab';
+        });
+      });
+    </script>
+      // Initialize buildings list
+      async function loadBuildings() {
+        try {
+          const response = await fetch('data/buildings.json');
+          const data = await response.json();
+          const buildingsContainer = document.getElementById('buildingsList');
+          
+          // Clear any existing content
+          buildingsContainer.innerHTML = '';
+
+          data.buildings.forEach(building => {
+            const button = document.createElement('button');
+            button.className = 'wide-button';
+            
+            // Create the building name element
+            const nameSpan = document.createElement('span');
+            nameSpan.className = 'building-name';
+            nameSpan.textContent = building.name;
+            
+            // Create the star rating element
+            const ratingSpan = document.createElement('span');
+            ratingSpan.className = 'building-rating';
+            const fullStars = Math.floor(building.rating);
+            const hasHalfStar = building.rating % 1 >= 0.5;
+            
+            // Add full stars
+            for (let i = 0; i < fullStars; i++) {
+                const star = document.createElement('span');
+                star.className = 'star';
+                star.textContent = '★';
+                ratingSpan.appendChild(star);
+            }
+            
+            // Add half star if needed
+            if (hasHalfStar) {
+                const halfStar = document.createElement('span');
+                halfStar.className = 'star half-star';
+                halfStar.textContent = '★';
+                ratingSpan.appendChild(halfStar);
+            }
+
+            // Add empty stars to make total of 5
+            const emptyStars = 5 - Math.ceil(building.rating);
+            for (let i = 0; i < emptyStars; i++) {
+                const emptyStar = document.createElement('span');
+                emptyStar.className = 'star';
+                emptyStar.textContent = '☆';
+                ratingSpan.appendChild(emptyStar);
+            }
+
+            // Create status element
+            const statusSpan = document.createElement('span');
+            statusSpan.className = `building-status ${building.isOpen ? 'status-open' : 'status-closed'}`;
+            statusSpan.textContent = building.isOpen ? 'Open' : 'Closed';
+            
+            // Add all elements to the button
+            button.appendChild(nameSpan);
+            button.appendChild(ratingSpan);
+            button.appendChild(statusSpan);
+            
+            buildingsContainer.appendChild(button);
+          });
+        } catch (error) {
+          console.error('Error loading buildings:', error);
+        }
+      }
+
+      }
+
+      // Initialize everything when DOM is loaded
+      document.addEventListener('DOMContentLoaded', () => {
+        // Load buildings
+        loadBuildings();
+
+        // Menu functionality
       const hamburger = document.querySelector('.hamburger');
       const sideMenu = document.getElementById('sideMenu');
       const closeMenu = document.getElementById('closeMenu');
@@ -126,6 +355,9 @@
       menuOverlay.addEventListener('click', closeMenuHandler);
 
       // Map functionality
+      // Load the buildings list
+      loadBuildings();
+
       const container = document.getElementById('imageContainer');
       const image = document.getElementById('panZoomImage');
       
@@ -229,6 +461,7 @@
       function updateTransform() {
         container.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
       }
+      });
     </script>
   </body>
 </html>

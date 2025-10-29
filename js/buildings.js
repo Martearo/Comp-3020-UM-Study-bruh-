@@ -54,16 +54,6 @@ async function loadBuildings() {
             button.appendChild(ratingSpan);
             button.appendChild(statusSpan);
             
-            // Create the status element
-            const statusSpan = document.createElement('span');
-            statusSpan.className = `building-status ${building.isOpen ? 'open' : 'closed'}`;
-            statusSpan.textContent = building.isOpen ? 'Open' : 'Closed';
-            
-            // Add all elements to the button
-            button.appendChild(nameSpan);
-            button.appendChild(ratingSpan);
-            button.appendChild(statusSpan);
-            
             buildingsContainer.appendChild(button);
         });
     } catch (error) {
