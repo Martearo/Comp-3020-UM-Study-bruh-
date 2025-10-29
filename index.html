@@ -6,7 +6,24 @@
     <link rel="stylesheet" href="style.css">
   </head>
   <body>
+
     <div class="top-image">
+      <div class="searchbar-overlay">
+        <button class="hamburger" aria-label="Menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+        <div class="logo">yelp<span class="star">*</span></div>
+        <form class="searchbar-form">
+          <input class="searchbar-input" type="text" placeholder="things to do, nail salons, plumber">
+          <div class="searchbar-divider"></div>
+          <input class="searchbar-location" type="text" placeholder="Winnipeg, MB">
+          <button class="searchbar-btn" type="submit">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="white"><circle cx="11" cy="11" r="8" stroke="none"/><path d="M21 21l-4.35-4.35" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+          </button>
+        </form>
+      </div>
       <div class="image-container" id="imageContainer">
         <img src="image.png" alt="Banner Image" id="panZoomImage" draggable="false">
       </div>
