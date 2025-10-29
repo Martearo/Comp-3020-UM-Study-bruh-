@@ -10,18 +10,27 @@ body {
   background: #fff;
   color: var(--deep-black);
   font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  padding: 0;
 }
 
-/* --- Search Bar Overlay Styles --- */
-.searchbar-overlay {
-  position: absolute;
-  top: 30px;
-  left: 0;
+/* --- Header and Search Bar Styles --- */
+.header {
+  position: sticky;
+  top: 0;
+  background: #fff;
+  z-index: 100;
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
   width: 100%;
+}
+
+.searchbar-overlay {
+  max-width: 1200px;
+  margin: 0 auto;
   display: flex;
   align-items: center;
-  z-index: 20;
-  pointer-events: none; /* Prevents overlay from blocking drag events on image */
+  padding: 10px 20px;
 }
 
 .searchbar-overlay > * {
@@ -79,12 +88,17 @@ body {
   display: flex;
   align-items: center;
   background: #fff;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(32,30,31,0.10);
-  padding: 4px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(32,30,31,0.12);
+  padding: 8px;
   min-width: 600px;
   max-width: 900px;
   width: 60vw;
+  transition: box-shadow 0.3s ease;
+}
+
+.searchbar-form:focus-within {
+  box-shadow: 0 6px 16px rgba(32,30,31,0.15);
 }
 
 .search-input-wrapper {
@@ -157,17 +171,67 @@ body {
     height: 34px;
   }
 }
-/* Make the image stay fixed at the top */
-.top-image {
-  position: relative;
-  width: 100%;
-  height: 400px;
-  overflow: hidden;
-  z-index: 10;
-  cursor: grab;
+.main-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
 }
 
-.top-image:active {
+.map-section {
+  position: relative;
+  width: 90%;
+  margin: 0 auto;
+}
+
+.map-controls {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  z-index: 10;
+}
+
+.map-button {
+  background: white;
+  border: none;
+  border-radius: 8px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  transition: all 0.2s ease;
+}
+
+.map-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.map-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.map-container {
+  width: 100%;
+  height: 600px;
+  overflow: hidden;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  cursor: grab;
+  background: linear-gradient(135deg, var(--dusty-blue) 0%, var(--concrete) 100%);
+  position: relative;
+}
+
+.map-container:active {
   cursor: grabbing;
 }
 
@@ -175,10 +239,11 @@ body {
   width: 100%;
   height: 100%;
   position: relative;
-  transform-origin: 0 0;
+  transform-origin: center;
+  transition: transform 0.3s ease;
 }
 
-.top-image img {
+.image-container img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -186,9 +251,14 @@ body {
   -webkit-user-drag: none;
 }
 
-/* Add padding so your content isn't hidden behind the fixed image */
 .content {
-  margin-top: 30px;
+  width: 90%;
+  margin: 30px auto;
+  background: #fff;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
 .sort-btn {
   border: none;
   border-radius: 4px;
@@ -264,6 +334,7 @@ body {
 .star.half {
   position: relative;
   background: linear-gradient(to right, #ffd700 50%, rgba(255, 255, 255, 0.3) 50%);
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
