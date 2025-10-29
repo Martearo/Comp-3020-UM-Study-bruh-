@@ -1,101 +1,52 @@
 // Initialize everything when DOM is loaded
-document.addEventListener('DOMContentLoaded', () => {
-    // Load buildings
-    loadBuildings();
-
-    // Menu functionality
+document.addEventListener('DOMContentLoaded', async () => {
+    await loadBuildings();
     initializeMenu();
-
-    // Map functionality
     initializeMap();
 });
 
+// Load and display buildings
 async function loadBuildings() {
     const buildingsContainer = document.getElementById('buildingsList');
-    try {
-        const response = await fetch('data/buildings.json');
-        const data = await response.json();
-        buildingsContainer.innerHTML = '';
-        
-        data.buildings.forEach(building => {
-            const button = document.createElement('button');
-            button.className = 'wide-button';
-            
-            const nameSpan = document.createElement('span');
-            nameSpan.className = 'building-name';
-            nameSpan.textContent = building.name;
-            
-            const ratingSpan = document.createElement('span');
-            ratingSpan.className = 'building-rating';
-            
-            // Add stars
-            addStarRating(ratingSpan, building.rating);
+    if (!buildingsContainer) return;
 
-            const statusSpan = document.createElement('span');
-            statusSpan.className = `building-status ${building.isOpen ? 'status-open' : 'status-closed'}`;
-            statusSpan.textContent = building.isOpen ? 'Open' : 'Closed';
-            
-            button.appendChild(nameSpan);
-            button.appendChild(ratingSpan);
-            button.appendChild(statusSpan);
-            buildingsContainer.appendChild(button);
+    try {
+        buildingsContainer.innerHTML = '';
+        const buildings = await fetchBuildings();
+        
+        buildings.forEach(building => {
+            const buildingElement = createBuildingElement(building);
+            buildingsContainer.appendChild(buildingElement);
         });
     } catch (error) {
         console.error('Error loading buildings:', error);
     }
 }
 
-function addStarRating(container, rating) {
-    const fullStars = Math.floor(rating);
-    const hasHalfStar = rating % 1 >= 0.5;
-    
-    // Add full stars
-    for (let i = 0; i < fullStars; i++) {
-        const star = document.createElement('span');
-        star.className = 'star';
-        star.textContent = '★';
-        container.appendChild(star);
-    }
-    
-    // Add half star if needed
-    if (hasHalfStar) {
-        const halfStar = document.createElement('span');
-        halfStar.className = 'star half-star';
-        halfStar.textContent = '★';
-        container.appendChild(halfStar);
-    }
-    
-    // Add empty stars
-    const emptyStars = 5 - Math.ceil(rating);
-    for (let i = 0; i < emptyStars; i++) {
-        const emptyStar = document.createElement('span');
-        emptyStar.className = 'star';
-        emptyStar.textContent = '☆';
-        container.appendChild(emptyStar);
-    }
-}
-
 function initializeMenu() {
-    const hamburger = document.querySelector('.hamburger');
-    const sideMenu = document.getElementById('sideMenu');
-    const closeMenu = document.getElementById('closeMenu');
-    const menuOverlay = document.getElementById('menuOverlay');
+    const elements = {
+        hamburger: document.querySelector('.hamburger'),
+        sideMenu: document.getElementById('sideMenu'),
+        closeMenu: document.getElementById('closeMenu'),
+        menuOverlay: document.getElementById('menuOverlay')
+    };
 
-    function openMenu() {
-        sideMenu.classList.add('open');
-        menuOverlay.classList.add('visible');
-        document.body.style.overflow = 'hidden';
+    // Check if all required elements exist
+    if (!Object.values(elements).every(element => element)) {
+        console.error('Some menu elements are missing');
+        return;
     }
 
-    function closeMenuHandler() {
-        sideMenu.classList.remove('open');
-        menuOverlay.classList.remove('visible');
-        document.body.style.overflow = '';
+    function toggleMenu(isOpen) {
+        elements.sideMenu.classList.toggle('open', isOpen);
+        elements.menuOverlay.classList.toggle('visible', isOpen);
+        document.body.style.overflow = isOpen ? 'hidden' : '';
     }
 
-    hamburger.addEventListener('click', openMenu);
-    closeMenu.addEventListener('click', closeMenuHandler);
-    menuOverlay.addEventListener('click', closeMenuHandler);
+    // Event handlers
+    elements.hamburger.addEventListener('click', () => toggleMenu(true));
+    elements.closeMenu.addEventListener('click', () => toggleMenu(false));
+    elements.menuOverlay.addEventListener('click', () => toggleMenu(false));
 }
 
 function initializeMap() {

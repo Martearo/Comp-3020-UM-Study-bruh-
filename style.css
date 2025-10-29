@@ -295,9 +295,21 @@ body {
   flex-direction: column;
   gap: 15px;
   width: 100%;
-  margin: 0;
-  padding: 0;
-  align-items: stretch;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.name-container {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.building-info {
+  font-size: 0.9em;
+  color: #666;
 }
 
 .map-controls {
@@ -325,17 +337,21 @@ body {
   background: white;
   border: 1px solid #e0e0e0;
   border-radius: 8px;
-  padding: 15px 20px;
+  padding: 20px;
   width: 100%;
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   cursor: pointer;
   transition: all 0.2s ease;
   position: relative;
   overflow: hidden;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  margin-bottom: 10px;
+}
+
+.wide-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .wide-button::before {

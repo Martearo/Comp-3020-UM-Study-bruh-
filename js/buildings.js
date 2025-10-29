@@ -1,65 +1,82 @@
-async function loadBuildings() {
+// Building-related functionality
+async function fetchBuildings() {
     try {
         const response = await fetch('data/buildings.json');
         const data = await response.json();
-        const buildingsContainer = document.getElementById('buildingsList');
-
-        data.buildings.forEach(building => {
-            const button = document.createElement('button');
-            button.className = 'wide-button';
-            
-            // Create the building name element
-            const nameSpan = document.createElement('span');
-            nameSpan.className = 'building-name';
-            nameSpan.textContent = building.name;
-            
-            // Create the star rating element
-            const ratingSpan = document.createElement('span');
-            ratingSpan.className = 'building-rating';
-            const fullStars = Math.floor(building.rating);
-            const hasHalfStar = building.rating % 1 >= 0.5;
-            
-            // Add full stars
-            for (let i = 0; i < fullStars; i++) {
-                const star = document.createElement('span');
-                star.className = 'star';
-                star.textContent = '★';
-                ratingSpan.appendChild(star);
-            }
-            
-            // Add half star if needed
-            if (hasHalfStar) {
-                const halfStar = document.createElement('span');
-                halfStar.className = 'star half-star';
-                halfStar.textContent = '★';
-                ratingSpan.appendChild(halfStar);
-            }
-
-            // Add empty stars to make total of 5
-            const emptyStars = 5 - Math.ceil(building.rating);
-            for (let i = 0; i < emptyStars; i++) {
-                const emptyStar = document.createElement('span');
-                emptyStar.className = 'star';
-                emptyStar.textContent = '☆';
-                ratingSpan.appendChild(emptyStar);
-            }
-
-            // Create status element
-            const statusSpan = document.createElement('span');
-            statusSpan.className = `building-status ${building.isOpen ? 'status-open' : 'status-closed'}`;
-            statusSpan.textContent = building.isOpen ? 'Open' : 'Closed';
-            
-            // Add all elements to the button
-            button.appendChild(nameSpan);
-            button.appendChild(ratingSpan);
-            button.appendChild(statusSpan);
-            
-            buildingsContainer.appendChild(button);
-        });
+        return data.buildings;
     } catch (error) {
-        console.error('Error loading buildings:', error);
+        console.error('Error fetching buildings:', error);
+        return [];
     }
 }
 
-// Load buildings when the page loads
-document.addEventListener('DOMContentLoaded', loadBuildings);
+function createBuildingElement(building) {
+    const button = document.createElement('button');
+    button.className = 'wide-button';
+    
+    // Create name and hours container
+    const nameContainer = document.createElement('div');
+    nameContainer.className = 'building-info';
+    
+    const nameSpan = document.createElement('div');
+    nameSpan.className = 'building-name';
+    nameSpan.textContent = building.name;
+    
+    const hoursSpan = document.createElement('div');
+    hoursSpan.className = 'building-hours';
+    hoursSpan.textContent = building.hours;
+    
+    nameContainer.appendChild(nameSpan);
+    nameContainer.appendChild(hoursSpan);
+    
+    // Create rating container
+    const ratingContainer = document.createElement('div');
+    ratingContainer.className = 'rating-container';
+    
+    const ratingSpan = document.createElement('div');
+    ratingSpan.className = 'building-rating';
+    addStarRating(ratingSpan, building.rating);
+    
+    const statusSpan = document.createElement('div');
+    statusSpan.className = `building-status ${building.isOpen ? 'status-open' : 'status-closed'}`;
+    statusSpan.textContent = building.isOpen ? 'Open' : 'Closed';
+    
+    ratingContainer.appendChild(ratingSpan);
+    ratingContainer.appendChild(statusSpan);
+    
+    // Add all elements to the button
+    button.appendChild(nameContainer);
+    button.appendChild(ratingContainer);
+    
+    return button;
+}
+
+function addStarRating(container, rating) {
+    const fullStars = Math.floor(rating);
+    const hasHalfStar = rating % 1 >= 0.5;
+    
+    // Add full stars
+    for (let i = 0; i < fullStars; i++) {
+        const star = document.createElement('span');
+        star.className = 'star';
+        star.textContent = '★';
+        container.appendChild(star);
+    }
+    
+    // Add half star if needed
+    if (hasHalfStar) {
+        const halfStar = document.createElement('span');
+        halfStar.className = 'star half-star';
+        halfStar.textContent = '★';
+        container.appendChild(halfStar);
+    }
+    
+    // Add empty stars
+    const emptyStars = 5 - Math.ceil(rating);
+    for (let i = 0; i < emptyStars; i++) {
+        const emptyStar = document.createElement('span');
+        emptyStar.className = 'star';
+        emptyStar.textContent = '☆';
+        container.appendChild(emptyStar);
+    }
+}
