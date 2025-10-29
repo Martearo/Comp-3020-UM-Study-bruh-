@@ -435,7 +435,7 @@
 
     <script>
       // Initialize everything when DOM is loaded
-      document.addEventListener('DOMContentLoaded', () => {
+      document.addEventListener('DOMContentLoaded', async () => {
         try {
           const response = await fetch('data/buildings.json');
           const data = await response.json();
