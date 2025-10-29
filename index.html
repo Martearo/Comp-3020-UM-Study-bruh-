@@ -109,9 +109,7 @@
 
     <!-- Load external JavaScript files -->
     <script src="js/buildings.js"></script>
-    <script type="text/javascript">
-      // Buildings list functionality
-      async function loadBuildings() {
+    <script src="js/main.js"></script>
         try {
           const response = await fetch('data/buildings.json');
           const data = await response.json();
