@@ -1,3 +1,17 @@
+/* --- New Color Palette --- */
+:root {
+  --dusty-blue: #6B7A89;
+  --concrete: #CDBCA8;
+  --taupe: #675C5A;
+  --deep-black: #201E1F;
+}
+
+body {
+  background: var(--concrete);
+  color: var(--deep-black);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
 /* --- Search Bar Overlay Styles --- */
 .searchbar-overlay {
   position: absolute;
@@ -15,7 +29,7 @@
 }
 
 .hamburger {
-  background: rgba(255,255,255,0.7);
+  background: var(--taupe);
   border: none;
   border-radius: 6px;
   width: 40px;
@@ -27,14 +41,14 @@
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  box-shadow: 0 2px 6px rgba(32,30,31,0.10);
   transition: background 0.2s;
 }
 .hamburger span {
   display: block;
   width: 22px;
   height: 3px;
-  background: #444;
+  background: var(--deep-black);
   margin: 3px 0;
   border-radius: 2px;
 }
@@ -43,29 +57,30 @@
   font-family: Arial, Helvetica, sans-serif;
   font-size: 2rem;
   font-weight: bold;
-  color: #fff;
-  background: rgba(0,0,0,0.3);
+  color: var(--concrete);
+  background: var(--dusty-blue);
   border-radius: 8px;
   padding: 4px 16px 4px 12px;
   margin-right: 18px;
   display: flex;
   align-items: center;
   letter-spacing: 1px;
+  box-shadow: 0 2px 8px rgba(32,30,31,0.10);
 }
 .logo .star {
-  color: #fff;
+  color: var(--deep-black);
   font-size: 1.5rem;
   margin-left: 2px;
   font-weight: normal;
-  text-shadow: 0 0 4px #e00707, 0 0 2px #fff;
+  text-shadow: 0 0 4px var(--taupe), 0 0 2px var(--concrete);
 }
 
 .searchbar-form {
   display: flex;
   align-items: center;
-  background: #fff;
+  background: var(--concrete);
   border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+  box-shadow: 0 2px 8px rgba(32,30,31,0.10);
   padding: 4px 4px 4px 18px;
   min-width: 600px;
   max-width: 900px;
@@ -78,11 +93,12 @@
   padding: 10px 8px 10px 0;
   flex: 2;
   background: transparent;
+  color: var(--deep-black);
 }
 .searchbar-divider {
   width: 1px;
   height: 28px;
-  background: #e0e0e0;
+  background: var(--taupe);
   margin: 0 12px;
 }
 .searchbar-location {
@@ -92,9 +108,10 @@
   padding: 10px 0 10px 0;
   flex: 1;
   background: transparent;
+  color: var(--deep-black);
 }
 .searchbar-btn {
-  background: #e00707;
+  background: var(--dusty-blue);
   border: none;
   border-radius: 7px;
   width: 48px;
@@ -107,7 +124,7 @@
   transition: background 0.2s;
 }
 .searchbar-btn:hover {
-  background: #b80000;
+  background: var(--taupe);
 }
 
 @media (max-width: 900px) {
@@ -169,21 +186,24 @@
 /* Style for the wide buttons */
 .wide-button {
   width: 100%;
-  padding: 30px; /* Increased height */
+  padding: 30px;
   font-size: 18px;
-  background: linear-gradient(to right, #333333 0%, rgba(51, 51, 51, 0.1) 100%); /* Gradient from solid to transparent */
-  color: white;
+  background: linear-gradient(to right, var(--dusty-blue) 0%, rgba(107, 122, 137, 0.1) 100%);
+  color: var(--concrete);
   border: none;
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Added shadow */
+  box-shadow: 0 4px 6px rgba(32,30,31,0.18);
   position: relative;
   overflow: hidden;
+  font-weight: 600;
+  letter-spacing: 0.5px;
 }
 
 .wide-button:hover {
-  background: linear-gradient(to right, #1a1a1a 0%, rgba(26, 26, 26, 0.1) 100%);
-  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3); /* Larger shadow on hover */
-  transform: translateY(-2px); /* Slight lift effect */
+  background: linear-gradient(to right, var(--taupe) 0%, rgba(103, 92, 90, 0.1) 100%);
+  color: var(--deep-black);
+  box-shadow: 0 6px 8px rgba(32,30,31,0.28);
+  transform: translateY(-2px);
 }
