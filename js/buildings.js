@@ -30,19 +30,29 @@ async function loadBuildings() {
             // Add half star if needed
             if (hasHalfStar) {
                 const halfStar = document.createElement('span');
-                halfStar.className = 'star half';
+                halfStar.className = 'star half-star';
                 halfStar.textContent = '★';
                 ratingSpan.appendChild(halfStar);
             }
-            
+
             // Add empty stars to make total of 5
             const emptyStars = 5 - Math.ceil(building.rating);
             for (let i = 0; i < emptyStars; i++) {
                 const emptyStar = document.createElement('span');
-                emptyStar.className = 'star empty';
+                emptyStar.className = 'star';
                 emptyStar.textContent = '☆';
                 ratingSpan.appendChild(emptyStar);
             }
+
+            // Create status element
+            const statusSpan = document.createElement('span');
+            statusSpan.className = `building-status ${building.isOpen ? 'status-open' : 'status-closed'}`;
+            statusSpan.textContent = building.isOpen ? 'Open' : 'Closed';
+            
+            // Add all elements to the button
+            button.appendChild(nameSpan);
+            button.appendChild(ratingSpan);
+            button.appendChild(statusSpan);
             
             // Create the status element
             const statusSpan = document.createElement('span');
