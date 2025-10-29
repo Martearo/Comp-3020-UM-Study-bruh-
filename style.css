@@ -81,17 +81,31 @@ body {
   background: #fff;
   border-radius: 10px;
   box-shadow: 0 2px 8px rgba(32,30,31,0.10);
-  padding: 4px 4px 4px 18px;
+  padding: 4px;
   min-width: 600px;
   max-width: 900px;
   width: 60vw;
 }
+
+.search-input-wrapper {
+  position: relative;
+  flex: 2;
+  display: flex;
+  align-items: center;
+}
+
+.search-icon {
+  position: absolute;
+  left: 12px;
+  pointer-events: none;
+}
+
 .searchbar-input {
   border: none;
   outline: none;
   font-size: 1.1rem;
-  padding: 10px 8px 10px 0;
-  flex: 2;
+  padding: 10px 8px 10px 40px;
+  width: 100%;
   background: transparent;
   color: var(--deep-black);
 }
@@ -176,23 +190,20 @@ body {
 .content {
   margin-top: 30px;
 .sort-btn {
-  background: #fff;
-  border: 1px solid var(--taupe);
-  border-radius: 7px;
-  width: 48px;
-  height: 44px;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
   margin-left: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  margin-right: 4px;
+  background: transparent;
+  color: var(--dusty-blue);
+  font-size: 1rem;
   cursor: pointer;
-  transition: background 0.2s, border 0.2s;
-  color: var(--taupe);
+  transition: background-color 0.2s;
 }
+
 .sort-btn:hover {
-  background: var(--taupe);
-  color: #fff;
-  border: 1px solid var(--taupe);
+  background-color: rgba(107, 122, 137, 0.1);
 }
   padding: 20px;
   display: flex;
@@ -203,24 +214,75 @@ body {
 /* Style for the wide buttons */
 .wide-button {
   width: 100%;
-  padding: 30px;
-  font-size: 18px;
-  background: linear-gradient(to right, var(--dusty-blue) 0%, rgba(107, 122, 137, 0.1) 100%);
-  color: var(--concrete);
+  padding: 20px;
+  font-size: 16px;
+  background: linear-gradient(to right, var(--dusty-blue) 0%, rgba(107, 122, 137, 0.9) 100%);
+  color: white;
   border: none;
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: 0 4px 6px rgba(32,30,31,0.18);
   position: relative;
-  overflow: hidden;
-  font-weight: 600;
-  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-align: left;
+  font-weight: 500;
 }
 
 .wide-button:hover {
-  background: linear-gradient(to right, var(--taupe) 0%, rgba(103, 92, 90, 0.1) 100%);
-  color: var(--deep-black);
+  background: linear-gradient(to right, var(--dusty-blue) 0%, var(--dusty-blue) 100%);
   box-shadow: 0 6px 8px rgba(32,30,31,0.28);
   transform: translateY(-2px);
+}
+
+.building-name {
+  flex: 1;
+  margin-right: 20px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.building-rating {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin: 0 20px;
+}
+
+.star {
+  color: #ffd700;
+  font-size: 18px;
+}
+
+.star.empty {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.star.half {
+  position: relative;
+  background: linear-gradient(to right, #ffd700 50%, rgba(255, 255, 255, 0.3) 50%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.building-status {
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  min-width: 80px;
+  text-align: center;
+}
+
+.building-status.open {
+  background-color: rgba(75, 181, 67, 0.2);
+  color: #4BB543;
+}
+
+.building-status.closed {
+  background-color: rgba(255, 59, 48, 0.2);
+  color: #FF3B30;
 }
