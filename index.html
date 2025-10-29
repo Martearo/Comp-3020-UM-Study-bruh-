@@ -72,10 +72,21 @@
           translateX = e.clientX - startX;
           translateY = e.clientY - startY;
           
-          // Limit panning
-          const maxTranslate = (scale - 1) * container.offsetWidth;
-          translateX = Math.min(Math.max(translateX, -maxTranslate), maxTranslate);
-          translateY = Math.min(Math.max(translateY, -maxTranslate), maxTranslate);
+          // Calculate limits based on actual image dimensions and scale
+          const containerRect = container.getBoundingClientRect();
+          const imageRect = image.getBoundingClientRect();
+          
+          // Calculate the scaled dimensions
+          const scaledWidth = imageRect.width * scale;
+          const scaledHeight = imageRect.height * scale;
+          
+          // Calculate maximum allowed translation
+          const maxTranslateX = Math.max(0, (scaledWidth - containerRect.width) / 2);
+          const maxTranslateY = Math.max(0, (scaledHeight - containerRect.height) / 2);
+          
+          // Apply limits
+          translateX = Math.min(Math.max(translateX, -maxTranslateX), maxTranslateX);
+          translateY = Math.min(Math.max(translateY, -maxTranslateY), maxTranslateY);
           
           updateTransform();
         }

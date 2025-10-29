@@ -4,7 +4,7 @@
   top: 0;
   left: 0;
   width: 100%;
-  height: 250px;
+  height: 400px; /* Made taller */
   overflow: hidden;
   z-index: 10;
   cursor: grab;
@@ -31,7 +31,7 @@
 
 /* Add padding so your content isn't hidden behind the fixed image */
 .content {
-  margin-top: 260px; /* Slightly larger than image height */
+  margin-top: 410px; /* Slightly larger than image height */
   padding: 20px;
   display: flex;
   flex-direction: column;
