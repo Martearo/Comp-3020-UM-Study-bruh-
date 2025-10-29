@@ -1,32 +1,69 @@
-// Initialize Google Map
+// Map interaction logic
+let scale = 1;
+const SCALE_STEP = 0.2;
+const MIN_SCALE = 0.5;
+const MAX_SCALE = 3;
+
 function initMap() {
-    const map = new google.maps.Map(document.getElementById('map'), {
-        center: { lat: 49.8951, lng: -97.1384 }, // Winnipeg coordinates
-        zoom: 12,
-        styles: [
-            {
-                "featureType": "all",
-                "elementType": "geometry",
-                "stylers": [{ "color": "#224193" }] // Azure base
-            },
-            {
-                "featureType": "water",
-                "elementType": "geometry",
-                "stylers": [{ "color": "#6F9BD1" }] // Powder blue water
-            },
-            {
-                "featureType": "poi",
-                "elementType": "geometry",
-                "stylers": [{ "color": "#DF3C5F" }] // Electric pink points of interest
-            }
-        ]
+    const map = $('#map');
+    let isDragging = false;
+    let currentX;
+    let currentY;
+    let initialX;
+    let initialY;
+
+    map.addEventListener('mousedown', startDragging);
+    document.addEventListener('mousemove', drag);
+    document.addEventListener('mouseup', stopDragging);
+    
+    // Touch events
+    map.addEventListener('touchstart', e => {
+        const touch = e.touches[0];
+        startDragging(touch);
+    });
+    document.addEventListener('touchmove', e => {
+        e.preventDefault();
+        const touch = e.touches[0];
+        drag(touch);
+    });
+    document.addEventListener('touchend', stopDragging);
+
+    function startDragging(e) {
+        initialX = e.clientX - currentX;
+        initialY = e.clientY - currentY;
+        isDragging = true;
+    }
+
+    function drag(e) {
+        if (isDragging) {
+            e.preventDefault();
+            currentX = e.clientX - initialX;
+            currentY = e.clientY - initialY;
+            updateMapPosition();
+        }
+    }
+
+    function stopDragging() {
+        isDragging = false;
+    }
+
+    function updateMapPosition() {
+        map.style.transform = `translate(${currentX}px, ${currentY}px) scale(${scale})`;
+    }
+
+    // Zoom controls
+    $('#zoom-in').addEventListener('click', () => {
+        if (scale < MAX_SCALE) {
+            scale += SCALE_STEP;
+            updateMapPosition();
+        }
     });
 
-    // Add a marker
-    new google.maps.Marker({
-        position: { lat: 49.8951, lng: -97.1384 },
-        map: map,
-        title: "Quiz Location"
+    $('#zoom-out').addEventListener('click', () => {
+        if (scale > MIN_SCALE) {
+            scale -= SCALE_STEP;
+            updateMapPosition();
+        }
     });
 }
 
