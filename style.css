@@ -279,6 +279,23 @@ body {
   margin: 0 auto;
 }
 
+.buildings-section {
+  width: 90%;
+  margin: 20px auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.buildings-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 800px;
+  margin: 0 auto;
+  width: 100%;
+}
+
 .map-controls {
   position: absolute;
   right: 20px;
@@ -298,6 +315,56 @@ body {
   display: flex;
   align-items: center;
   padding: 0 15px;
+}
+
+.wide-button {
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 15px 20px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.wide-button:hover {
+  background: #f8f8f8;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.building-name {
+  font-weight: 500;
+  font-size: 1.1rem;
+  color: var(--deep-black);
+}
+
+.building-rating {
+  display: flex;
+  gap: 2px;
+  color: #ffd700;
+}
+
+.building-status {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+.status-open {
+  background: #e6f4ea;
+  color: #137333;
+}
+
+.status-closed {
+  background: #fce8e6;
+  color: #c5221f;
+}
+
+.map-button {
   gap: 10px;
   cursor: pointer;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
@@ -535,6 +602,48 @@ body {
 .building-status.closed {
   background-color: rgba(255, 59, 48, 0.2);
   color: #FF3B30;
+}
+
+/* Updated buildings list styles */
+.buildings-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+.wide-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-height: 80px;
+}
+
+.wide-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-color: #ccc;
+}
+
+.building-name {
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--deep-black);
+  margin-right: 20px;
+  flex: 1;
+}
+
+.building-info {
+  font-size: 14px;
+  color: var(--dusty-blue);
+  margin-top: 4px;
+  display: block;
 }
 
 /* --- Buildings Section Styles --- */

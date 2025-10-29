@@ -97,7 +97,10 @@
         </div>
       </div>
 
-      <div class="content" id="buildingsList">
+      <div class="content buildings-section">
+        <div id="buildingsList" class="buildings-list">
+          <!-- Buildings will be dynamically added here -->
+        </div>
         <!-- Buildings will be populated by JavaScript -->
       </div>
     </div>
@@ -434,12 +437,26 @@
       });
 
     <script>
+      const buildingsList = [
+        { id: 'eitc-e1', name: 'EITC E1', info: 'Engineering and Information Technology Complex - Building E1', rating: 4.5 },
+        { id: 'eitc-e2', name: 'EITC E2', info: 'Engineering and Information Technology Complex - Building E2', rating: 4.0 },
+        { id: 'eitc-e3', name: 'EITC E3', info: 'Engineering and Information Technology Complex - Building E3', rating: 4.2 },
+        { id: 'drake', name: 'Drake Centre', info: 'Drake Centre - Asper School of Business', rating: 4.3 },
+        { id: 'helen-glass', name: 'Helen Glass', info: 'Helen Glass Centre for Nursing', rating: 4.1 },
+        { id: 'education', name: 'Education', info: 'Education Building', rating: 3.9 },
+        { id: 'fletcher', name: 'Fletcher', info: 'Fletcher Argue Building', rating: 3.8 },
+        { id: 'armes', name: 'Armes', info: 'Armes Building', rating: 4.0 },
+        { id: 'allen', name: 'Allen', info: 'Allen Building', rating: 3.7 },
+        { id: 'buller', name: 'Buller', info: 'Buller Building', rating: 3.9 },
+        { id: 'parker', name: 'Parker', info: 'Parker Building', rating: 3.8 }
+      ];
+
       // Initialize everything when DOM is loaded
       document.addEventListener('DOMContentLoaded', async () => {
+        const buildingsContainer = document.getElementById('buildingsList');
         try {
           const response = await fetch('data/buildings.json');
           const data = await response.json();
-          const buildingsContainer = document.getElementById('buildingsList');
           // Clear any existing content
           buildingsContainer.innerHTML = '';
           
@@ -497,6 +514,61 @@
         } catch (error) {
           console.error('Error loading buildings:', error);
         }
+        // Clear any existing content
+        buildingsContainer.innerHTML = '';
+        
+        buildingsList.forEach(building => {
+          const button = document.createElement('button');
+          button.className = 'wide-button';
+          button.setAttribute('data-building-id', building.id);
+          
+          const nameContainer = document.createElement('div');
+          nameContainer.style.flex = '1';
+          
+          const nameSpan = document.createElement('div');
+          nameSpan.className = 'building-name';
+          nameSpan.textContent = building.name;
+          
+          const infoSpan = document.createElement('div');
+          infoSpan.className = 'building-info';
+          infoSpan.textContent = building.info;
+          
+          nameContainer.appendChild(nameSpan);
+          nameContainer.appendChild(infoSpan);
+          
+          const ratingSpan = document.createElement('div');
+          ratingSpan.className = 'building-rating';
+          
+          // Add the rating stars
+          const fullStars = Math.floor(building.rating);
+          const hasHalfStar = building.rating % 1 >= 0.5;
+          
+          for (let i = 0; i < fullStars; i++) {
+            const star = document.createElement('span');
+            star.className = 'star';
+            star.textContent = '★';
+            ratingSpan.appendChild(star);
+          }
+          
+          if (hasHalfStar) {
+            const halfStar = document.createElement('span');
+            halfStar.className = 'star half';
+            halfStar.textContent = '★';
+            ratingSpan.appendChild(halfStar);
+          }
+          
+          const emptyStars = 5 - Math.ceil(building.rating);
+          for (let i = 0; i < emptyStars; i++) {
+            const emptyStar = document.createElement('span');
+            emptyStar.className = 'star empty';
+            emptyStar.textContent = '☆';
+            ratingSpan.appendChild(emptyStar);
+          }
+          
+          button.appendChild(nameContainer);
+          button.appendChild(ratingSpan);
+          buildingsContainer.appendChild(button);
+        });
       });
     </script>
   </body>
