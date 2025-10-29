@@ -1,0 +1,6 @@
+body { font-family: system-ui, Arial; margin: 40px; }
+main { max-width: 700px; margin: 0 auto; }
+.hidden { display: none; }
+button { margin: 6px; padding: 8px 12px; }
+button.correct { background: #8f8; }
+button.wrong { background: #f88; }
