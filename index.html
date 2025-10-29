@@ -7,23 +7,27 @@
   </head>
   <body>
 
-    <div class="top-image">
-      <div class="searchbar-overlay">
-        <button class="hamburger" aria-label="Menu">
-          <span></span>
-          <span></span>
-          <span></span>
+
+    <div class="searchbar-overlay">
+      <button class="hamburger" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <div class="logo">Undecided Website Name!<span class="star">*</span></div>
+      <form class="searchbar-form">
+        <input class="searchbar-input" type="text" placeholder="things to do, nail salons, plumber">
+        <div class="searchbar-divider"></div>
+        <input class="searchbar-location" type="text" placeholder="Winnipeg, MB">
+        <button class="searchbar-btn" type="submit">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="white"><circle cx="11" cy="11" r="8" stroke="none"/><path d="M21 21l-4.35-4.35" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
         </button>
-  <div class="logo">Undecided Website Name!<span class="star">*</span></div>
-        <form class="searchbar-form">
-          <input class="searchbar-input" type="text" placeholder="things to do, nail salons, plumber">
-          <div class="searchbar-divider"></div>
-          <input class="searchbar-location" type="text" placeholder="Winnipeg, MB">
-          <button class="searchbar-btn" type="submit">
-            <svg viewBox="0 0 24 24" width="22" height="22" fill="white"><circle cx="11" cy="11" r="8" stroke="none"/><path d="M21 21l-4.35-4.35" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
-          </button>
-        </form>
-      </div>
+        <button class="sort-btn" type="button" title="Sort">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="18" x2="21" y2="18"/><line x1="3" y1="12" x2="17" y2="12"/><line x1="3" y1="6" x2="11" y2="6"/></svg>
+        </button>
+      </form>
+    </div>
+    <div class="top-image">
       <div class="image-container" id="imageContainer">
         <img src="image.png" alt="Banner Image" id="panZoomImage" draggable="false">
       </div>
@@ -45,10 +49,10 @@
       const container = document.getElementById('imageContainer');
       const image = document.getElementById('panZoomImage');
       
-      let isZoomed = false;
-      let isDragging = false;
-      let startX, startY, translateX = 0, translateY = 0;
-      let scale = 1;
+  let isZoomed = true;
+  let isDragging = false;
+  let startX, startY, translateX = 0, translateY = 0;
+  let scale = 1.5;
       
       // Double click to zoom in/out
       container.addEventListener('dblclick', (e) => {
@@ -85,26 +89,21 @@
       });
 
       container.addEventListener('mousemove', (e) => {
-        if (isDragging) {
+        if (isDragging && scale > 1) {
           translateX = e.clientX - startX;
           translateY = e.clientY - startY;
-          
           // Calculate limits based on actual image dimensions and scale
           const containerRect = container.getBoundingClientRect();
           const imageRect = image.getBoundingClientRect();
-          
           // Calculate the scaled dimensions
           const scaledWidth = imageRect.width * scale;
           const scaledHeight = imageRect.height * scale;
-          
           // Calculate maximum allowed translation
           const maxTranslateX = Math.max(0, (scaledWidth - containerRect.width) / 2);
           const maxTranslateY = Math.max(0, (scaledHeight - containerRect.height) / 2);
-          
           // Apply limits
           translateX = Math.min(Math.max(translateX, -maxTranslateX), maxTranslateX);
           translateY = Math.min(Math.max(translateY, -maxTranslateY), maxTranslateY);
-          
           updateTransform();
         }
       });
