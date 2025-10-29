@@ -15,8 +15,28 @@
   object-fit: cover; /* Keeps the image nicely scaled */
 }
 
-/* Add padding so your content isn’t hidden behind the fixed image */
+/* Add padding so your content isn't hidden behind the fixed image */
 .content {
   margin-top: 260px; /* Slightly larger than image height */
   padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px; /* Space between buttons */
+}
+
+/* Style for the wide buttons */
+.wide-button {
+  width: 100%;
+  padding: 20px;
+  font-size: 18px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.wide-button:hover {
+  background-color: #45a049;
 }
