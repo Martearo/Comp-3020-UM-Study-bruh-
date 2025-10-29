@@ -110,15 +110,8 @@
     <!-- Load external JavaScript files -->
     <script src="js/buildings.js"></script>
     <script src="js/main.js"></script>
-        try {
-          const response = await fetch('data/buildings.json');
-          const data = await response.json();
-          const buildingsContainer = document.getElementById('buildingsList');
-          
-          // Clear any existing content
-          buildingsContainer.innerHTML = '';
-
-          data.buildings.forEach(building => {
+  </body>
+</html>
             const button = document.createElement('button');
             button.className = 'wide-button';
             

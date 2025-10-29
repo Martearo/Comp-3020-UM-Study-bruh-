@@ -265,9 +265,8 @@ body {
   }
 }
 .main-container {
-  max-width: 1400px;
+  width: 100%;
   margin: 0 auto;
-  padding: 20px;
   display: flex;
   flex-direction: column;
   gap: 30px;
@@ -276,15 +275,18 @@ body {
 .map-section {
   position: relative;
   width: 90%;
+  max-width: 1400px;
   margin: 0 auto;
+  padding: 0 20px;
 }
 
 .buildings-section {
-  width: 90%;
+  width: 100%;
   margin: 20px auto;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  align-items: center;
+  padding: 0;
 }
 
 .buildings-list {
@@ -292,8 +294,9 @@ body {
   flex-direction: column;
   gap: 15px;
   width: 100%;
-  margin: 30px auto;
-  padding: 0 20px;
+  margin: 0;
+  padding: 0;
+  align-items: stretch;
 }
 
 .map-controls {
@@ -322,7 +325,9 @@ body {
   border: 1px solid #e0e0e0;
   border-radius: 8px;
   padding: 15px 20px;
-  width: 100%;
+  width: 90%;
+  max-width: 1400px;
+  margin: 0 auto;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -340,13 +345,13 @@ body {
   top: 0;
   bottom: 0;
   width: 30%;
-  background-image: url('./cutout');
+  background-image: url('cutout.png');
   background-position: center left;
   background-repeat: no-repeat;
   background-size: cover;
-  opacity: 0.8;
-  mask-image: linear-gradient(to right, black 40%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to right, black 40%, transparent 100%);
+  opacity: 0.9;
+  mask-image: linear-gradient(to right, black 70%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, black 70%, transparent 100%);
   z-index: 1;
 }
 
