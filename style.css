@@ -536,24 +536,13 @@ body{
 }
 
 /* ===== LOGIN PAGE STYLES ===== */
-/*.login-container {
+.login-container {
     display: flex;
     justify-content: center;
     align-items: center;
     height: calc(100vh - 120px);
     background: transparent; /* allow background image to show through */
-    /*padding: 2rem;/*
-}*/
-.login-container {
-    /* reserve space below both fixed navbars and center content */
-    min-height: calc(100vh - (var(--navbar-height) + var(--secondary-height)));
-    display: flex;
-    align-items: center;      /* vertical centering */
-    justify-content: center;  /* horizontal centering */
     padding: 2rem;
-    box-sizing: border-box;
-    margin-top: 0;
-    background: transparent;
 }
 
 .login-card {
