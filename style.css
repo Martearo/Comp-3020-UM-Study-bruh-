@@ -530,6 +530,7 @@ body{
 .spot-status.closed {
   background-color: #D32F2F; /* Red (Not Available) */
 }
+
 /* ===== LOGIN PAGE STYLES ===== */
 .login-container {
     display: flex;
@@ -544,8 +545,8 @@ body{
     padding: 2.5rem 3rem;
     border-radius: 20px;
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-    max-width: 380px;
-    width: 100%;
+    max-width: 320px;
+    width: 90%;
     text-align: center;
 }
 
