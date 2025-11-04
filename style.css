@@ -630,3 +630,61 @@ body{
 .login-card.forgot {
     border-top: 5px solid #ffb347;
 }
+
+/* ...existing code... */
+
+/* ========== OVERRIDE: Force navbar appearance (place at end of file) ========== */
+.navbar-custom {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: var(--navbar-height) !important;
+    box-sizing: border-box !important;
+    background-color: #CDBCA8 !important;
+    backdrop-filter: blur(4px) !important;
+    box-shadow: 0 3px 8px rgba(222, 221, 221, 0.6) !important;
+    z-index: 1000 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+/* Inner container */
+.nav-inner {
+    width: 93% !important;
+    padding-left: 0 !important;
+    padding-right: 2rem !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+}
+
+/* Logo block */
+.navbar-Logo {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    transition: transform 0.3s ease !important;
+    margin: 0 !important;
+}
+
+/* Ensure search wrapper stays inline and sized */
+.search-bar-wrapper {
+    display: flex !important;
+    align-items: center !important;
+    width: 50% !important;
+    position: relative !important;
+}
+
+/* Make sure the secondary navbar stacks directly below */
+.navbar-secondary {
+    position: fixed !important;
+    top: var(--navbar-height) !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: var(--secondary-height) !important;
+    z-index: 999 !important;
+}
+
+/* End override */
