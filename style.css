@@ -5,17 +5,14 @@
 
 
 body{
-    background-image: url('Images/BG.png'); 
-    
-    /* These three lines ensure the image covers the whole screen, 
-       doesn't repeat, and stays fixed when the user scrolls. */
+    background-image: 
+        linear-gradient(rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.15)),
+        url('Images/BG.png');
     background-size: cover;
     background-attachment: fixed;
     background-repeat: no-repeat;
-    
-    /* This color overlay will ensure the image remains subtle */
-    background-color: rgba(28, 27, 26, 0.211); /* #CDBCA8 with 40% transparency */
-    background-blend-mode: overlay;
+    background-blend-mode: soft-light;
+    backdrop-filter: blur(1px);
     /* min-height: 500vh; */
 }
 
