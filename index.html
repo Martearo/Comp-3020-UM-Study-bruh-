@@ -1,0 +1,102 @@
+<html> 
+
+<head> 
+    <title>StudyDen</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <nav class="navbar-custom" role="navigation" aria-label="Top navigation">        
+
+        <div class="nav-inner">
+            <a href="#" class="navbar-Logo">
+
+                <img src="Images/UMLogo.png" alt="StudyDen Logo" class="navbar-LogoImg">
+                <div class="navbar-LogoText">StudyDen</div>
+
+            </a>
+
+            <div class="search-bar-wrapper">
+                <span class="search-icon">🔍</span>
+                <input type="text" placeholder="Search Buildings..." id="searchInput"/>
+                <button class="sort-btn">⇅ Sort</button>
+            </div>
+
+
+            <div class="language-selector">
+
+                <button class="lang-btn">
+                    <img src="https://flagcdn.com/w20/ca.png" alt="flag" class="flag-icon">
+                    <span>EN</span>
+                    <span class="arrow">▼</span> <!-- 👈 dropdown arrow -->
+                </button>
+                
+                <ul class="dropdown">
+                    <p>Change Language:</p>
+                    <li><img src="https://flagcdn.com/w20/fr.png" alt="French"> FR</li>
+                </ul>
+                
+            </div>
+
+
+            <img src="Images/PFP.png" alt="Profile" class="navbar-profile">
+        </div>
+    </nav>
+
+    <!-- Secondary Navbar -->
+
+    <!--<img src="Images/HamburgerIco.png" alt="Menu" class="HamburgerMenu">
+-->>
+    <nav class="navbar-secondary">
+        <div class="nav-inner">    
+
+            <img src="Images/HamburgerIco.png" alt="Menu" class="HamburgerMenu">
+            
+            <!-- Sidebar Menu -->
+            <div class="sidebar" id="sidebar">
+                <a href="#">🏠 Home</a>
+                <a href="#">📚 My Reviews</a>
+                <a href="#">📑 Bookmarks</a>
+                <a href="#">🔒 Login / SignUp</a>
+
+                <button class="closeBtn" id="closeBtn">← Close</button>
+            </div>
+
+
+            <div class="breadcrumbs">
+                <span href="#">Home</span> › 
+                <!--<a href="#">Study Spots</a> › --> 
+                <!--<span>Library</span>-->
+            </div>
+            
+            <button class="help-btn">Help</button>
+       
+        </div>
+    </nav>
+
+    <main class="site-content">
+        <div class="map-container">
+            <img src="Images/Map.png" alt="Map of study spots" class="map-image">
+        </div>
+
+        <div class="button-list" id="button-list">
+            <!-- <button class="spot-btn">Library</button>
+            <button class="spot-btn">Cafeteria</button>
+            <button class="spot-btn">Study Hall</button>
+            <button class="spot-btn">Lounge</button>
+            <button class="spot-btn">Gym</button> -->
+            <!-- Add more buttons here -->
+        </div>
+    </main>
+
+    <!-- <nav class="navbar-bottom">
+        <div class="nav-inner">
+            <span>© 2024 StudyDen. All rights reserved.</span>
+        </div>
+    </nav> -->
+
+    <script src="script.js"></script>
+</body>
+
+
+</html>
