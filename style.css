@@ -537,17 +537,19 @@ body{
     justify-content: center;
     align-items: center;
     height: calc(100vh - 120px);
-    background-color: #f5f7fb;
+    background: transparent; /* allow background image to show through */
+    padding: 2rem;
 }
 
 .login-card {
-    background: white;
+    background: rgba(255, 255, 255, 0.85); /* semi-transparent white */
     padding: 2.5rem 3rem;
     border-radius: 20px;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
     max-width: 320px;
-    width: 90%;
+    width: 100%;
     text-align: center;
+    backdrop-filter: blur(6px); /* glass-like effect */
 }
 
 .login-card h2 {
