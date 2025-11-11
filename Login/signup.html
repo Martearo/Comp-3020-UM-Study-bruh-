@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up | StudyDen</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Top Navbar -->
+    <nav class="navbar-custom" role="navigation" aria-label="Top navigation">        
+    <div class="nav-inner">
+        <a href="../index.html" class="navbar-Logo"> 
+            <img src="../Images/UMLogo.png" alt="StudyDen Logo" class="navbar-LogoImg">
+            <div class="navbar-LogoText">StudyDen</div>
+        </a>
+
+        <div class="nav-right">
+            
+            <div class="language-selector">
+                <button class="lang-btn">
+                    <img src="https://flagcdn.com/w20/ca.png" alt="flag" class="flag-icon">
+                    <span>EN</span>
+                    <span class="arrow">▼</span>
+                </button>
+                <ul class="dropdown">
+                    <p>Change Language:</p>
+                    <li><img src="https://flagcdn.com/w20/fr.png" alt="French"> FR</li>
+                </ul>
+            </div>
+
+                <img src="../Images/PFP.png" alt="Profile" class="navbar-profile">
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sign Up Section -->
+    <main class="login-container">
+        <div class="login-card">
+            <h2>Create an Account</h2>
+            <p class="login-subtext">Join StudyDen and find your perfect study spot!</p>
+
+            <form class="login-form">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" placeholder="Enter your full name" required>
+
+                <label for="email">Email</label>
+                <input type="email" id="email" placeholder="Enter your email" required>
+
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Create a password" required>
+
+                <label for="confirm-password">Confirm Password</label>
+                <input type="password" id="confirm-password" placeholder="Confirm your password" required>
+
+                <button type="submit" class="login-btn">Sign Up</button>
+
+                <p class="login-footer">
+                    Already have an account? <a href="login.html">Login</a>
+                </p>
+            </form>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
