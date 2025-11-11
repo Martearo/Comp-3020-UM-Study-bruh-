@@ -534,3 +534,233 @@ body{
   background-color: #D32F2F; /* Red (Not Available) */
 }
 
+.room-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* center all content horizontally */
+  margin-top: calc(var(--navbar-height) + var(--secondary-height));
+  padding: 1rem;
+
+}
+
+.room-button-list {
+  display: grid;
+  grid-template-columns: repeat(3,1fr); /*3 per row*/
+  width: 90%;
+  max-width: 800px;
+  gap: 1rem; /* space between buttons */
+  justify-items: center;
+}
+
+.room-btn {
+  width: 100%;
+  aspect-ratio: 1/1;
+  display: flex;           /* horizontal layout */
+  flex-direction: column;
+  align-items: center;     /* vertically center image + text */
+  justify-content: space-between; /* align content to left */
+  gap: 0.2rem;               /* space between image and text */
+  padding: 0;              /* remove default padding */
+  border: none;
+  border-radius: 0.5rem;
+  background-color: #6B7A89;
+  color: #eadfd2;
+  cursor: pointer;
+  box-shadow: 0 8px 8px rgba(47, 44, 44, 0.796);
+  transition: all 0.2s ease;
+}
+
+.room-btn:hover {
+  background-color: #b09c5e;
+  transform: scale(1.02);
+}
+
+.room-img-wrapper {
+  width: 100%;
+  height: 70%; /* top part for image */
+  overflow: hidden;
+}
+
+.room-img {
+  height: 100%;        /* fills the button height */
+  width: 100%;         /* keeps aspect ratio */
+  object-fit: cover;
+  border-radius: 0;
+
+  
+}
+
+.room-info {
+  position: relative;
+  height: 30%; /* bottom 30% for text box */
+  width: 100%;
+  background-color: #6B7A89;
+  display: block;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.room-building {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+  
+  font-size: large;
+  font-weight: bold;
+  text-shadow: 1px 2px 5px rgba(0, 0, 0, 0.708);
+}
+
+.room-rating {
+  position: absolute;
+  bottom: 0.5rem;
+  right: 0.5rem;
+  padding: 0.2rem 0.4rem;
+  font-weight: bold;
+  text-shadow: 1px 2px 5px rgba(0, 0, 0, 0.708);
+}
+
+.room-bookmark {
+  position: absolute;
+  top: 0;
+  right: 0.2rem;
+  cursor: pointer;
+  
+}
+
+.room-number{
+  position: absolute;
+  bottom: 0.5rem;
+  left: 0.5rem;
+  
+  font-size: large;
+  font-weight: bold;
+  text-shadow: 1px 2px 5px rgba(0, 0, 0, 0.708);
+
+}
+
+
+
+/*------ Review Page ----------*/
+.review-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.review-section {
+  display: block;
+  max-width: 9000px;
+  width: 60%;
+  margin-top: 5rem;
+  margin-left: 2.5rem;
+  margin-right: 2.5rem;
+  background-color: white; /*#CDBCA8 #6B7A89*/
+  padding: 2rem;
+  border-radius: 20px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.review-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.room-image {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.room-name {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #201E1F;
+}
+
+.rating-container {
+  margin-bottom: 0.5rem;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.rating-text {
+  font-size: 1rem;
+  color: #201E1F;
+  margin-bottom: 0.3rem;
+}
+
+.stars {
+  display: flex;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.star {
+  width: 3rem;
+  height: 3rem;
+  color: #ccc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 2rem;
+  color: #ccc;
+  border: 4px solid #ddd;
+  border-radius: 10px;
+  transition: all 0.2 ease;
+  background-color: white;
+}
+
+.star.hovered, .star.selected {
+  color: #f7b731;
+  border-color: #f7b731;
+  background-color: white;
+}
+
+.review-input-row {
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-end;
+}
+
+
+
+.review-box {
+  flex: 1;
+  width: 100%;
+  height: 150px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  padding: 1rem;
+  font-size: 1rem;
+  resize: none;
+  margin-bottom: 1.5rem;
+  font-family: inherit;
+}
+
+
+.post-btn {
+  display: block;
+  width: 80px;
+  height: 80px;
+  background-color: #0066cc; /*#0066cc     #6B7A89*/
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 600;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-bottom: 1.5rem;
+
+}
+
+
+.post-btn:hover {
+  background-color: #004c99;
+}
