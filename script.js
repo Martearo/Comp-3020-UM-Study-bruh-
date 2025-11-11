@@ -179,12 +179,83 @@ function renderStudyRooms(rooms) {
 
 
 
+// Reviews -------------
+
+//Stars
+const stars = document.querySelectorAll('.star');
+let selectedRating = 0;
+if(stars){
+    stars.forEach(star => {
+        star.addEventListener('mouseover', () => {
+            stars.forEach(s => s.classList.remove('hovered'));
+            for (let i =0; i < star.dataset.value; i++)
+            {
+                stars[i].classList.add('hovered');
+            }
+        });
+
+        star.addEventListener('mouseout', () => {
+            stars.forEach(s => s.classList.remove('hovered'));
+        });
+
+        star.addEventListener('click', () => {
+            selectedRating = star.dataset.value;
+            stars.forEach(s => s.classList.remove('selected'));
+            for(let i = 0; i < selectedRating; i++)
+            {
+                stars[i].classList.add('selected');
+            }
+        });
+    });
+}
+
+//Post Button
+
+    const postBtn = document.getElementById('postBtn');
+    if(postBtn){
+    postBtn.addEventListener('click', () => {
+        const reviewText = document.getElementById('reviewBox').value.trim();
+
+        if(!selectedRating) 
+        {
+            alert("Please select a star rating before posting.");
+            return;
+        }
+    
+
+        alert('Thank you for posting!');
+        document.getElementById('reviewBox').value = "";
+        stars.forEach(s => s.classList.remove('selected'));
+        selectedRating = 0;
+    })
+}
+
+
 
 
 
 renderStudySpots(studySpots)
 renderStudyRooms(studyRooms)
 
+
+
+
+// 3. Filtering logic executed on every keystroke
+function filterAndRender() {
+    const searchTerm = searchInput.value.toLowerCase().trim();
+
+    const filteredSpots = studySpots.filter(spot => {
+        // Check if the spot name includes the search term (case-insensitive)
+        return spot.name.toLowerCase().includes(searchTerm);
+    });
+
+    renderStudySpots(filteredSpots);
+}
+
+renderStudySpots(studySpots);
+
+// 4. Attach the filter function to the search input 'input' event
+searchInput.addEventListener('input', filterAndRender);
 
 
 

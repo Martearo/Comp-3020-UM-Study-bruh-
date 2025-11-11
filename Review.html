@@ -1,7 +1,7 @@
 <html> 
 
 <head> 
-    <title>StudyDen/Rooms</title>
+    <title>StudyDen/Review</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -74,20 +74,36 @@
         </div>
     </nav>
 
-    <main class="room-content">
-        <div class="map-container">
-            <img src="Images/EITC.png" alt="Map of study spots" class="map-image">
+
+
+
+    <main class="review-content">
+       <section class="review-section">
+
+        <div class="review-header">
+            <img src="Images/StudyRooms/StudyRoom.png" alt="Study Room" class="room-image">
+            <div class="header-text">
+                <h2 class="room-name">EITC2 430</h2>
+                <div class="rating-container">
+                    <p class="rating-text"> Give your rating:</p>
+                    <div class="stars" id="starRating">
+                        <span class="star" data-value="1">★</span>
+                        <span class="star" data-value="2">★</span>
+                        <span class="star" data-value="3">★</span>
+                        <span class="star" data-value="4">★</span>
+                        <span class="star" data-value="5">★</span>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div class="room-button-list" id="room-button-list">
-            <!-- <button class="room-btn">430</button>
-            <button class="room-btn">Cafeteria</button>
-            <button class="room-btn">Study Hall</button>
-            <button class="room-btn">Lounge</button>
-            <button class="room-btn">Gym</button> -->
-            <!-- Add more buttons here -->
-        </div> 
-    </main>
+        
+        <div class="review-input-row">
+            <textarea class="review-box" id="reviewBox" placeholder="Write your review..."></textarea>
+            <button class="post-btn" id="postBtn"> Post</button>
+        </div>
+    </section>
+</main>
 
     <!-- <nav class="navbar-bottom">
         <div class="nav-inner">
