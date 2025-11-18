@@ -1,0 +1,127 @@
+<html> 
+<head> 
+    <title>StudyDen</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+<nav class="navbar-custom" role="navigation" aria-label="Top navigation">        
+
+        <div class="nav-inner">
+            <a href="#" class="navbar-Logo">
+
+                <img src="Images/UMLogo.png" alt="StudyDen Logo" class="navbar-LogoImg">
+                <div class="navbar-LogoText">StudyDen</div>
+
+            </a>
+
+            
+
+
+            <div class="language-selector">
+
+                <button class="lang-btn">
+                    <img src="https://flagcdn.com/w20/ca.png" alt="flag" class="flag-icon">
+                    <span>EN</span>
+                    <span class="arrow">▼</span> <!-- 👈 dropdown arrow -->
+                </button>
+                
+                <ul class="dropdown">
+                    <li class="dropdown-header">Change Language:</li> 
+                    <li><img src="https://flagcdn.com/w20/fr.png" alt="French"> FR</li> 
+                </ul>       
+            </div>
+
+
+            <div class="profile-wrapper"> 
+                <img src="Images/PDid.png" alt="Profile" class="navbar-profile">
+                
+                <div id="profile-card" class="profile-info-card">
+                    <p class="card-name">Sean Combs</p>
+                    <p class="card-email">P.Did@umanitoba.ca</p>
+                    <hr>
+                    <a href="#" class="card-link">View Profile</a>
+                    <a href="Login/login.html" class="card-link logout">Log Out</a>
+                </div>
+            </div>
+
+
+            <!-- <img src="Images/PFP.png" alt="Profile" class="navbar-profile"> -->
+        </div>
+    </nav>
+
+    <!-- Secondary Navbar -->
+
+    <!--<img src="Images/HamburgerIco.png" alt="Menu" class="HamburgerMenu">
+-->>
+    <nav class="navbar-secondary">
+        <div class="nav-inner">    
+
+            <img src="Images/HamburgerIco.png" alt="Menu" class="HamburgerMenu">
+            
+            <!-- Sidebar Menu -->
+            <div class="sidebar" id="sidebar">
+                <a href="index.html">🏠 Home</a>
+                <a href="#">📚 My Reviews</a>
+                <a href="#">📑 Bookmarks</a>
+                <a href="Login/login.html">🔒 Login / SignUp</a>
+
+                <button class="closeBtn" id="closeBtn">← Close</button>
+            </div>
+
+
+            <div class="breadcrumbs">
+                <span href="#">Home</span> › 
+                <a href="Rooms\Rooms.html">Study Spots</a>
+                <!--<a href="#">Study Spots</a> › --> 
+                <!--<span>Library</span>-->
+            </div>
+            
+            <a href="Help/help.html" class="help-btn">Help</a>
+       
+        </div>
+    </nav>
+
+
+
+    <main class="review-content">
+       <section class="review-section white-box">
+
+        <div class="review-header">
+            <img src="Images/StudyRooms/StudyRoom.png" alt="Study Room" class="room-image">
+            <div class="header-text">
+                <h2 class="room-name">EITC2 430</h2>
+                <div class="rating-container">
+                    <p class="rating-text"> Give your rating:</p>
+                    <div class="stars" id="starRating">
+                        <span class="star" data-value="1">★</span>
+                        <span class="star" data-value="2">★</span>
+                        <span class="star" data-value="3">★</span>
+                        <span class="star" data-value="4">★</span>
+                        <span class="star" data-value="5">★</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+        <div class="review-input-row">
+            <textarea class="review-box" id="reviewBox" placeholder="Write your review..."></textarea>
+                <button class="post-btn" id="postBtn"> Post</button>
+        </div>
+    </section>
+</main>
+
+    <!-- <nav class="navbar-bottom">
+        <div class="nav-inner">
+            <span>© 2024 StudyDen. All rights reserved.</span>
+        </div>
+    </nav> -->
+
+    <script src="script.js"></script>
+</body>
+
+
+
+
+</html>

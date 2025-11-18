@@ -626,3 +626,63 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 });
+
+
+
+/* ----------------- STAR RATING ----------------- */
+
+const stars = document.querySelectorAll(".star");
+let rating = 0;
+
+stars.forEach((star) => {
+    star.addEventListener("mouseover", () => {
+        resetStars();
+        highlight(star.dataset.value);
+    });
+
+    star.addEventListener("mouseout", () => {
+        resetStars();
+        highlight(rating);
+    });
+
+    star.addEventListener("click", () => {
+        rating = star.dataset.value;
+        highlight(rating);
+    });
+});
+
+function highlight(num) {
+    stars.forEach((star) => {
+        if (star.dataset.value <= num) {
+            star.classList.add("active");
+        }
+    });
+}
+
+function resetStars() {
+    stars.forEach((star) => star.classList.remove("active"));
+}
+
+
+/* ----------------- POST REVIEW ----------------- */
+
+document.getElementById("postBtn").addEventListener("click", () => {
+    const reviewText = document.getElementById("reviewBox").value.trim();
+
+    if (reviewText === "" || rating === 0) {
+        alert("Please rate and write a review!");
+        return;
+    }
+
+
+    const reviewData = {
+        rating: rating,
+        text: reviewText
+    }
+
+    localStorage.setItem("newReview", JSON.stringify(reviewData));
+
+
+    window.location.href = "";
+   
+});
