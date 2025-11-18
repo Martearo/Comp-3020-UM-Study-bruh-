@@ -20,23 +20,23 @@ body{
 }
 
 .navbar-custom{
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: var(--navbar-height);
-    box-sizing: border-box;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: var(--navbar-height);
+  box-sizing: border-box;
 
 
-    /* Navbar styling INSIDE*/
-    background-color: #CDBCA8;
-    backdrop-filter: blur(4px);
-    box-shadow: 0 3px 8px rgba(222, 221, 221, 0.6); /* 👈 visible under-shadow */
-    z-index: 1000; /* ensure navbar is above other content */
+  /* Navbar styling INSIDE*/
+  background-color: #CDBCA8;
+  backdrop-filter: blur(4px);
+  box-shadow: 0 3px 8px rgba(222, 221, 221, 0.6); /* 👈 visible under-shadow */
+  z-index: 1000; /* ensure navbar is above other content */
 
-    display: flex;
-    align-items: center;
-    justify-content: center; /* center the inner container horizontally */
+  display: flex;
+  align-items: center;
+  justify-content: center; /* center the inner container horizontally */
 }
 
 /* Inner container for spacing */
@@ -90,48 +90,6 @@ body{
 
 }
 
-.search-bar {
-    position: relative;
-    display: flex;
-    align-items: center;
-    width: 50%; /* takes up 60% of the parent container */
-}
-
-.search-bar .search-icon {
-  position: absolute;
-  left: 8px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 18px;
-  color: gray;
-}
-
-.search-bar input {
-  width: 100%;
-  /*padding: 0.5rem 0.75rem;*/
-  border: 1.5px solid #ccc;
-  border-radius: 25px; /* 👈 rounded corners */
-  padding: 8px 45px;
-
-  outline: none;
-  transition: all 0.2s ease-in-out;
-  font-size: 0.95rem;
-  background-color: #ffffff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-
-.sort-btn {
-  background-color: #766838;
-  color: #fff;
-  border: 1px solid #766838;
-  border-radius: 0 25px 25px 0; /* round only right side */
-  padding: 2px 15px;
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
 
 .search-bar-wrapper {
     display: flex;
@@ -140,28 +98,49 @@ body{
     position: relative;
 }
 
-.search-bar-wrapper input {
-    flex: 1; /* input takes available space */
-    padding: 10px 12px 10px 36px; /* leave space for search icon */
-    border-radius: 25px 0 0 25px; /* round only left side */
+
+/* ---------------------------------------------------- */
+/* --- Rooms Page: Search Input Group FIX --- */
+/* ---------------------------------------------------- */
+
+/* ⭐ NEW RULE: Style the container for the icon and input */
+.search-input-group {
+    position: relative; 
+    flex: 1; 
+    order: 1; 
+}
+
+/* ⭐ NEW RULE: Target the input inside the new group */
+.search-input-group input { 
+    width: 100%; /* Fill parent group width */
+    padding: 10px 12px 10px 36px; 
+    border-radius: 25px; /* Fully rounded */
     border: 1px solid #ccc;
-    border-right: none; /* remove right border to connect with button */
     outline: none;
     font-size: 0.95rem;
 }
 
-.search-bar-wrapper .sort-btn {
-    border-radius: 0 25px 25px 0; /* round only right side */
-    border: 1px solid #766838;
-    padding: 10px 15px;
+/* ⭐ NEW RULE: Style the sort wrapper to position it correctly */
+.sort-dropdown-wrapper {
+    position: relative;
+    z-index: 900;
+    order: 2;
+    margin-left: 10px; /* Space between input and button */
+}
+
+/* ⭐ NEW RULE: Style the sort button as a standalone, fully rounded button */
+.sort-btn {
     background-color: #766838;
     color: #fff;
+    border: none; /* Remove border reliance */
+    border-radius: 25px; /* Fully rounded */
+    padding: 10px 15px;
+    font-size: 0.9rem;
     cursor: pointer;
     transition: all 0.2s ease;
-
-    /* FIX: Prevent the content (⇅ Sort) from wrapping onto a second line */
     white-space: nowrap;
 }
+
 
 .search-bar-wrapper .sort-btn:hover {
     background-color: #b09c5e;
@@ -172,12 +151,12 @@ body{
 .search-bar-wrapper .search-icon {
     position: absolute;
     left: 10px;
+    z-index: 10; /* Added z-index for consistency with other page */
     font-size: 18px;
     color: gray;
     top: 50%;
     transform: translateY(-50%);
 }
-
 
 
 .navbar-profile {
@@ -190,8 +169,82 @@ body{
 }
 
 
-.navbar-profile:hover {
-  transform: scale(1.1);
+.profile-wrapper {
+    position: relative;
+    /* Ensure the wrapper respects the size of the image, 
+       and that the card doesn't get clipped by nearby elements */
+    z-index: 1000; 
+}
+
+/* 2. The Card itself */
+.profile-info-card {
+    /* Positioning */
+    position: absolute;
+    top: calc(100% + 10px); /* Position 10px below the wrapper/pfp */
+    right: 0; /* Align to the right edge of the pfp */
+    
+    /* Appearance */
+    width: 200px;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    padding: 15px;
+    
+    /* Visibility Control */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-5px); /* Start slightly above its final position */
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    
+    /* Font */
+    font-family: sans-serif; /* Adjust to match your desired site font */
+    color: #333;
+    z-index: 1000; 
+}
+
+/* 3. Card content styling */
+.profile-info-card p, .profile-info-card a {
+    margin: 0;
+    padding: 0;
+    font-size: 0.95rem;
+    line-height: 1.4;
+}
+
+.profile-info-card .card-name {
+    font-weight: bold;
+    color: #766838; /* Use your brand color */
+    margin-bottom: 5px;
+    font-size: 1.1rem;
+}
+
+.profile-info-card hr {
+    margin: 10px 0;
+    border: 0;
+    border-top: 1px solid #eee;
+}
+
+.profile-info-card .card-link {
+    display: block;
+    color: #007bff;
+    text-decoration: none;
+    padding: 5px 0;
+}
+
+.profile-info-card .card-link:hover {
+    text-decoration: underline;
+    background-color: #f7f7f7;
+}
+
+.profile-info-card .logout {
+    color: #d32f2f; /* Red for logout */
+}
+
+/* 4. Display the card on hover (CSS-only approach for simplicity) */
+.profile-wrapper:hover .profile-info-card {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0); /* Move to final position */
 }
 
 
@@ -297,6 +350,7 @@ body{
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+  text-decoration: none;
 }
 
 .help-btn:hover {
@@ -413,15 +467,6 @@ body{
 /* Main Content */
 /*-----------------*/
 
-.site-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* center all content horizontally */
-  margin-top: calc(var(--navbar-height) + var(--secondary-height));
-  padding: 1rem;
-
-}
-
 
 .map-container {
     display: flex;
@@ -433,106 +478,158 @@ body{
     /* top: calc(var(--navbar-height) + var(--secondary-height)); */
 }
 
-.map-image {
-    width: 80%;        /* adjust as needed */
-    max-width: 1000px;  /* keeps it from being too big on large screens */
+
+.map-content {
+    /* Critical: Ensures absolute children (pins) are positioned relative to this block */
+    position: relative; 
+    
+    /* Critical: Makes the container shrink-wrap around the map-image's true size, 
+       even when scaled, so 100% width/height is the image size. */
+    display: inline-block;
+    
+    /* Apply initial scaling/transformation, driven by JS variable */
+    transform: scale(var(--current-zoom, 1.2)); 
+    transform-origin: center center; /* Ensure scaling centers on the map */
+    transition: transform 0.3s ease; /* Smooth zoom animation */
+    
+    /* Optional: Ensure nothing overflows and messes up placement */
+    overflow: hidden; 
+    
+    /* Use the same sizing as the map-image for boundaries */
+    width: 80%; 
+    max-width: 1000px; 
     max-height: 600px;
-    height: auto;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* 2. The image inside the map-content */
+/* Change your existing .map-image to this: */
+.map-content .map-image {
+    width: 100%;
+    height: auto; 
+    /* Remove redundant transform properties that are now on .map-content */
+    /* Remove border/box-shadow if they are wanted on the .map-content instead */
     border: 2px solid #ccc;
     border-radius: 10px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 
-.map-image:hover {
-    transform: scale(1.02);
-    box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+/* 3. The pin container (positioned relative to .map-content) */
+.map-pin-container, .room-pin-container {
+    position: absolute;
+    /* This centers the pin icon's bottom edge on the X,Y coordinate */
+    transform: translate(-50%, -100%); 
+    
+    /* Define the size of the clickable area */
+    width: 30px; 
+    height: 30px; 
+    cursor: pointer;
+    z-index: 10; /* Make sure it sits above the map image */
+}
+
+/* 4. The actual icon image inside the container */
+.map-pin-icon {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* --- Floating Info Card (for hover) --- */
+#pin-popup-root {
+    position: fixed; /* Fixed relative to the viewport, above all else */
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none; /* Allows clicks to pass through empty space */
+    z-index: 2000; /* Highest priority */
+}
+
+.floating-pin-info-card {
+    position: absolute; /* Positioned relative to the fixed #pin-popup-root */
+    pointer-events: auto; /* Allows interaction when card is visible */
+    
+    /* Styling */
+    background-color: white;
+    border: 1px solid #766838;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    padding: 10px;
+    width: 250px;
+    
+    /* Visibility Control (driven by JS) */
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s, visibility 0.2s, transform 0.2s;
+    transform: translate(0, -50%); /* Center vertically on the mouse/pin */
+}
+
+.floating-pin-info-card.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.info-card-img {
+    width: 100%;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 6px;
+    margin-bottom: 8px;
+}
+
+.info-card-details {
+    display: flex;
+    flex-direction: column;
+    font-size: 0.9rem;
+    color: #333;
+}
+
+.info-name {
+    font-weight: bold;
+    color: #766838;
+    font-size: 1.1rem;
+}
+
+.info-status {
+    padding-top: 4px;
+    font-style: italic;
+    color: #666;
+}
+
+.info-action {
+    margin-top: 5px;
+    color: #0077cc;
+    font-weight: 500;
 }
 
 
-.button-list {
-  width: 80%;
-  max-width: 800px;
-  display: flex;
-  flex-direction: column; /* stack buttons vertically */
-  gap: 1rem; /* space between buttons */
+/* ---------------------------------------------------- */
+/* --- New Rule for Room Pin Hover Effect --- */
+/* ---------------------------------------------------- */
+
+/* 1. Ensure the pin container has a smooth transition */
+.map-pin-container, .room-pin-container {
+    /* ... existing properties ... */
+    
+    /* Ensure transition is applied to the pin container */
+    transition: transform 0.2s ease; 
 }
 
-.spot-btn {
-  display: flex;           /* horizontal layout */
-  align-items: center;     /* vertically center image + text */
-  justify-content: flex-start; /* align content to left */
-  gap: 1rem;               /* space between image and text */
-  height: 100px;            /* button height */
-  padding: 0;              /* remove default padding */
-  border: none;
-  border-radius: 0.5rem;
-  background-color: #6B7A89;
-  color: #eadfd2;
-  cursor: pointer;
-  box-shadow: 0 8px 8px rgba(47, 44, 44, 0.796);
-  transition: all 0.2s ease;
+/* 2. Apply the scale transform on hover specifically to room pins */
+/* Using .room-pin-container ensures we target only the pins on the rooms map */
+.room-pin-container:hover {
+    transform: translate(-50%, -100%) scale(1.2); /* Keep the positioning transform, and add scale */
+    z-index: 15; /* Optional: Raise the z-index slightly to ensure it overlaps nearby elements */
 }
 
-.spot-btn:hover {
-  background-color: #b09c5e;
-  transform: scale(1.02);
+/* 3. If you want ALL pins (index page and room page) to scale similarly: */
+/* If you want the scale to apply to ALL pin containers, use this rule: */
+.map-pin-container:hover {
+    transform: translate(-50%, -100%) scale(1.2); 
+    z-index: 15;
 }
 
-.spot-img {
-  height: 100%;        /* fills the button height */
-  width: auto;         /* keeps aspect ratio */
-  object-fit: cover;
-  border-radius: 5px;
-
-  /* Make the right side fade out */
-  -webkit-mask-image: linear-gradient(to right, rgba(0,0,0,1), rgba(0,0,0,0));
-  -webkit-mask-repeat: no-repeat;
-  -webkit-mask-size: cover;
-
-  mask-image: linear-gradient(to right, rgba(0,0,0,1), rgba(0,0,0,0));
-  mask-repeat: no-repeat;
-  mask-size: cover;
-}
-
-.spot-name {
-  font-size: large;
-  font-weight: bold;
-  text-shadow: 1px 2px 5px rgba(0, 0, 0, 0.708);
-}
-
-.spot-rating {
-  font-weight: bold;
-  text-shadow: 1px 2px 5px rgba(246, 246, 69, 0.708);
-}
-
-.spot-status {
-  /* Fix: Add min-width and center text for consistent size and alignment */
-  min-width: 4rem; 
-  text-align: center;
-  
-  /* Use auto margin to push the element to the far right */
-  margin-left: auto; 
-  
-  padding: 0.3rem 0.6rem;
-  border-radius: 4px;
-  font-size: 0.85rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  color: white;
-  margin-right: 1rem; /* Spacing from the right edge */
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
-  /* Remove existing text shadow to make the background color pop */
-  text-shadow: none; 
-}
-
-.spot-status.open {
-  background-color: #4CAF50; /* Green (Visible/Ready) */
-}
-
-.spot-status.closed {
-  background-color: #D32F2F; /* Red (Not Available) */
-}
+/*-----------------*/
+/* Room Buttons */
 
 .room-content {
   display: flex;
@@ -550,6 +647,7 @@ body{
   max-width: 800px;
   gap: 1rem; /* space between buttons */
   justify-items: center;
+  margin-top: 2rem;
 }
 
 .room-btn {
@@ -579,15 +677,17 @@ body{
   width: 100%;
   height: 70%; /* top part for image */
   overflow: hidden;
+
+  border-top-left-radius: 0.2rem;
+  border-top-right-radius: 0.2rem;
+  border-bottom-left-radius: 0.2rem; /* Match button's bottom-left */
+  border-bottom-right-radius: 0.2rem;
 }
 
 .room-img {
   height: 100%;        /* fills the button height */
   width: 100%;         /* keeps aspect ratio */
   object-fit: cover;
-  border-radius: 0;
-
-  
 }
 
 .room-info {

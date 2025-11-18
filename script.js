@@ -12,23 +12,97 @@ document.addEventListener("DOMContentLoaded", () => {
     const buttonList = document.getElementById("button-list"); // Used on index.html
     const roombuttonList = document.getElementById("room-button-list"); // Used on Rooms/Rooms.html
 
+    const mapContainer = document.querySelector(".map-container"); // NEW: Select the map container
+    const mapContent = document.querySelector(".map-content"); // 🔑 NEW: The element that holds the map and pins, and is scaled.
+    const mapImage = document.querySelector(".map-image"); // Select the map image
+
+    const pinPopupRoot = document.getElementById("pin-popup-root");
+
+    // NEW: Zoom controls
+    const zoomInBtn = document.getElementById("zoomInBtn");
+    const zoomOutBtn = document.getElementById("zoomOutBtn");
+    const resetViewBtn = document.getElementById("resetViewBtn");
+
+    // --- NEW: Sort Elements ---
+    const sortBtn = document.getElementById("sortBtn");
+    const sortDropdown = document.getElementById("sortDropdown");
+    // --- NEW: Sort State ---
+    let currentSortBy = 'rating'; // Default sort key
+    let currentSortOrder = 'desc'; // Default sort order
+
+    const DEFAULT_ZOOM = 1.2; 
+    
+    let currentZoom = DEFAULT_ZOOM;
+    let currentPopup = null; // Track the currently visible popup
+    const MAX_ZOOM = 3.0;
+    const MIN_ZOOM = 1.0; 
+    const ZOOM_STEP = 0.2;
+
+
     // --- Data Definitions ---
     const studySpots = [
-        { name: "Dafoe", image: "Images/StudyRooms/Dafoe.jpg", mapImage: "../Images/RoomMaps/Dafoe.png", rating: 4.5, open: 7, close: 22},
-        { name: "Engineering", image: "Images/StudyRooms/EITC.png", mapImage: "../Images/RoomMaps/EITC.png", rating: 4.0, open: 7, close: 24 },
-        { name: "Machray Hall", image: "Images/StudyRooms/Machray.png", mapImage: "../Images/RoomMaps/Machray.png", rating: 2.9, open: 9, close: 20 },
-        { name: "Tier", image: "Images/StudyRooms/Tier.png", mapImage: "../Images/RoomMaps/Tier.png", rating: 4.1, open: 8, close: 23 },
-        { name: "Gym", image: "Images/Map.png", mapImage: "../Images/RoomMaps/Gym.png", rating: 3.9, open: 6, close: 22 },
+        { name: "Dafoe", image: "Images/StudyRooms/Dafoe.jpg", mapImage: "../Images/RoomMaps/Dafoe.png", rating: 4.5, open: 7, close: 22, x: 67, y: 29, pinImage: "Images/PinIcon.png" },
+        { name: "Engineering", image: "Images/StudyRooms/EITC.png", mapImage: "../Images/RoomMaps/EITC.png", rating: 4.0, open: 7, close: 24, x: 55, y: 50, pinImage: "Images/PinIcon.png" },
+        { name: "Machray Hall", image: "Images/StudyRooms/Machray.png", mapImage: "../Images/RoomMaps/Machray.png", rating: 2.9, open: 9, close: 20, x: 57, y: 18, pinImage: "Images/PinIcon.png" },
+        { name: "Tier", image: "Images/StudyRooms/Tier.png", mapImage: "../Images/RoomMaps/Tier.png", rating: 4.1, open: 8, close: 23, x: 70, y: 38, pinImage: "Images/PinIcon.png" },
+        { name: "Gym", image: "Images/Map.png", mapImage: "../Images/RoomMaps/Gym.png", rating: 3.9, open: 6, close: 22, x: 15, y: 70, pinImage: "Images/PinIcon.png" },
     ];
     
     const studyRooms = [
-        { building: "Dafoe", room: "D-401", image: "../Images/StudyRooms/StudyRoom.png", rating: 4.8, bookmark: false},
-        { building: "Dafoe", room: "D-402", image: "../Images/StudyRooms/StudyRoom.png", rating: 4.2, bookmark: true},
-        { building: "Engineering", room: "EITC2 123", image: "../Images/StudyRooms/StudyRoom.png", rating: 4.5, bookmark: false },
-        { building: "Engineering", room: "EITC1 222", image: "../Images/StudyRooms/StudyRoom.png", rating: 4.0, bookmark: true },
-        { building: "Machray Hall", room: "M-300", image: "../Images/StudyRooms/StudyRoom.png", rating: 3.0, bookmark: false },
-        { building: "Tier", room: "T-100", image: "../Images/StudyRooms/StudyRoom.png", rating: 3.5, bookmark: false },
+        { building: "Dafoe", room: "D-401", image: "../Images/StudyRooms/StudyRoom.png", rating: 4.8, bookmark: false, x: 20, y: 35 },
+        { building: "Dafoe", room: "D-402", image: "../Images/StudyRooms/StudyRoom.png", rating: 4.2, bookmark: true, x: 55, y: 45 },
+        
+        // Engineering Pins (Coordinates relative to EITC.png map)
+        { building: "Engineering", room: "EITC2 123", image: "../Images/StudyRooms/StudyRoom.png", rating: 4.5, bookmark: false, x: 30, y: 60 },
+        { building: "Engineering", room: "EITC1 222", image: "../Images/StudyRooms/StudyRoom.png", rating: 4.0, bookmark: true, x: 75, y: 20 },
+        
+        // Machray and Tier (Add coordinates for all, using samples)
+        { building: "Machray Hall", room: "M-300", image: "../Images/StudyRooms/StudyRoom.png", rating: 3.0, bookmark: false, x: 40, y: 40 },
+        { building: "Tier", room: "T-100", image: "../Images/StudyRooms/StudyRoom.png", rating: 3.5, bookmark: false, x: 50, y: 50 },
     ];
+
+
+    // NEW: Applies the current scale to the map image
+    function applyMapTransform() {
+        if (mapContent) {
+            // Only apply scale (no translate/pan needed)
+            mapContent.style.transform = `scale(${currentZoom})`; 
+            mapContent.style.setProperty('--current-zoom', currentZoom); // <--- ADD THIS LINE
+
+            // Disable buttons at min/max zoom
+            if (zoomInBtn) {
+                zoomInBtn.disabled = currentZoom >= MAX_ZOOM;
+            }
+            if (zoomOutBtn) {
+                zoomOutBtn.disabled = currentZoom <= MIN_ZOOM;
+            }
+        }
+    }
+
+    // NEW: Function to zoom in
+    function zoomIn() {
+        if (currentZoom < MAX_ZOOM) {
+            currentZoom += ZOOM_STEP;
+            if (currentZoom > MAX_ZOOM) currentZoom = MAX_ZOOM;
+            applyMapTransform();
+        }
+    }
+
+    // NEW: Function to zoom out
+    function zoomOut() {
+        if (currentZoom > MIN_ZOOM) {
+            currentZoom -= ZOOM_STEP;
+            if (currentZoom < MIN_ZOOM) currentZoom = MIN_ZOOM;
+            applyMapTransform();
+        }
+    }
+
+    // NEW: Function to reset view
+    function resetView() {
+        currentZoom = DEFAULT_ZOOM;
+        // Resetting translation is not needed as it's not supported
+        applyMapTransform();
+    }
 
 
     // --- Helper Functions ---
@@ -42,6 +116,38 @@ document.addEventListener("DOMContentLoaded", () => {
         const params = new URLSearchParams(window.location.search);
         return params.get('building'); 
     }
+
+
+    // ⭐ NEW FUNCTION: Sorting logic
+    function sortStudySpots(spots, sortBy, sortOrder) {
+        // Clone the array to avoid modifying the original 'studySpots' array in place
+        const sortedSpots = [...spots]; 
+
+        sortedSpots.sort((a, b) => {
+            let valA = a[sortBy];
+            let valB = b[sortBy];
+
+            // Handle string comparisons (e.g., 'name')
+            if (typeof valA === 'string') {
+                valA = valA.toLowerCase();
+                valB = valB.toLowerCase();
+                
+                if (valA < valB) return sortOrder === 'asc' ? -1 : 1;
+                if (valA > valB) return sortOrder === 'asc' ? 1 : -1;
+                return 0; // names are equal
+            }
+
+            // Handle numeric comparisons (e.g., 'rating')
+            if (sortOrder === 'asc') {
+                return valA - valB;
+            } else {
+                return valB - valA; // 'desc'
+            }
+        });
+
+        return sortedSpots;
+    }
+
 
     // --- Sidebar Functionality ---
     if (hamburger && sidebar) {
@@ -99,7 +205,7 @@ document.addEventListener("DOMContentLoaded", () => {
             buttonList.appendChild(anchor);
         });
     }
-    
+
     // ----------------------------------------------------
     // --- ROOMS.HTML: Dynamic Content and Rendering ---
     // ----------------------------------------------------
@@ -204,7 +310,6 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         }
     }
-    // ... (rest of the script remains the same)
 
     // --- Search/Filter Logic for both pages ---
     function filterAndRender() {
@@ -216,125 +321,308 @@ document.addEventListener("DOMContentLoaded", () => {
             const currentBuilding = getBuildingNameFromUrl();
             const roomsToFilter = filterRoomsByBuilding(studyRooms, currentBuilding);
             
-            const filteredRooms = roomsToFilter.filter(room => {
+            let filteredRooms = roomsToFilter.filter(room => {
                 return room.room.toLowerCase().includes(searchTerm) || room.building.toLowerCase().includes(searchTerm);
             });
+
+
+            // ⭐ NEW: Add sorting for Rooms page
+            filteredRooms = sortStudySpots(filteredRooms, currentSortBy, currentSortOrder); 
+            
             renderStudyRooms(filteredRooms);
+            // ⭐ NEW: Filter the room pins too
+            renderRoomPins(filteredRooms);
+
         } else {
-            const filteredSpots = studySpots.filter(spot => {
+            let filteredSpots = studySpots.filter(spot => {
                 return spot.name.toLowerCase().includes(searchTerm);
             });
+
+            filteredSpots = sortStudySpots(filteredSpots, currentSortBy, currentSortOrder);
+
             renderStudySpots(filteredSpots);
+            renderMapPins(filteredSpots); // NEW: Update map pins based on filtered spots
         }
     }
 
 
     // --- Initialization: Run once the page loads ---
     if (IS_ROOMS_PAGE) {
+        if (mapContent) {
+            applyMapTransform();
+        }
+
         const currentBuilding = getBuildingNameFromUrl();
         updateRoomsPageContent(currentBuilding);
         updateMapImage(currentBuilding); 
+        
         const roomsToRender = filterRoomsByBuilding(studyRooms, currentBuilding);
         renderStudyRooms(roomsToRender);
+        
+        renderRoomPins(roomsToRender);
+
     } else {
-        // This runs on index.html
-        renderStudySpots(studySpots);
+        // This runs on index.html, with NEW zoom initialization
+        if (mapContainer && mapImage) {
+            // Apply default zoom and transform on load (This sets the map to 1.2x immediately)
+            applyMapTransform();
+
+            // Attach zoom event listeners
+            if (zoomInBtn) zoomInBtn.addEventListener('click', zoomIn);
+            if (zoomOutBtn) zoomOutBtn.addEventListener('click', zoomOut);
+            if (resetViewBtn) resetViewBtn.addEventListener('click', resetView);
+        }
+
+        filterAndRender();
     }
 
     // Attach the filter function to the search input 'input' event (for both pages)
     if (searchInput) {
         searchInput.addEventListener('input', filterAndRender);
     }
-});
-        // swap SVG
-        bookmarkIcon.innerHTML = !isBookmarked
-            ? `<svg class="bookmark-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="gold" width="24" height="24">
-            <path d="M6 4a2 2 0 0 0-2 2v16l8-4 8 4V6a2 2 0 0 0-2-2H6z"/>
-            </svg>`
-            : `<svg class="bookmark-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="gold" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="24" height="24">
-            <path d="M19 21l-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
-            </svg>`;
 
+    // ----------------------------------------------------
+    // --- NEW: Sort Dropdown Logic ---
+    // ----------------------------------------------------
 
+    if (sortBtn && sortDropdown) {
+        // Toggle the dropdown visibility
+        sortBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            sortDropdown.classList.toggle('active');
+        });
 
-// Reviews -------------
+        // Handle selection from the dropdown
+        sortDropdown.addEventListener('click', (e) => {
+            const listItem = e.target.closest('li');
+            if (!listItem) return;
 
-//Stars
-const stars = document.querySelectorAll('.star');
-let selectedRating = 0;
-if(stars){
-    stars.forEach(star => {
-        star.addEventListener('mouseover', () => {
-            stars.forEach(s => s.classList.remove('hovered'));
-            for (let i =0; i < star.dataset.value; i++)
-            {
-                stars[i].classList.add('hovered');
+            // Get sort parameters from data attributes
+            const sortBy = listItem.dataset.sortBy;
+            const sortOrder = listItem.dataset.sortOrder;
+
+            // Update the state
+            currentSortBy = sortBy;
+            currentSortOrder = sortOrder;
+
+            // Close the dropdown
+            sortDropdown.classList.remove('active');
+            
+            // Re-render the list with the new sorting
+            filterAndRender();
+        });
+
+        // Hide dropdown when clicking elsewhere
+        document.addEventListener('click', (e) => {
+            if (!sortDropdown.contains(e.target) && !sortBtn.contains(e.target)) {
+                sortDropdown.classList.remove('active');
             }
         });
+    }
 
-        star.addEventListener('mouseout', () => {
-            stars.forEach(s => s.classList.remove('hovered'));
+
+    // **NEW FUNCTION: Render Map Pins**
+    // **NEW FUNCTION: Render Map Pins**
+    function renderMapPins(spots) {
+        if (!mapContent || IS_ROOMS_PAGE) return; 
+
+        // CRITICAL: Remove all existing pins before adding new ones (needed for filtering)
+        document.querySelectorAll('.map-content .map-pin-container').forEach(pin => pin.remove());        // NOTE: Changed selector from .map-pin to the new .map-pin-container
+
+        // Clear the floating popup root before rendering new pins
+        pinPopupRoot.innerHTML = '';
+
+        spots.forEach(spot => {
+            // Ensure coordinates exist before trying to place a pin
+            if (spot.x === undefined || spot.y === undefined) return; 
+
+            // 🌟 Rework: Pin is now a DIV container
+            const pinContainer = document.createElement("div"); 
+            pinContainer.classList.add("map-pin-container"); // Use a container class
+            pinContainer.setAttribute('data-name', spot.name); 
+
+            // Create the actual clickable image element
+            const pinImage = document.createElement("img");
+            pinImage.src = spot.pinImage;
+            pinImage.alt = `${spot.name} location pin`;
+            pinImage.classList.add("map-pin-icon"); // Use a specific class for the icon
+
+            // Position the pin container
+            pinContainer.style.left = `${spot.x}%`;
+            pinContainer.style.top = `${spot.y}%`;
+            pinContainer.prepend(pinImage);
+
+            // --- 🌟 Add the Info Card Content ---
+            const isOpen = isSpotOpen(spot.open, spot.close);
+            const statusText = isOpen ? "Open" : "Closed";
+            const statusClass = isOpen ? "open" : "closed";
+            const stars = "⭐".repeat(Math.floor(spot.rating));
+            
+            const infoCard = document.createElement("div");
+            infoCard.classList.add("floating-pin-info-card");
+            infoCard.innerHTML = `
+                <img src="${spot.image}" alt="${spot.name} exterior" class="info-card-img">
+                <div class="info-card-details">
+                    <span class="info-name">${spot.name}</span>
+                    <span class="info-rating">${stars} ${spot.rating}</span>
+                    <span class="info-status ${statusClass}">${statusText}</span>
+                    <span class="info-action">Click Pin to View Rooms</span>
+                </div>
+            `;
+
+            pinPopupRoot.appendChild(infoCard);
+            
+            // --- 🌟 NEW: Event Listeners for Hover/Positioning ---
+            pinContainer.addEventListener('mouseenter', () => {
+                // 1. Hide any currently visible popup
+                if (currentPopup && currentPopup !== infoCard) {
+                    currentPopup.classList.remove('visible');
+                }
+
+                // 2. Calculate the exact screen position of the pin image
+                const rect = pinImage.getBoundingClientRect();
+                
+                // Calculate position for the info card relative to the viewport
+                // Card will appear to the right of the pin.
+                const cardLeft = rect.right + 25; // 25px offset from the right edge of the pin
+                const cardTop = rect.top + (rect.height / 2); // Center vertically with the pin
+
+                // Apply calculated position
+                infoCard.style.left = `${cardLeft}px`;
+                infoCard.style.top = `${cardTop}px`;
+                
+                // Show the info card
+                infoCard.classList.add('visible');
+                currentPopup = infoCard;
+            });
+            
+            pinContainer.addEventListener('mouseleave', () => {
+                // Delay hiding the card to allow quick re-entry or mouse movement
+                setTimeout(() => {
+                    // Only hide if the mouse is not over the pin container or the card itself
+                    if (!pinContainer.matches(':hover') && !infoCard.matches(':hover')) {
+                        infoCard.classList.remove('visible');
+                        currentPopup = null;
+                    }
+                }, 100); 
+            });
+            
+            // Ensure the card hides if the mouse leaves the card itself
+            infoCard.addEventListener('mouseleave', () => {
+                infoCard.classList.remove('visible');
+                currentPopup = null;
+            });
+
+            // Make the pin container clickable, linking to the Rooms page (UNCHANGED)
+            pinContainer.addEventListener('click', (event) => {
+                window.location.href = `Rooms/Rooms.html?building=${encodeURIComponent(spot.name)}`;
+            });
+
+            mapContent.appendChild(pinContainer);
         });
+    }
 
-        star.addEventListener('click', () => {
-            selectedRating = star.dataset.value;
-            stars.forEach(s => s.classList.remove('selected'));
-            for(let i = 0; i < selectedRating; i++)
-            {
-                stars[i].classList.add('selected');
-            }
-        });
-    });
-}
 
-//Post Button
+    function renderRoomPins(rooms) {
+        if (!mapContent) return; 
 
-    const postBtn = document.getElementById('postBtn');
-    if(postBtn){
-    postBtn.addEventListener('click', () => {
-        const reviewText = document.getElementById('reviewBox').value.trim();
-
-        if(!selectedRating) 
-        {
-            alert("Please select a star rating before posting.");
-            return;
+        // Remove existing pins from the map content before adding new ones
+        document.querySelectorAll('.map-content .room-pin-container').forEach(pin => pin.remove());
+        
+        // Check if the pin popup root exists and clear it (if you are using the same popup logic)
+        if (pinPopupRoot) {
+            pinPopupRoot.innerHTML = ''; 
         }
-    
+        
+        // Get the current building's map data
+        const currentBuilding = getBuildingNameFromUrl();
+        const spotData = studySpots.find(spot => spot.name.toLowerCase() === currentBuilding.toLowerCase());
+        
+        // Use a generic pin image for rooms, or define one in studyRooms
+        const defaultRoomPin = spotData && spotData.pinImage 
+            ? `../${spotData.pinImage}` 
+            : "../Images/PinIcon.png"; 
 
-        alert('Thank you for posting!');
-        document.getElementById('reviewBox').value = "";
-        stars.forEach(s => s.classList.remove('selected'));
-        selectedRating = 0;
-    })
-}
+        rooms.forEach(room => {
+            // Skip rendering if coordinates are missing
+            if (room.x === undefined || room.y === undefined) return; 
+
+            // 1. Create Pin Container
+            const pinContainer = document.createElement("div"); 
+            pinContainer.classList.add("map-pin-container", "room-pin-container"); // Add a new class for room pins
+            pinContainer.setAttribute('data-name', room.room); 
+
+            // 2. Create Pin Icon
+            const pinImage = document.createElement("img");
+            pinImage.src = defaultRoomPin;
+            pinImage.alt = `${room.room} location pin`;
+            pinImage.classList.add("map-pin-icon", "room-pin-icon"); 
+
+            // 3. Position the pin (relative to the building map image)
+            pinContainer.style.left = `${room.x}%`;
+            pinContainer.style.top = `${room.y}%`;
+            pinContainer.prepend(pinImage);
+
+            // --- Add Info Card (for hover functionality, using existing logic) ---
+            const infoCard = document.createElement("div");
+            infoCard.classList.add("floating-pin-info-card");
+            
+            const bookmarkStatus = room.bookmark ? 'Bookmarked' : 'Unbookmarked';
+
+            infoCard.innerHTML = `
+                <img src="${room.image}" alt="${room.room} interior" class="info-card-img">
+                <div class="info-card-details">
+                    <span class="info-name">${room.room} (${room.building})</span>
+                    <span class="info-rating">Rating: ${room.rating}</span>
+                    <span class="info-status">${bookmarkStatus}</span>
+                    <span class="info-action">Click to Read Reviews/View Details</span>
+                </div>
+            `;
+
+            if (pinPopupRoot) {
+                pinPopupRoot.appendChild(infoCard);
+            }
 
 
+            pinContainer.addEventListener('mouseenter', () => {
+                if (currentPopup && currentPopup !== infoCard) {
+                    currentPopup.classList.remove('visible');
+                }
+
+                const rect = pinImage.getBoundingClientRect();
+                const cardLeft = rect.right + 25; 
+                const cardTop = rect.top + (rect.height / 2); 
+
+                infoCard.style.left = `${cardLeft}px`;
+                infoCard.style.top = `${cardTop}px`;
+                
+                infoCard.classList.add('visible');
+                currentPopup = infoCard;
+            });
+            
+            pinContainer.addEventListener('mouseleave', () => {
+                setTimeout(() => {
+                    if (!pinContainer.matches(':hover') && !infoCard.matches(':hover')) {
+                        infoCard.classList.remove('visible');
+                        currentPopup = null;
+                    }
+                }, 100); 
+            });
+            
+            infoCard.addEventListener('mouseleave', () => {
+                infoCard.classList.remove('visible');
+                currentPopup = null;
+            });
+            
+            // 4. Add Event Listeners (You can reuse your existing pin listener logic here)
+            pinContainer.addEventListener('click', (event) => {
+                alert(`Room pin clicked: ${room.room}. Now show room details.`);
+                // In a real app, this would open a modal or navigate to a room detail page.
+            });
 
 
+            mapContent.appendChild(pinContainer);
+        });
+    }
 
-renderStudySpots(studySpots)
-renderStudyRooms(studyRooms)
-
-
-
-
-// 3. Filtering logic executed on every keystroke
-function filterAndRender() {
-    const searchTerm = searchInput.value.toLowerCase().trim();
-
-    const filteredSpots = studySpots.filter(spot => {
-        // Check if the spot name includes the search term (case-insensitive)
-        return spot.name.toLowerCase().includes(searchTerm);
-    });
-
-    renderStudySpots(filteredSpots);
-}
-
-renderStudySpots(studySpots);
-
-// 4. Attach the filter function to the search input 'input' event
-searchInput.addEventListener('input', filterAndRender);
-
-
-
-
+});

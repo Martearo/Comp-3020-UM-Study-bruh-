@@ -90,47 +90,79 @@ body{
 
 }
 
-.search-bar {
-    position: relative;
-    display: flex;
-    align-items: center;
-    width: 50%; /* takes up 60% of the parent container */
+
+/* ---------------------------------------------------- */
+/* --- NEW: Sort Dropdown Wrapper and List Styling --- */
+/* ---------------------------------------------------- */
+
+.sort-dropdown-wrapper {
+    /* Critical: Allows the dropdown to be positioned absolutely relative to the wrapper */
+    position: relative; 
+    z-index: 900;
+
+    order: 2;
+    margin-left: 10px;
 }
 
-.search-bar .search-icon {
-  position: absolute;
-  left: 8px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 18px;
-  color: gray;
+/* Styling for the actual dropdown list */
+.sort-dropdown {
+    /* Positioning */
+    position: absolute;
+    top: 110%; /* Place it just below the sort button */
+    right: 0; /* Align the dropdown to the right side of the sort button wrapper */
+    
+    /* Appearance */
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    list-style: none;
+    padding: 6px 0;
+    margin: 0;
+    width: 200px; /* Fixed width for readability */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    
+    /* Visibility Control */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-5px);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    pointer-events: none; /* Crucial: Prevents hidden list from blocking clicks */
 }
 
-.search-bar input {
-  width: 100%;
-  /*padding: 0.5rem 0.75rem;*/
-  border: 1.5px solid #ccc;
-  border-radius: 25px; /* 👈 rounded corners */
-  padding: 8px 45px;
-
-  outline: none;
-  transition: all 0.2s ease-in-out;
-  font-size: 0.95rem;
-  background-color: #ffffff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-
+/* Class applied by JavaScript to show the dropdown */
 .sort-btn {
   background-color: #766838;
   color: #fff;
-  border: 1px solid #766838;
-  border-radius: 0 25px 25px 0; /* round only right side */
-  padding: 2px 15px;
+  border: none; /* No need for a border since it's a standalone button */
+  border-radius: 25px; /* Fully rounded */
+  padding: 10px 15px; /* Consistent padding */
   font-size: 0.9rem;
   cursor: pointer;
   transition: all 0.2s ease;
+  white-space: nowrap;
 }
+
+.sort-dropdown.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+.sort-dropdown li {
+    padding: 8px 15px;
+    font-size: 0.95rem;
+    color: #333;
+    cursor: pointer;
+    white-space: nowrap; /* Prevent list item text from wrapping */
+}
+
+.sort-dropdown li:hover {
+    background-color: #f0f0f0;
+    color: #766838;
+}
+
+
 
 
 .search-bar-wrapper {
@@ -140,28 +172,22 @@ body{
     position: relative;
 }
 
-.search-bar-wrapper input {
-    flex: 1; /* input takes available space */
-    padding: 10px 12px 10px 36px; /* leave space for search icon */
-    border-radius: 25px 0 0 25px; /* round only left side */
+.search-input-group {
+    position: relative; 
+    flex: 1; 
+    order: 1; /* Ensures this group is the first item */
+}
+
+.search-input-group input { 
+    width: 100%; /* Make input fill the space of its parent group */
+    padding: 10px 12px 10px 36px; /* Space for the icon */
+    border-radius: 25px; /* Now fully rounded */
     border: 1px solid #ccc;
-    border-right: none; /* remove right border to connect with button */
     outline: none;
     font-size: 0.95rem;
+    /* REMOVE 'order' property here */
 }
 
-.search-bar-wrapper .sort-btn {
-    border-radius: 0 25px 25px 0; /* round only right side */
-    border: 1px solid #766838;
-    padding: 10px 15px;
-    background-color: #766838;
-    color: #fff;
-    cursor: pointer;
-    transition: all 0.2s ease;
-
-    /* FIX: Prevent the content (⇅ Sort) from wrapping onto a second line */
-    white-space: nowrap;
-}
 
 .search-bar-wrapper .sort-btn:hover {
     background-color: #b09c5e;
@@ -170,29 +196,108 @@ body{
 }
 
 .search-bar-wrapper .search-icon {
-    position: absolute;
-    left: 10px;
-    font-size: 18px;
-    color: gray;
-    top: 50%;
-    transform: translateY(-50%);
+  position: absolute;
+  left: 10px; /* Aligned 10px from the left edge of its parent (.search-input-group) */
+  z-index: 10;
+  font-size: 18px;
+  color: gray;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 
 
 .navbar-profile {
   height: 90%;
-  width: 2.2rem;
+  width: 2.5rem;
   border-radius: 50%;
   object-fit: cover;
   cursor: pointer;
   transition: transform 0.2s ease;
 }
 
+.profile-wrapper {
+    position: relative;
+    /* Ensure the wrapper respects the size of the image, 
+       and that the card doesn't get clipped by nearby elements */
+    z-index: 1000; 
+}
 
+/* 2. The Card itself */
+.profile-info-card {
+    /* Positioning */
+    position: absolute;
+    top: calc(100% + 10px); /* Position 10px below the wrapper/pfp */
+    right: 0; /* Align to the right edge of the pfp */
+    
+    /* Appearance */
+    width: 200px;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    padding: 15px;
+    
+    /* Visibility Control */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-5px); /* Start slightly above its final position */
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    
+    /* Font */
+    font-family: sans-serif; /* Adjust to match your desired site font */
+    color: #333;
+    z-index: 1000; 
+}
+
+/* 3. Card content styling */
+.profile-info-card p, .profile-info-card a {
+    margin: 0;
+    padding: 0;
+    font-size: 0.95rem;
+    line-height: 1.4;
+}
+
+.profile-info-card .card-name {
+    font-weight: bold;
+    color: #766838; /* Use your brand color */
+    margin-bottom: 5px;
+    font-size: 1.1rem;
+}
+
+.profile-info-card hr {
+    margin: 10px 0;
+    border: 0;
+    border-top: 1px solid #eee;
+}
+
+.profile-info-card .card-link {
+    display: block;
+    color: #007bff;
+    text-decoration: none;
+    padding: 5px 0;
+}
+
+.profile-info-card .card-link:hover {
+    text-decoration: underline;
+    background-color: #f7f7f7;
+}
+
+.profile-info-card .logout {
+    color: #d32f2f; /* Red for logout */
+}
+
+/* 4. Display the card on hover (CSS-only approach for simplicity) */
+.profile-wrapper:hover .profile-info-card {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0); /* Move to final position */
+}
+
+/* 
 .navbar-profile:hover {
   transform: scale(1.1);
-}
+} */
 
 
 /*---------------------------*/
@@ -297,6 +402,7 @@ body{
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+  text-decoration: none;
 }
 
 .help-btn:hover {
@@ -422,32 +528,309 @@ body{
 
 }
 
-
 .map-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 2rem;
+    position: relative; 
+    overflow: hidden; /* CRITICAL: Hides the non-rounded part of the scaled content */
+    cursor: default; 
+    width: 100%;
+    height: calc(100vh - var(--navbar-height) - var(--secondary-height) - 4rem);
+    max-width: 750px;
+    /*max-height: 500px;*/
+    margin: 0 auto;
+    border-radius: 12px;
+}
 
-    position: relative; /* or absolute, if you want it over the page */
-    /* top: calc(var(--navbar-height) + var(--secondary-height)); */
+/* 🔑 NEW: The element that gets scaled and holds the map/pins */
+.map-content {
+    position: relative; /* Allows scaling from the center without affecting layout */
+    width: 100%;
+    
+    padding-bottom: 62.5%; /* Example: For a 800px wide x 500px tall map (500/800 = 0.625) */
+    height: 0; /* Necessary for padding-bottom to work */
+
+    /* CRITICAL: This ensures pins and map scale from the center together */
+    transform-origin: 50% 50%; 
+    top: 0;
+    left: 0;
+    
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease-in-out; /* Add animation to the content wrapper */
 }
 
 .map-image {
-    width: 80%;        /* adjust as needed */
-    max-width: 1000px;  /* keeps it from being too big on large screens */
-    max-height: 600px;
-    height: auto;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border: 2px solid #ccc;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  position: absolute;
+  top: 0;
+  left: 0;
+
+
+  width: 100%;
+  height: 100%;
+  max-width: 100%;  /* keeps it from being too big on large screens */
+  
+  object-fit: cover;
+
+  transition: transform 0.3s ease-in-out; 
+  transform-origin: 50% 50%; /* Zoom from the center of the map */
+
+  border: 2px solid #ccc;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 
 .map-image:hover {
-    transform: scale(1.02);
+    /*transform: scale(1.02);*/
     box-shadow: 0 6px 16px rgba(0,0,0,0.25);
 }
+
+
+/* --- Map Controls Styling (NEW) --- */
+.map-controls {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    z-index: 100;
+}
+
+.control-btn {
+    background-color: #4C3F34;
+    color: white;
+    border: none;
+    width: 35px;
+    height: 35px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    font-weight: bold;
+    line-height: 1;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.control-btn:hover:not(:disabled) {
+    background-color: #6a5a4a;
+    transform: scale(1.05);
+}
+
+.control-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+
+/* NEW: Icon for legend */
+.legend-control-icon {
+    width: 25px;
+    height: 25px;
+    margin-right: 10px;
+    background-color: #4C3F34;
+    color: white;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+
+/* --- NEW PIN CONTAINER --- */
+.map-pin-container {
+    /* Critical positioning for the parent */
+    position: absolute;
+    cursor: pointer;
+    z-index: 10;
+    
+    /* Center the pin container tip exactly on the coordinates */
+    transform: translate(-50%, -50%); 
+}
+
+/* Style the actual pin image/icon */
+.map-pin-icon {
+    width: 35px; /* Size of the pin icon */
+    height: 35px; 
+    object-fit: contain;
+
+    transform: scale(calc(1 / var(--current-zoom, 1)));
+    transition: transform 0.2s ease, filter 0.2s ease;
+
+    filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.5));
+}
+
+.map-pin-container:hover .map-pin-icon {
+    transform: scale(1.1);
+    filter: brightness(1.1);
+    z-index: 11;
+}
+
+/* --- INFO CARD STYLING (The Pop-up) --- */
+
+
+
+
+/* Ensure the hovered pin container is on top of ALL other pins */
+.map-pin-container:hover {
+    z-index: 101; /* Higher than the info card's z-index (100) and other pins (10) */
+}
+
+.info-card-img {
+    width: 100%;
+    height: 100px;
+    object-fit: cover;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.info-card-details {
+    padding: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.info-name {
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: #766838;
+}
+
+.info-rating {
+    font-size: 0.9rem;
+}
+
+.info-status {
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    align-self: flex-start; /* Only take the space needed */
+    color: white;
+    /* Use the existing status colors from your button list */
+}
+
+.info-action {
+    color: #766838; /* Use your brand color */
+    font-size: 0.85rem;
+    font-weight: 500;
+    margin-top: 0.5rem;
+    text-align: center; /* Center the instruction text */
+    padding: 0.25rem 0;
+    border-top: 1px solid #e0e0e0;
+}
+
+
+/* NEW: Root container for floating popups */
+#pin-popup-root {
+    position: fixed; /* Fixed position relative to the viewport */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none; /* Crucial: Allows clicks to pass through when empty */
+    z-index: 1001; /* Ensure it's above everything, including navbars (z-index: 1000) */
+}
+
+/* NEW: Style for the floating info card */
+.floating-pin-info-card {
+    position: absolute; /* Positioned relative to #pin-popup-root (i.e., the viewport) */
+    
+    /* Appearance (copied from your old .pin-info-card) */
+    background-color: white;
+    border: 1px solid #766838;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+    width: 250px;
+    height: auto;
+    overflow: hidden;
+    
+    /* Layout */
+    display: flex;
+    flex-direction: column;
+
+    /* Initial state */
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    pointer-events: auto; /* Re-enable interaction when shown */
+}
+
+.floating-pin-info-card.visible {
+    opacity: 1;
+    visibility: visible;
+    /* Optional: Keep a slight movement effect for hover */
+    transform: translate(0, -50%); 
+}
+
+
+
+/* NEW: Styles for the Map Legend */
+.map-legend {
+    /* Set a fixed maximum width to make it less wide */
+    max-width: 250px; 
+    height: 100%;
+
+    /* Remove the 'flex: 1' line if it still exists, and use flex-shrink: 0 */
+    flex-shrink: 0; /* Ensures the guide respects its max-width and doesn't try to shrink */
+    
+    background-color: #f8f8f8;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    
+    /* CRITICAL: This property ensures the height matches the map (flex item height) */
+    align-self: stretch; 
+    
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    font-family: sans-serif;
+    color: #333;
+}
+
+.map-legend h3 {
+    color: #766838; /* Match your brand color */
+    margin-top: 0;
+    margin-bottom: 1rem;
+    font-size: 1.4rem;
+    font-weight: bold;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 0.5rem;
+}
+
+.map-legend p {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin-bottom: 0.5rem;
+}
+
+.map-legend .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.map-legend .legend-pin-icon {
+    width: 25px; /* Size of the icon in the legend */
+    height: 25px;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 2px rgba(0,0,0,0.2)); /* A subtle shadow for the icon */
+}
+
+.map-and-legend-wrapper {
+    display: flex;
+    gap: 2rem; /* Space between map and legend */
+    align-items: flex-start; /* Align items to the top */
+    width: 80%; /* Match the width of your .map-image */
+    max-width: 1200px; /* Adjust max-width as needed */
+    margin-bottom: 2rem; /* Consistent spacing below the wrapper */
+}
+
+/*-----------------*/
+
 
 
 .button-list {
@@ -532,235 +915,4 @@ body{
 
 .spot-status.closed {
   background-color: #D32F2F; /* Red (Not Available) */
-}
-
-.room-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* center all content horizontally */
-  margin-top: calc(var(--navbar-height) + var(--secondary-height));
-  padding: 1rem;
-
-}
-
-.room-button-list {
-  display: grid;
-  grid-template-columns: repeat(3,1fr); /*3 per row*/
-  width: 90%;
-  max-width: 800px;
-  gap: 1rem; /* space between buttons */
-  justify-items: center;
-}
-
-.room-btn {
-  width: 100%;
-  aspect-ratio: 1/1;
-  display: flex;           /* horizontal layout */
-  flex-direction: column;
-  align-items: center;     /* vertically center image + text */
-  justify-content: space-between; /* align content to left */
-  gap: 0.2rem;               /* space between image and text */
-  padding: 0;              /* remove default padding */
-  border: none;
-  border-radius: 0.5rem;
-  background-color: #6B7A89;
-  color: #eadfd2;
-  cursor: pointer;
-  box-shadow: 0 8px 8px rgba(47, 44, 44, 0.796);
-  transition: all 0.2s ease;
-}
-
-.room-btn:hover {
-  background-color: #b09c5e;
-  transform: scale(1.02);
-}
-
-.room-img-wrapper {
-  width: 100%;
-  height: 70%; /* top part for image */
-  overflow: hidden;
-}
-
-.room-img {
-  height: 100%;        /* fills the button height */
-  width: 100%;         /* keeps aspect ratio */
-  object-fit: cover;
-  border-radius: 0;
-
-  
-}
-
-.room-info {
-  position: relative;
-  height: 30%; /* bottom 30% for text box */
-  width: 100%;
-  background-color: #6B7A89;
-  display: block;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-.room-building {
-  position: absolute;
-  top: 0.5rem;
-  left: 0.5rem;
-  
-  font-size: large;
-  font-weight: bold;
-  text-shadow: 1px 2px 5px rgba(0, 0, 0, 0.708);
-}
-
-.room-rating {
-  position: absolute;
-  bottom: 0.5rem;
-  right: 0.5rem;
-  padding: 0.2rem 0.4rem;
-  font-weight: bold;
-  text-shadow: 1px 2px 5px rgba(0, 0, 0, 0.708);
-}
-
-.room-bookmark {
-  position: absolute;
-  top: 0;
-  right: 0.2rem;
-  cursor: pointer;
-  
-}
-
-.room-number{
-  position: absolute;
-  bottom: 0.5rem;
-  left: 0.5rem;
-  
-  font-size: large;
-  font-weight: bold;
-  text-shadow: 1px 2px 5px rgba(0, 0, 0, 0.708);
-
-}
-
-
-
-/*------ Review Page ----------*/
-.review-content {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-
-.review-section {
-  display: block;
-  max-width: 9000px;
-  width: 60%;
-  margin-top: 5rem;
-  margin-left: 2.5rem;
-  margin-right: 2.5rem;
-  background-color: white; /*#CDBCA8 #6B7A89*/
-  padding: 2rem;
-  border-radius: 20px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-}
-
-.review-header {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
-}
-
-.room-image {
-  width: 100px;
-  height: 100px;
-  object-fit: cover;
-  border-radius: 10px;
-}
-
-.room-name {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #201E1F;
-}
-
-.rating-container {
-  margin-bottom: 0.5rem;
-  flex-direction: column;
-  gap: 0.3rem;
-}
-
-.rating-text {
-  font-size: 1rem;
-  color: #201E1F;
-  margin-bottom: 0.3rem;
-}
-
-.stars {
-  display: flex;
-  gap: 0.5rem;
-  cursor: pointer;
-}
-
-.star {
-  width: 3rem;
-  height: 3rem;
-  color: #ccc;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  font-size: 2rem;
-  color: #ccc;
-  border: 4px solid #ddd;
-  border-radius: 10px;
-  transition: all 0.2 ease;
-  background-color: white;
-}
-
-.star.hovered, .star.selected {
-  color: #f7b731;
-  border-color: #f7b731;
-  background-color: white;
-}
-
-.review-input-row {
-  display: flex;
-  gap: 0.5rem;
-  align-items: flex-end;
-}
-
-
-
-.review-box {
-  flex: 1;
-  width: 100%;
-  height: 150px;
-  border-radius: 10px;
-  border: 1px solid #ccc;
-  padding: 1rem;
-  font-size: 1rem;
-  resize: none;
-  margin-bottom: 1.5rem;
-  font-family: inherit;
-}
-
-
-.post-btn {
-  display: block;
-  width: 80px;
-  height: 80px;
-  background-color: #0066cc; /*#0066cc     #6B7A89*/
-  color: white;
-  font-size: 1.1rem;
-  font-weight: 600;
-  padding: 0.75rem;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  margin-bottom: 1.5rem;
-
-}
-
-
-.post-btn:hover {
-  background-color: #004c99;
 }

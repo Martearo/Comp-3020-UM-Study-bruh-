@@ -112,7 +112,7 @@ body{
 
 .navbar-profile {
   height: 90%;
-  width: 2.2rem;
+  width: 3.8rem;
   border-radius: 50%;
   object-fit: cover;
   cursor: pointer;
@@ -483,6 +483,7 @@ body{
     border-radius: 12px;
     cursor: pointer;
     transition: background 0.3s;
+    text-decoration: none;
 }
 
 .login-btn:hover {
