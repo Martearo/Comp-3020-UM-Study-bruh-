@@ -1,0 +1,755 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Brush Script MT',cursive;
+}
+
+body {
+    background-image: url('../Images/BG.png'); 
+    background-size: cover;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-color: rgba(28, 27, 26, 0.211);
+    background-blend-mode: overlay;
+}
+
+/* Navigation Styles - Matching StudyDen */
+.navbar-custom {
+    background-color: #2c3e50;
+    padding: 12px 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.nav-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+}
+
+.navbar-Logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: white;
+}
+
+.navbar-LogoImg {
+    height: 40px;
+    margin-right: 10px;
+}
+
+.navbar-LogoText {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.search-bar-wrapper {
+    display: flex;
+    align-items: center;
+    background: white;
+    border-radius: 20px;
+    padding: 5px 15px;
+    flex: 0 1 400px;
+}
+
+.search-icon {
+    margin-right: 8px;
+    color: #7f8c8d;
+}
+
+#searchInput {
+    border: none;
+    outline: none;
+    flex: 1;
+    padding: 8px 0;
+}
+
+/* Removed sort button styles */
+
+.language-selector {
+    position: relative;
+}
+
+.lang-btn {
+    display: flex;
+    align-items: center;
+    background: rgba(255,255,255,0.1);
+    border: none;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 20px;
+    cursor: pointer;
+    gap: 8px;
+}
+
+.flag-icon {
+    width: 20px;
+    height: 15px;
+    border-radius: 2px;
+}
+
+.arrow {
+    margin-left: 5px;
+    font-size: 0.8rem;
+}
+
+.dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    padding: 15px;
+    width: 180px;
+    z-index: 100;
+}
+
+.language-selector:hover .dropdown {
+    display: block;
+}
+
+.dropdown p {
+    margin-bottom: 10px;
+    color: #7f8c8d;
+    font-size: 0.9rem;
+}
+
+.dropdown li {
+    list-style: none;
+    padding: 8px 0;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    gap: 10px;
+}
+
+.navbar-profile {
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* Secondary Navbar */
+.navbar-secondary {
+    background-color: #34495e;
+    padding: 10px 0;
+}
+
+.HamburgerMenu {
+    font-size: 1.5rem;
+    color: #ecf0f1;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.HamburgerMenu:hover {
+    color: #3498db;
+}
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: -300px;
+    width: 300px;
+    height: 100%;
+    background: white;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+    padding: 20px;
+    transition: left 0.3s ease;
+    z-index: 1000;
+}
+
+.sidebar a {
+    display: block;
+    padding: 12px 15px;
+    text-decoration: none;
+    color: #2c3e50;
+    border-radius: 5px;
+    margin-bottom: 5px;
+}
+
+.sidebar a:hover {
+    background: #ecf0f1;
+}
+
+.closeBtn {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    background: #e74c3c;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.breadcrumbs {
+    color: #ecf0f1;
+}
+
+.breadcrumbs a {
+    color: #3498db;
+    text-decoration: none;
+}
+
+.help-btn {
+    background: #3498db;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Main Content - Updated Colors to Match StudyDen */
+.site-content {
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 0 20px;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 30px;
+}
+
+.left-column {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.card {
+    background: white;
+    border-radius: 10px;
+    padding: 25px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+/* Using StudyDen color scheme */
+.gallery-card {
+    border-left: 5px solid #766838;
+}
+
+.facility-card {
+    border-left: 5px solid #766838;
+}
+
+.reviews-card {
+    border-left: 5px solid #766838;
+    display: flex;
+    flex-direction: column;
+    height: 650px; /* Increased height to cover more space */
+    position: relative;
+}
+
+.info-item {
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px dashed #ecf0f1;
+}
+
+.info-item:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.info-label {
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+}
+
+.info-label i {
+    margin-right: 8px;
+    width: 20px;
+    text-align: center;
+    color: #3498db;
+}
+
+.info-value {
+    color: #555;
+    font-size: 1.1rem;
+    padding-left: 28px;
+}
+
+.rating {
+    color: #f39c12;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.rating-change {
+    font-size: 0.9rem;
+    margin-left: 10px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: normal;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.rating-change.positive {
+    background-color: rgba(46, 204, 113, 0.2);
+    color: #27ae60;
+    opacity: 1;
+}
+
+.rating-change.negative {
+    background-color: rgba(231, 76, 60, 0.2);
+    color: #c0392b;
+    opacity: 1;
+}
+
+.hours {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.hour-item {
+    background: #ecf0f1;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    color: #2c3e50;
+}
+
+/* Image Carousel Styles */
+.carousel-container {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    margin-top: 10px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.carousel-slide {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    transition: transform 0.5s ease;
+}
+
+.carousel-image {
+    min-width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+  
+}
+
+.carousel-nav {
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    transform: translateY(-50%);
+    padding: 0 15px;
+}
+
+.carousel-btn {
+    background: rgba(255, 255, 255, 0.7);
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1.2rem;
+    color: #2c3e50;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.carousel-btn:hover {
+    background: white;
+    transform: scale(1.1);
+}
+
+.carousel-dots {
+    position: absolute;
+    bottom: 15px;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.dot.active {
+    background: white;
+    transform: scale(1.2);
+}
+
+/* Reviews Section Styles */
+.reviews-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #ecf0f1;
+}
+
+.reviews-header h3 {
+    color: #2c3e50;
+    font-size: 1.3rem;
+}
+
+.scroll-indicator {
+    color: #3498db;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.scroll-indicator:hover {
+    transform: translateY(3px);
+}
+
+.reviews-container {
+    flex: 1;
+    overflow-y: auto;
+    max-height: 500px; /* Increased height to match larger card */
+    padding-right: 10px;
+    margin-bottom: 15px;
+}
+
+/* Custom scrollbar for reviews container */
+.reviews-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+.reviews-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.reviews-container::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 10px;
+}
+
+.reviews-container::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
+
+.review-item {
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #ecf0f1;
+}
+
+.review-item:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.reviewer {
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.review-date {
+    color: #7f8c8d;
+    font-size: 0.9rem;
+}
+
+.review-text {
+    color: #555;
+    line-height: 1.5;
+    margin-bottom: 10px;
+}
+
+.review-rating {
+    color: #f39c12;
+    margin-bottom: 10px;
+}
+
+.vote-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.vote-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2rem;
+    color: #7f8c8d;
+    transition: color 0.2s ease;
+    padding: 5px;
+    border-radius: 4px;
+}
+
+.vote-btn:hover {
+    background: #ecf0f1;
+}
+
+.upvote-btn:hover {
+    color: #27ae60;
+}
+
+.downvote-btn:hover {
+    color: #e74c3c;
+}
+
+.vote-count {
+    font-weight: 600;
+    color: #2c3e50;
+    min-width: 30px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.vote-count.changed {
+    transform: scale(1.2);
+}
+
+.vote-btn.active {
+    color: #3498db;
+}
+
+.upvote-btn.active {
+    color: #27ae60;
+}
+
+.downvote-btn.active {
+    color: #e74c3c;
+}
+
+/* Floating Write Review Button */
+.write-review-container {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 100;
+}
+
+.write-review-btn {
+    background: #3498db;
+    color: white;
+    border: none;
+    padding: 15px 25px;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 6px 15px rgba(52, 152, 219, 0.4);
+    position: relative;
+    overflow: hidden;
+}
+
+.write-review-btn:hover {
+    background: #2980b9;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(52, 152, 219, 0.5);
+}
+
+.write-review-btn:active {
+    transform: translateY(-1px);
+}
+
+/* Add a subtle pulse animation to attract attention */
+@keyframes pulse {
+    0% {
+        box-shadow: 0 6px 15px rgba(52, 152, 219, 0.4);
+    }
+    50% {
+        box-shadow: 0 6px 20px rgba(52, 152, 219, 0.6);
+    }
+    100% {
+        box-shadow: 0 6px 15px rgba(52, 152, 219, 0.4);
+    }
+}
+
+.write-review-btn {
+    animation: pulse 2s infinite;
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background-color: white;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 500px;
+    padding: 30px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    position: relative;
+}
+
+.close-modal {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #999;
+}
+
+.close-modal:hover {
+    color: #e74c3c;
+}
+
+.modal-content h2 {
+    margin-bottom: 20px;
+    color: #2c3e50;
+    text-align: center;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: #3498db;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+}
+
+.rating-stars {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 10px;
+}
+
+.star {
+    font-size: 2rem;
+    color: #ddd;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.star:hover,
+.star.active {
+    color: #f39c12;
+}
+
+.submit-review-btn {
+    background: #27ae60;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.submit-review-btn:hover {
+    background: #219653;
+}
+
+@media (max-width: 900px) {
+    .site-content {
+        grid-template-columns: 1fr;
+    }
+    
+    .carousel-container {
+        height: 250px;
+    }
+    
+    .reviews-card {
+        height: auto;
+        max-height: 600px;
+    }
+}
+
+@media (max-width: 768px) {
+    .nav-inner {
+        flex-wrap: wrap;
+    }
+    
+    .search-bar-wrapper {
+        order: 3;
+        flex: 1 1 100%;
+        margin-top: 10px;
+    }
+    
+    .reviews-container {
+        max-height: 400px;
+    }
+    
+    .write-review-container {
+        bottom: 20px;
+        right: 20px;
+    }
+    
+    .write-review-btn {
+        padding: 12px 20px;
+        font-size: 0.9rem;
+    }
+}
