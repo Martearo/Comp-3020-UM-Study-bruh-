@@ -919,107 +919,136 @@ body{
 
 
 
-/*Reviews */
 
-.white-box {
-    background: white;
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
-    margin-bottom: 25px;
-}
-
-.review-content {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    padding-top: 150px;
-}
-
-.review-section {
-  width: 100%;
-  max-width: 700px;
-  margin: 0 auto;
-}
-
-.review-header {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    background: white;
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0 2px 7px rgba(0,0,0,0.1);
-}
-
-.room-image {
-    width: 150px;
-    border-radius: 10px;
-}
-
-.room-name {
-    margin: 0;
-}
-
-.rating-container {
-    margin-top: 10px;
-}
-
-.stars {
+/* Make bookmark content use same layout as room content */
+.bookmark-content {
   display: flex;
-    font-size: 30px;
-    cursor: pointer;
-    gap: 10px;
+  flex-direction: column;
+  align-items: center;
+  margin-top: calc(var(--navbar-height) + var(--secondary-height));
+  padding: 1rem;
 }
 
-.star {
-  font-size: 32px;
-  color: #ccc;
+/* Use the same grid layout as rooms */
+.room-button-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  width: 90%;
+  max-width: 800px;
+  gap: 1rem;
+  justify-items: center;
+  margin-top: 2rem;
+  position: relative; /* For empty state positioning */
+}
+
+/* Room button styles */
+.room-btn {
+  width: 100%;
+  aspect-ratio: 1/1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.2rem;
+  padding: 0;
+  border: none;
+  border-radius: 0.5rem;
+  background-color: #6B7A89;
+  color: #eadfd2;
   cursor: pointer;
-
-  border: 2px solid #ccc;
-  padding: 8px 15px;
-  border-radius: 8px;
-  
-  transition: 0.2s;
-  user-select: none;
+  box-shadow: 0 8px 8px rgba(47, 44, 44, 0.796);
+  transition: all 0.2s ease;
 }
 
-.star.active,
-.star.hover {
-    color: gold;
-    border-color: gold;
-}
-
-/* REVIEW INPUT */
-
-.review-input-row {
-    margin-top: 25px;
-    display: flex;
-    gap: 15px;
-}
-
-.review-box {
-    width: 100%;
-    height: 120px;
-    resize: none;
-    padding: 15px;
-    border-radius: 10px;
-    border: 1px solid #ccc;
-}
-
-.post-btn {
-    background: #6B7A89;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    height: 50px;
-    border-radius: 10px;
-    cursor: pointer;
-
-    transition: 0.2s;
-}
-.post-btn:hover {
-  background: #43678b;
+.room-btn:hover {
+  background-color: #b09c5e;
   transform: scale(1.02);
+}
+
+/* Image takes top ~2/3 */
+.room-img-wrapper {
+  width: 100%;
+  height: 70%; /* top part for image */
+  overflow: hidden;
+  border-top-left-radius: 0.2rem;
+  border-top-right-radius: 0.2rem;
+}
+
+.room-img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
+/* Room info takes bottom ~1/3 */
+.room-info {
+  position: relative;
+  height: 30%; /* bottom 30% for text box */
+  width: 100%;
+  background-color: #6B7A89;
+  display: block;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.room-building {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+  font-size: large;
+  font-weight: bold;
+  text-shadow: 1px 2px 5px rgba(0, 0, 0, 0.708);
+}
+
+.room-rating {
+  position: absolute;
+  bottom: 0.5rem;
+  right: 0.5rem;
+  padding: 0.2rem 0.4rem;
+  font-weight: bold;
+  text-shadow: 1px 2px 5px rgba(0, 0, 0, 0.708);
+}
+
+.room-bookmark {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  cursor: pointer;
+}
+
+.room-number {
+  position: absolute;
+  bottom: 0.5rem;
+  left: 0.5rem;
+  font-size: large;
+  font-weight: bold;
+  text-shadow: 1px 2px 5px rgba(0, 0, 0, 0.708);
+}
+
+/* Empty state positioning */
+.bookmarks-empty-state {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  width: 100%;
+}
+
+.bookmarks-empty-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+}
+
+.bookmarks-empty-text {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+.bookmarks-empty-subtext {
+  color: #666;
+  max-width: 300px;
+  margin: 0 auto;
 }

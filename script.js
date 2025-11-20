@@ -1,7 +1,11 @@
 document.addEventListener("DOMContentLoaded", () => {
+
+
     // --- Configuration & Element Selectors ---
     const IS_ROOMS_PAGE = window.location.pathname.includes('Rooms/Rooms.html');
-    
+    const IS_BOOKMARK_PAGE = window.location.pathname.includes('Bookmark.html');
+
+
     // Select elements (safely handle if they don't exist on one page)
     const hamburger = document.querySelector(".HamburgerMenu");
     const sidebar = document.querySelector(".sidebar");
@@ -38,6 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const MIN_ZOOM = 1.0; 
     const ZOOM_STEP = 0.2;
 
+    // Add this at the top of your DOMContentLoaded event for debugging
 
     // --- Data Definitions ---
     const studySpots = [
@@ -298,15 +303,31 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (!bookmarkIconSpan) return; // only proceed if a bookmark was clicked
                 e.stopPropagation(); // prevent triggering room button click
 
+                const roomBtn = bookmarkIconSpan.closest('.room-btn');
+                const roomBuilding = roomBtn.querySelector('.room-building').textContent;
+                const roomNumber = roomBtn.querySelector('.room-number').textContent;
+
+                const room = studyRooms.find(r => r.building === roomBuilding && r.room ===roomNumber);
+                if(!room) return;
+                
+                const roomId = getRoomId(room);
                 const isBookmarked = bookmarkIconSpan.dataset.bookmarked === "true";
+
+                const newBookmarkState = !isBookmarked;
+                bookmarkIconSpan.dataset.bookmarked = newBookmarkState.toString();
+
+                room.bookmark = newBookmarkState;
+                toggleRoomBookmark(roomId, newBookmarkState);
+
+
                 const filledSVG = `<svg class="bookmark-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="gold" width="24" height="24"><path d="M6 4a2 2 0 0 0-2 2v16l8-4 8 4V6a2 2 0 0 0-2-2H6z"/></svg>`;
                 const emptySVG = `<svg class="bookmark-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="gold" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="24" height="24"><path d="M19 21l-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>`;
 
-                // toggle bookmark state
-                bookmarkIconSpan.dataset.bookmarked = (!isBookmarked).toString();
+                bookmarkIconSpan.innerHTML = newBookmarkState ? filledSVG : emptySVG
 
-                // swap SVG
-                bookmarkIconSpan.innerHTML = !isBookmarked ? filledSVG : emptySVG;
+                if(IS_BOOKMARK_PAGE && !newBookmarkState) {
+                    roomBtn.remove();
+                }
             });
         }
     }
@@ -332,6 +353,21 @@ document.addEventListener("DOMContentLoaded", () => {
             renderStudyRooms(filteredRooms);
             // ⭐ NEW: Filter the room pins too
             renderRoomPins(filteredRooms);
+
+        }
+        else if(IS_BOOKMARK_PAGE){
+            const bookmarkedRoomIds = getBookmarkedRooms();
+            let filteredRooms = studyRooms.filter(room => {
+                const isBookmarked = bookmarkedRoomIds.includes(getRoomId(room));
+                const matchesSearch = room.room.toLowerCase().includes(searchTerm) || room.building.toLowerCase().includes(searchTerm);
+                return isBookmarked && matchesSearch;
+            });
+
+            filteredRooms = sortStudySpots(filteredRooms, currentSortBy, currentSortOrder);
+
+            renderBookmarkedRooms(filteredRooms);
+
+            updateBookmarkEmptyState(filteredRooms);
 
         } else {
             let filteredSpots = studySpots.filter(spot => {
@@ -361,7 +397,21 @@ document.addEventListener("DOMContentLoaded", () => {
         
         renderRoomPins(roomsToRender);
 
-    } else {
+    }
+    else if(IS_BOOKMARK_PAGE) {
+        const bookmarkedRoomIds = getBookmarkedRooms();
+        const bookmarkedRooms = studyRooms.filter(room => {
+            return bookmarkedRoomIds.includes(getRoomId(room));
+        });
+
+        
+        if(searchInput) {
+            searchInput.placeholder = "Search bookmarked rooms..."
+        }
+
+        renderStudyRooms(bookmarkedRooms);
+        filterAndRender();
+     } else {
         // This runs on index.html, with NEW zoom initialization
         if (mapContainer && mapImage) {
             // Apply default zoom and transform on load (This sets the map to 1.2x immediately)
@@ -625,64 +675,97 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-});
 
+    
 
+function getBookmarkedRooms() {
+    const bookmarks = localStorage.getItem('bookmarkedRooms');
+    return bookmarks ? JSON.parse(bookmarks) : [];
+}
 
-/* ----------------- STAR RATING ----------------- */
+function saveBookmarkedRooms(bookmarks) {
+    localStorage.setItem('bookmarkedRooms', JSON.stringify(bookmarks));
+}
 
-const stars = document.querySelectorAll(".star");
-let rating = 0;
+function toggleRoomBookmark(roomId, isBookmarked) {
+    const bookmarks = getBookmarkedRooms();
 
-stars.forEach((star) => {
-    star.addEventListener("mouseover", () => {
-        resetStars();
-        highlight(star.dataset.value);
-    });
-
-    star.addEventListener("mouseout", () => {
-        resetStars();
-        highlight(rating);
-    });
-
-    star.addEventListener("click", () => {
-        rating = star.dataset.value;
-        highlight(rating);
-    });
-});
-
-function highlight(num) {
-    stars.forEach((star) => {
-        if (star.dataset.value <= num) {
-            star.classList.add("active");
+    if(isBookmarked) {
+        if(!bookmarks.includes(roomId)) {
+            bookmarks.push(roomId);
         }
-    });
+    }else {
+            const index = bookmarks.indexOf(roomId);
+            if(index >-1) {
+                bookmarks.splice(index, 1);
+            }
+        }
+
+        saveBookmarkedRooms(bookmarks)
 }
 
-function resetStars() {
-    stars.forEach((star) => star.classList.remove("active"));
+
+function getRoomId(room) {
+    return `${room.building}-${room.room}`;
 }
 
 
-/* ----------------- POST REVIEW ----------------- */
-
-document.getElementById("postBtn").addEventListener("click", () => {
-    const reviewText = document.getElementById("reviewBox").value.trim();
-
-    if (reviewText === "" || rating === 0) {
-        alert("Please rate and write a review!");
+function renderBookmarkedRooms(rooms) {
+    if (!roombuttonList) return;
+    
+    if (rooms.length === 0) {
+        updateBookmarkEmptyState([]);
         return;
     }
 
+    roombuttonList.innerHTML = rooms.map(room => `
+    <button class="room-btn" data-room-id="${getRoomId(room)}">
+        <div class="room-img-wrapper">
+            <img src="Images/StudyRooms/StudyRoom.png" alt="${room.room}" class="room-img">
+        </div>
+        <div class="room-info">
+            <span class="room-building">${room.building}</span>
+            <span class="room-number">${room.room}</span>
+            <span class="room-rating">${"⭐".repeat(Math.floor(room.rating))} ${room.rating}</span>
+            <span class="room-bookmark" data-bookmarked="true">
+                <svg class="bookmark-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="gold" width="24" height="24">
+                    <path d="M6 4a2 2 0 0 0-2 2v16l8-4 8 4V6a2 2 0 0 0-2-2H6z"/>
+                </svg>
+            </span>
+        </div>
+    </button>
+`).join('');
 
-    const reviewData = {
-        rating: rating,
-        text: reviewText
+    // Add event listeners for the new bookmark buttons
+    roombuttonList.querySelectorAll('.bookmark-btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const roomCard = this.closest('.room-card');
+            const roomId = roomCard.dataset.roomId;
+            const room = rooms.find(r => getRoomId(r) === roomId);
+            
+            if (room) {
+                const newBookmarkState = false; // Since we're unbookmarking
+                room.bookmark = newBookmarkState;
+                toggleRoomBookmark(roomId, newBookmarkState);
+                roomCard.remove();
+                updateBookmarkEmptyState(rooms.filter(r => getRoomId(r) !== roomId));
+            }
+        });
+    });
+}
+
+function updateBookmarkEmptyState(rooms) {
+    const emptyState = document.getElementById('empty-state');
+    if (!emptyState) return;
+    
+    if (rooms.length === 0) {
+        roombuttonList.style.display = 'none';
+        emptyState.style.display = 'block';
+    } else {
+        roombuttonList.style.display = 'grid';
+        emptyState.style.display = 'none';
     }
+}
 
-    localStorage.setItem("newReview", JSON.stringify(reviewData));
-
-
-    window.location.href = "";
-   
 });
