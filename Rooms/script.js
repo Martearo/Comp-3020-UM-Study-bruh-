@@ -13,9 +13,37 @@ const ALL_ROOM_DATA = [
         id: "D008", 
         buildingNameForLink: "Dafoe", 
         roomNumber: "D-008",
+        title: "Dafoe Study Room 008",
+        rating: "4.2",
+        address: "008 Dafoe Hall, Central Campus",
+        amenities: "Free WiFi, Study Rooms, Vending",
+        description: "Large, quiet study area in the basement floor of Dafoe Hall.",
+        utilization: "Capacity: 60% (Moderate)",
+        imageUrls: [
+            '../Images/StudyRooms/Dafoe008.jpg',
+        ]
+    },
+    {
+        id: "D401", 
+        buildingNameForLink: "Dafoe", 
+        roomNumber: "D-401",
         title: "Dafoe Study Room 401",
         rating: "4.8",
         address: "401 Dafoe Hall, Central Campus",
+        amenities: "Free WiFi, Study Rooms, Vending",
+        description: "Large, quiet study area on the top floor of Dafoe Hall.",
+        utilization: "Capacity: 60% (Moderate)",
+        imageUrls: [
+            '../Images/StudyRooms/Dafoe008.jpg',
+        ]
+    },
+    {
+        id: "D402", 
+        buildingNameForLink: "Dafoe", 
+        roomNumber: "D-402",
+        title: "Dafoe Study Room 402",
+        rating: "4.2",
+        address: "402 Dafoe Hall, Central Campus",
         amenities: "Free WiFi, Study Rooms, Vending",
         description: "Large, quiet study area on the top floor of Dafoe Hall.",
         utilization: "Capacity: 60% (Moderate)",
@@ -28,7 +56,7 @@ const ALL_ROOM_DATA = [
         buildingNameForLink: "Machray Hall", 
         roomNumber: "M-211",
         title: "Machray Study Room 211",
-        rating: "3.9",
+        rating: "3.0",
         address: "211 Machray Hall, Central Campus",
         amenities: "Free WiFi, Study Rooms, Vending",
         description: "Large, quiet study area on the top floor of Dafoe Hall.",
@@ -48,17 +76,30 @@ const ALL_ROOM_DATA = [
         description: "Dedicated group study room in the newer Engineering complex.",
         utilization: "Capacity: 75% (High)",
         imageUrls: [
-            '../Images/StudyRooms/EITC.png',
-            '../Images/StudyRooms/Machray.png',
+            '../Images/StudyRooms/EITC.png'
+        ]
+    },
+    {
+        id: "EITC1222",
+        buildingNameForLink: "Engineering", 
+        roomNumber: "EITC1 222",
+        title: "Engineering Room EITC1 222",
+        rating: "4.0",
+        address: "222 Engineering, EITC II",
+        amenities: "Projector, Whiteboard, Charging Ports",
+        description: "Dedicated group study room in the newer Engineering complex.",
+        utilization: "Capacity: 75% (High)",
+        imageUrls: [
+            '../Images/StudyRooms/EITC.png'
         ]
     },
     {
         id: "T100",
         buildingNameForLink: "Tier", 
         roomNumber: "T 100",
-        title: "Engineering Room EITC2 123",
-        rating: "4.5",
-        address: "123 Engineering, EITC II",
+        title: "Tier 100",
+        rating: "3.5",
+        address: "100 Tier, campus central",
         amenities: "Projector, Whiteboard, Charging Ports",
         description: "Dedicated group study room in the newer Engineering complex.",
         utilization: "Capacity: 75% (High)",
@@ -67,24 +108,18 @@ const ALL_ROOM_DATA = [
         ]
     }
 
-    // ... add all your rooms here
 ];
 
 if (viewProfileLink) {
-        // 1. Remove the default navigation behavior (the href="#")
         viewProfileLink.addEventListener('click', (e) => {
             e.preventDefault(); 
             
-            // 2. Display the alert message
+            // Display the alert message
             alert("Profile page is currently unimplemented. Not Part of Primary or Secondary Tasks!"); 
             
-            // OPTIONAL: Hide the profile card immediately after clicking the link
+            // Hide the profile card immediately after clicking the link
             const profileCard = e.target.closest('.profile-info-card');
             if (profileCard) {
-                // You'll need to use the CSS classes/styles you use to hide it
-                // Assuming you're using CSS to show/hide on hover:
-                // Since this click is inside the wrapper, it might not hide immediately based on pure CSS hover.
-                // This will force it to hide:
                 profileCard.style.opacity = '0';
                 profileCard.style.visibility = 'hidden';
                 profileCard.style.transform = 'translateY(-5px)';
@@ -101,7 +136,6 @@ function getRoomIdFromUrl() {
 // ==============================================
 // --- 2. ROOM & CAROUSEL LOADING FUNCTIONS ---
 // ==============================================
-
 function loadRoomData(roomId) {
     const room = ALL_ROOM_DATA.find(r => r.id === roomId); 
 
@@ -166,7 +200,7 @@ function initializeCarousel() {
         updateDots();
     };
 
-    // Create Dots Logic
+    // Create dots logic
     const createDots = () => {
         if (!dotsContainer) return;
         dotsContainer.innerHTML = ''; // Clear existing dots
@@ -211,7 +245,6 @@ function initializeCarousel() {
 // ==============================================
 // --- 3. DOM READY LOGIC (All Event Listeners) ---
 // ==============================================
-
 document.addEventListener('DOMContentLoaded', () => {
     // Load the specific room data based on URL ID
     const roomId = getRoomIdFromUrl();
@@ -259,7 +292,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
-    // --- Review Modal, Submission, and Voting ---
+    // Review Modal, Submission, and Voting 
     const reviewsContainer = document.getElementById('reviewsContainer');
     const modal = document.getElementById('reviewModal');
     const openBtn = document.getElementById('writeReviewBtn');
@@ -269,7 +302,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const ratingInput = document.getElementById('reviewRating');
     let currentRating = 0;
 
-    // 1. Modal Open/Close
+    // Modal open/close
     if (modal && openBtn && closeBtnModal) {
         openBtn.addEventListener('click', () => modal.style.display = 'flex');
         closeBtnModal.addEventListener('click', () => modal.style.display = 'none');
@@ -278,7 +311,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     
-    // 2. Star Rating Logic
+    // Star rating logic
     if (ratingStars.length > 0) {
         ratingStars.forEach(star => {
             star.addEventListener('click', function() {
@@ -294,7 +327,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 3. Form Submission
+    // Form submission
     if (form && reviewsContainer) {
         form.addEventListener('submit', (e) => {
             e.preventDefault();
@@ -311,7 +344,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const date = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
             const newReviewId = Date.now(); 
             
-            // Generate Star HTML
+            // Generate star HTML
             let starsHtml = '';
             for(let i=0; i<5; i++) starsHtml += i < rating ? '★' : '☆';
 
@@ -340,7 +373,7 @@ document.addEventListener('DOMContentLoaded', () => {
             reviewsContainer.insertAdjacentHTML('afterbegin', newReviewHTML);
             reviewsContainer.scrollTop = 0;
 
-            // Reset Form and Close Modal
+            // Reset form and close modal
             form.reset();
             ratingInput.value = 0;
             ratingStars.forEach(s => s.classList.remove('filled')); 
@@ -348,7 +381,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 4. Scroll Down Button
+    // Scroll down button
     const scrollDownBtn = document.getElementById('scrollDownBtn');
     if (reviewsContainer && scrollDownBtn) {
         scrollDownBtn.addEventListener('click', () => {
@@ -359,7 +392,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 5. Review Voting Functionality (Event Delegation)
+    // Review voting functionality (event delegation)
     if (reviewsContainer) {
         reviewsContainer.addEventListener('click', function(e) {
             const button = e.target.closest('.vote-btn');
@@ -384,12 +417,12 @@ document.addEventListener('DOMContentLoaded', () => {
             let voteChange = 0;
             const alreadyActive = button.classList.contains('active');
             
-            // 1. Unvote (Clicking the active button again)
+            // Unvote (clicking the active button again)
             if (alreadyActive) {
                 button.classList.remove('active');
                 voteChange = isUpvote ? -1 : 1; 
             
-            // 2. Swap Vote (Clicking the opposite button)
+            // Swap vote (clicking the opposite button)
             } else if ((upvoteBtn && upvoteBtn.classList.contains('active')) || (downvoteBtn && downvoteBtn.classList.contains('active'))) {
                 if (upvoteBtn.classList.contains('active')) {
                     upvoteBtn.classList.remove('active');
@@ -402,13 +435,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 button.classList.add('active');
                 voteChange += isUpvote ? 1 : -1;
                 
-            // 3. New Vote
+            // New vote
             } else {
                 button.classList.add('active');
                 voteChange = isUpvote ? 1 : -1;
             }
 
-            // --- Update the Count ---
+            // Update count
             currentCount += voteChange;
             voteCountElement.textContent = currentCount; 
 
