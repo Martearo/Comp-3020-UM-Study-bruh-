@@ -1,13 +1,10 @@
 document.addEventListener("DOMContentLoaded", () => {
-
-
     // --- Configuration & Element Selectors ---
+    // 🔑 NEW PATH: The Rooms folder is now Buildings
     const IS_BUILDINGS_PAGE = window.location.pathname.includes('Buildings/Buildings.html'); 
-    
-    const IS_ROOMS_PAGE = window.location.pathname.includes('Rooms/Rooms.html');
+    const IS_ROOMS_PAGE = window.location.pathname.includes('Rooms/rooms.html') || window.location.pathname.includes('Rooms/Rooms.html');
     const IS_BOOKMARK_PAGE = window.location.pathname.includes('Bookmark.html');
-
-
+    
     // Select elements (safely handle if they don't exist on one page)
     const hamburger = document.querySelector(".HamburgerMenu");
     const sidebar = document.querySelector(".sidebar");
@@ -15,8 +12,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const searchInput = document.getElementById("searchInput");
     
     // Containers
-    const buildingListContainer = document.getElementById("button-list"); // Used on index.html
-    const roomListContainer = document.getElementById("room-button-list"); // Used on Buildings/Buildings.html
+    const buildingListContainer = document.getElementById("button-list"); // Used on index.html (Was: buttonList)
+    const roomListContainer = document.getElementById("room-button-list"); // Used on Buildings/Buildings.html (Was: roombuttonList)
 
     const mapContainer = document.querySelector(".map-container"); 
     const mapContent = document.querySelector(".map-content"); 
@@ -50,10 +47,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const ZOOM_STEP = 0.2;
     
 
-    // Add this at the top of your DOMContentLoaded event for debugging
 
     // --- Data Definitions ---
-    // Buildings:
+    // 🔑 RENAMED: studySpots -> buildingData
     const buildingData = [
         { name: "Dafoe", image: "Images/StudyRooms/Dafoe.jpg", mapImage: "../Images/RoomMaps/Dafoe.png", rating: 4.5, open: 7, close: 22, x: 67, y: 29, pinImage: "Images/PinIcon.png" },
         { name: "Engineering", image: "Images/StudyRooms/EITC.png", mapImage: "../Images/RoomMaps/EITC.png", rating: 4.0, open: 7, close: 24, x: 55, y: 50, pinImage: "Images/PinIcon.png" },
@@ -62,7 +58,7 @@ document.addEventListener("DOMContentLoaded", () => {
         { name: "Agriculture", image: "Images/StudyRooms/Agriculture.png", mapImage: "../Images/RoomMaps/Agriculture.png", rating: 3.9, open: 6, close: 22, x: 58, y: 60, pinImage: "Images/PinIcon.png" },
     ];
     
-    // Rooms:
+    // 🔑 RENAMED: studyRooms -> roomData
     const roomData = [
         { building: "Dafoe", room: "D401", image: "../Images/StudyRooms/StudyRoom.png", rating: 4.8, bookmark: false, x: 80, y: 22 },
         { building: "Dafoe", room: "D402", image: "../Images/StudyRooms/StudyRoom.png", rating: 4.2, bookmark: true, x: 89, y: 22 },
@@ -71,39 +67,41 @@ document.addEventListener("DOMContentLoaded", () => {
         // Engineering Pins (Coordinates relative to EITC.png map)
         { building: "Engineering", room: "EITC2123", image: "../Images/StudyRooms/StudyRoom.png", rating: 4.5, bookmark: false, x: 30, y: 60 },
         { building: "Engineering", room: "EITC1222", image: "../Images/StudyRooms/StudyRoom.png", rating: 4.0, bookmark: true, x: 75, y: 20 },
-
+        
+        // Machray and Tier (Add coordinates for all, using samples)
         { building: "Machray Hall", room: "M211", image: "../Images/StudyRooms/Machray211.jpg", rating: 3.0, bookmark: false, x: 70, y: 80 },
-
         { building: "Tier", room: "T100", image: "../Images/StudyRooms/Tier01.png", rating: 3.5, bookmark: false, x: 40, y: 70 },
     ];
 
-    // Initialize bookmarkState from localStorage or from roomData
-const bookmarkState = (() => {
-    // Try to load from localStorage first
-    const savedBookmarks = localStorage.getItem('bookmarkState');
-    if (savedBookmarks) {
-        return JSON.parse(savedBookmarks);
-    }
-    
-    // If no saved state, initialize from roomData
-    const initialState = {};
-    roomData.forEach(room => {
-        initialState[room.room] = room.bookmark;
-    });
-    return initialState;
-})();
+    // Initialize bookmarkState from localStorage if present, otherwise from roomData
+    const bookmarkState = (() => {
+        try {
+            const saved = localStorage.getItem('bookmarkState');
+            if (saved) return JSON.parse(saved);
+        } catch (e) {
+            // ignore parse errors and fall back to defaults
+        }
+        const initial = {};
+        roomData.forEach(r => { initial[r.room] = r.bookmark; });
+        return initial;
+    })();
 
 
     if (viewProfileLink) {
+        // 1. Remove the default navigation behavior (the href="#")
         viewProfileLink.addEventListener('click', (e) => {
             e.preventDefault(); 
             
             // 2. Display the alert message
             alert("Profile page is currently unimplemented. Not Part of Primary or Secondary Tasks!"); 
             
-            // Hide the profile card immediately after clicking the link
+            // OPTIONAL: Hide the profile card immediately after clicking the link
             const profileCard = e.target.closest('.profile-info-card');
             if (profileCard) {
+                // You'll need to use the CSS classes/styles you use to hide it
+                // Assuming you're using CSS to show/hide on hover:
+                // Since this click is inside the wrapper, it might not hide immediately based on pure CSS hover.
+                // This will force it to hide:
                 profileCard.style.opacity = '0';
                 profileCard.style.visibility = 'hidden';
                 profileCard.style.transform = 'translateY(-5px)';
@@ -125,55 +123,63 @@ const bookmarkState = (() => {
             // Hide the toast after 3 seconds
             setTimeout(() => {
                 toast.classList.remove("show");
-            }, 3000); // 3 seconds
+            }, 3000); // 3000 milliseconds = 3 seconds
+        }
+    }
+
+    // Persist bookmarkState to localStorage
+    function saveBookmarkState() {
+        try {
+            localStorage.setItem('bookmarkState', JSON.stringify(bookmarkState));
+        } catch (e) {
+            // ignore storage errors
         }
     }
 
     function filterAndRender() {
-    if (!searchInput) return;
+        if (!searchInput) return;
 
-    const searchTerm = searchInput.value.toLowerCase().trim();
+        const searchTerm = searchInput.value.toLowerCase().trim();
 
-    if (IS_BUILDINGS_PAGE) {
-        const currentBuilding = getBuildingNameFromUrl();
-        const roomsToFilter = filterRoomsForBuilding(roomData, currentBuilding);
-        
-        let filteredRooms = roomsToFilter.filter(room => {
-            return room.room.toLowerCase().includes(searchTerm) || room.building.toLowerCase().includes(searchTerm);
-        });
+        // 🔑 IS_ROOMS_PAGE -> IS_BUILDINGS_PAGE
+        if (IS_BUILDINGS_PAGE) {
+            const currentBuilding = getBuildingNameFromUrl();
+            const roomsToFilter = filterRoomsForBuilding(roomData, currentBuilding);
+            
+            let filteredRooms = roomsToFilter.filter(room => {
+                return room.room.toLowerCase().includes(searchTerm) || room.building.toLowerCase().includes(searchTerm);
+            });
 
-        filteredRooms = sortBuildingOrRoomData(filteredRooms, currentSortBy, currentSortOrder); 
-        
-        renderRooms(filteredRooms);
-        renderRoomPinsForBuilding(filteredRooms);
 
-    } else if (IS_BOOKMARK_PAGE) {
-        let filteredRooms = roomData.filter(room => {
-            const isBookmarked = bookmarkState[room.room];
-            const matchesSearch = room.room.toLowerCase().includes(searchTerm) || room.building.toLowerCase().includes(searchTerm);
-            return isBookmarked && matchesSearch;
-        });
+            // 🔑 sortStudySpots -> sortBuildingOrRoomData
+            filteredRooms = sortBuildingOrRoomData(filteredRooms, currentSortBy, currentSortOrder); 
+            
+            // 🔑 renderStudyRooms -> renderRooms
+            renderRooms(filteredRooms);
+            // 🔑 renderRoomPins -> renderRoomPinsForBuilding (Also update the call inside)
+            renderRoomPinsForBuilding(filteredRooms);
 
-        filteredRooms = sortBuildingOrRoomData(filteredRooms, currentSortBy, currentSortOrder);
-        renderBookmarkedRooms(filteredRooms);
+        } else {
+            // 🔑 studySpots -> buildingData
+            let filteredSpots = buildingData.filter(spot => {
+                return spot.name.toLowerCase().includes(searchTerm);
+            });
 
-    } else {
-        let filteredSpots = buildingData.filter(spot => {
-            return spot.name.toLowerCase().includes(searchTerm);
-        });
+            // 🔑 sortStudySpots -> sortBuildingOrRoomData
+            filteredSpots = sortBuildingOrRoomData(filteredSpots, currentSortBy, currentSortOrder);
 
-        filteredSpots = sortBuildingOrRoomData(filteredSpots, currentSortBy, currentSortOrder);
-        renderBuildings(filteredSpots);
-        renderMapPins(filteredSpots); 
+            // 🔑 renderStudySpots -> renderBuildings
+            renderBuildings(filteredSpots);
+            renderMapPins(filteredSpots); 
+        }
     }
-}
 
-    // Apply the current scale to the map image
+    // NEW: Applies the current scale to the map image
     function applyMapTransform() {
         if (mapContent) {
-            // Apply scale
+            // Only apply scale (no translate/pan needed)
             mapContent.style.transform = `scale(${currentZoom})`; 
-            mapContent.style.setProperty('--current-zoom', currentZoom);
+            mapContent.style.setProperty('--current-zoom', currentZoom); // <--- ADD THIS LINE
 
             // Disable buttons at min/max zoom
             if (zoomInBtn) {
@@ -187,6 +193,7 @@ const bookmarkState = (() => {
 
     
 
+    // NEW: Function to zoom in
     function zoomIn() {
         if (currentZoom < MAX_ZOOM) {
             currentZoom += ZOOM_STEP;
@@ -195,6 +202,7 @@ const bookmarkState = (() => {
         }
     }
 
+    // NEW: Function to zoom out
     function zoomOut() {
         if (currentZoom > MIN_ZOOM) {
             currentZoom -= ZOOM_STEP;
@@ -203,8 +211,10 @@ const bookmarkState = (() => {
         }
     }
 
+    // NEW: Function to reset view
     function resetView() {
         currentZoom = DEFAULT_ZOOM;
+        // Resetting translation is not needed as it's not supported
         applyMapTransform();
     }
 
@@ -223,7 +233,8 @@ const bookmarkState = (() => {
 
     
 
-    
+
+    // 🔑 RENAMED: sortStudySpots -> sortBuildingOrRoomData
     function sortBuildingOrRoomData(data, sortBy, sortOrder) {
         // Clone the array to avoid modifying the original array in place
         const sortedData = [...data]; 
@@ -281,6 +292,7 @@ const bookmarkState = (() => {
     // ----------------------------------------------------
     // --- INDEX.HTML: Building Spot Rendering ---
     // ----------------------------------------------------
+    // 🔑 RENAMED: renderStudySpots -> renderBuildings
     function renderBuildings(spots) {
         if (!buildingListContainer) return;
         buildingListContainer.innerHTML = '';
@@ -288,6 +300,7 @@ const bookmarkState = (() => {
         spots.forEach(spot => {
             const anchor = document.createElement("a");
             
+            // 🔑 NEW PATH: From root index.html to Buildings/Buildings.html
             anchor.href = `Buildings/Buildings.html?building=${encodeURIComponent(spot.name)}`; 
             anchor.classList.add("spot-btn");
 
@@ -313,8 +326,10 @@ const bookmarkState = (() => {
     // ----------------------------------------------------
     // --- BUILDINGS.HTML: Dynamic Content and Rendering ---
     // ----------------------------------------------------
+    
     function updateMapImage(buildingName) {
         const mapImageElement = document.querySelector('.map-image');
+        // 🔑 Using the renamed buildingData array
         const spotData = buildingData.find(spot => spot.name.toLowerCase() === buildingName.toLowerCase());
         
         if (mapImageElement && spotData && spotData.mapImage) {
@@ -323,9 +338,10 @@ const bookmarkState = (() => {
         }
     }
 
+    // 🔑 RENAMED: updateRoomsPageContent -> updateBuildingsPageContent
     function updateBuildingsPageContent(buildingName) {
         if (!buildingName) {
-            buildingName = "All Buildings";
+            buildingName = "All Buildings"; // Changed from "All Rooms"
         }
         
         const breadcrumbsContainer = document.querySelector('.breadcrumbs');
@@ -350,123 +366,127 @@ const bookmarkState = (() => {
         }
     }
 
+    // 🔑 RENAMED: filterRoomsByBuilding -> filterRoomsForBuilding
     function filterRoomsForBuilding(rooms, buildingName) {
         if (!buildingName) return [];
         return rooms.filter(room => room.building.toLowerCase() === buildingName.toLowerCase());
     }
 
-function renderRooms(rooms) {
-    if (!roomListContainer) return;
-    roomListContainer.innerHTML = ''; 
+    // 🔑 RENAMED: renderStudyRooms -> renderRooms
+    function renderRooms(rooms) {
+        if (!roomListContainer) return;
+        roomListContainer.innerHTML = ''; 
 
-    rooms.forEach(room => {
-        const btn = document.createElement("button");
-        btn.classList.add("room-btn"); 
+        rooms.forEach(room => {
+            const btn = document.createElement("button");
+            btn.classList.add("room-btn"); 
 
-        let stars = Math.floor(room.rating);
-        let amountStars = "⭐".repeat(stars);
-        
-        const isBookmarked = bookmarkState[room.room] || false;
-        
-        const filledSVG = `<svg class="bookmark-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="gold" width="24" height="24"><path d="M6 4a2 2 0 0 0-2 2v16l8-4 8 4V6a2 2 0 0 0-2-2H6z"/></svg>`;
-        const emptySVG = `<svg class="bookmark-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="gold" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="24" height="24"><path d="M19 21l-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>`;
-        
-        // Set initial HTML and data attribute
-        btn.innerHTML = `
-            <div class="room-img-wrapper">
-                <img src="${room.image}" alt="${room.room}" class="room-img">
-            </div>
-            <div class="room-info">
-                <span class="room-building">${room.building}</span>
-                <span class ="room-number">${room.room}</span>
-                <span class="room-rating">${amountStars} ${room.rating}</span>
-                <span class="room-bookmark" data-bookmarked="${isBookmarked}">
-                    ${isBookmarked ? filledSVG : emptySVG}
-                </span>
-            </div>
-        `;
+            let stars = Math.floor(room.rating);
+            let amountStars = "⭐".repeat(stars);
+            
+            // This 'room.bookmark' is still based on the static data. 
+            // In a real app, this would be loaded from local storage/a server.
+            const isBookmarked = bookmarkState[room.room] || false;
+            
+            const filledSVG = `<svg class="bookmark-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="gold" width="24" height="24"><path d="M6 4a2 2 0 0 0-2 2v16l8-4 8 4V6a2 2 0 0 0-2-2H6z"/></svg>`;
+            const emptySVG = `<svg class="bookmark-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="gold" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="24" height="24"><path d="M19 21l-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>`;
+            
+            // Set initial HTML and data attribute
+            btn.innerHTML = `
+                <div class="room-img-wrapper">
+                    <img src="${room.image}" alt="${room.room}" class="room-img">
+                </div>
+                <div class="room-info">
+                    <span class="room-building">${room.building}</span>
+                    <span class ="room-number">${room.room}</span>
+                    <span class="room-rating">${amountStars} ${room.rating}</span>
+                    <span class="room-bookmark" data-bookmarked="${isBookmarked}">
+                        ${isBookmarked ? filledSVG : emptySVG}
+                    </span>
+                </div>
+            `;
 
-        // --- UNIFIED CLICK HANDLER (Combines Navigation and Bookmark Logic) ---
-        btn.addEventListener("click", (e) => {
-    const bookmarkIconSpan = e.target.closest(".room-bookmark"); 
+            // --- UNIFIED CLICK HANDLER (Combines Navigation and Bookmark Logic) ---
+            btn.addEventListener("click", (e) => {
+                const bookmarkIconSpan = e.target.closest(".room-bookmark"); 
 
-    // Logic for handling the bookmark click
-    if (bookmarkIconSpan) {
-        e.stopPropagation(); 
-        
-        const currentState = bookmarkIconSpan.dataset.bookmarked === "true";
-        const newState = !currentState; 
+                if (bookmarkIconSpan) {
+                    // 1. Logic for handling the bookmark click
+                    e.stopPropagation(); 
+                    
+                    const currentState = bookmarkIconSpan.dataset.bookmarked === "true";
+                    const newState = !currentState; 
 
-        bookmarkState[room.room] = newState; 
-        
-        // Save to localStorage
-        saveBookmarkState();
-        
-        // toggle bookmark state in the DOM
-        bookmarkIconSpan.dataset.bookmarked = newState.toString();
+                    // ⭐ FIX 1: Update the global state map
+                    bookmarkState[room.room] = newState; 
+                    // Persist bookmark change
+                    saveBookmarkState();
+                    
+                    // toggle bookmark state in the DOM
+                    bookmarkIconSpan.dataset.bookmarked = newState.toString();
 
-        // swap SVG
-        bookmarkIconSpan.innerHTML = newState ? filledSVG : emptySVG;
-        
-        const action = newState ? 'Bookmarked' : 'Unbookmarked';
-        const message = `Room ${room.room} has been ${action}.`;
-        showToast(message);
+                    // swap SVG (use the variables already defined above in the function)
+                    bookmarkIconSpan.innerHTML = newState ? filledSVG : emptySVG;
+                    
+                    const action = newState ? 'Bookmarked' : 'Unbookmarked';
+                    const message = `Room ${room.room} has been ${action}.`;
+                    showToast(message); // Assuming showToast is accessible
 
-        filterAndRender();
-        
-        return; 
+                    // ⭐ FIX 2: Re-run the filter/sort/render cycle
+                    // This is essential to update the map pin's info card for this room.
+                    filterAndRender(); // Assuming filterAndRender is accessible and defined below
+                    
+                    return; 
+                }
+
+                // 2. Logic for handling the navigation click (only runs if it wasn't a bookmark)
+                window.location.href = `../Rooms/rooms.html?id=${encodeURIComponent(room.room.replace(/\s/g, ''))}`;
+            });
+
+            roomListContainer.appendChild(btn);
+        });
     }
 
-    // Logic for handling the navigation click
-    window.location.href = `../Rooms/Rooms.html?id=${encodeURIComponent(room.room)}`;
-});
-
-        roomListContainer.appendChild(btn); 
-    }); 
-} 
+    // --- Search/Filter Logic for both pages ---
     
-
-
 
 
     // --- Initialization: Run once the page loads ---
-if (IS_BUILDINGS_PAGE) {
-    if (mapContent) {
-        applyMapTransform();
+    // 🔑 IS_ROOMS_PAGE -> IS_BUILDINGS_PAGE
+    if (IS_BUILDINGS_PAGE) {
+        if (mapContent) {
+            applyMapTransform();
+        }
+
+        const currentBuilding = getBuildingNameFromUrl();
+        // 🔑 updateRoomsPageContent -> updateBuildingsPageContent
+        updateBuildingsPageContent(currentBuilding);
+        updateMapImage(currentBuilding); 
+        
+        // 🔑 filterRoomsByBuilding -> filterRoomsForBuilding, studyRooms -> roomData
+        const roomsToRender = filterRoomsForBuilding(roomData, currentBuilding);
+        // 🔑 renderStudyRooms -> renderRooms
+        renderRooms(roomsToRender);
+        
+        // 🔑 renderRoomPins -> renderRoomPinsForBuilding
+        renderRoomPinsForBuilding(roomsToRender);
+
+    } else {
+        // This runs on index.html
+        if (mapContainer && mapImage) {
+            // Apply default zoom and transform on load (This sets the map to 1.2x immediately)
+            applyMapTransform();
+
+            // Attach zoom event listeners
+            if (zoomInBtn) zoomInBtn.addEventListener('click', zoomIn);
+            if (zoomOutBtn) zoomOutBtn.addEventListener('click', zoomOut);
+            if (resetViewBtn) resetViewBtn.addEventListener('click', resetView);
+        }
+
+        // filterAndRender();
+        renderBuildings(buildingData);
+        renderMapPins(buildingData);
     }
-
-    const currentBuilding = getBuildingNameFromUrl();
-    updateBuildingsPageContent(currentBuilding);
-    updateMapImage(currentBuilding); 
-    
-    const roomsToRender = filterRoomsForBuilding(roomData, currentBuilding);
-    renderRooms(roomsToRender);
-    renderRoomPinsForBuilding(roomsToRender);
-
-} else if (IS_BOOKMARK_PAGE) {
-    // Handle bookmark page - use the actual bookmarkState, not roomData bookmarks
-    const bookmarkedRooms = roomData.filter(room => bookmarkState[room.room]);
-    
-    if (searchInput) {
-        searchInput.placeholder = "Search bookmarked rooms...";
-    }
-
-    renderBookmarkedRooms(bookmarkedRooms);
-    
-} else {
-    // This runs on index.html (main page)
-    if (mapContainer && mapImage) {
-        applyMapTransform();
-
-        // Attach zoom event listeners
-        if (zoomInBtn) zoomInBtn.addEventListener('click', zoomIn);
-        if (zoomOutBtn) zoomOutBtn.addEventListener('click', zoomOut);
-        if (resetViewBtn) resetViewBtn.addEventListener('click', resetView);
-    }
-
-    renderBuildings(buildingData);
-    renderMapPins(buildingData);
-}
 
     // Attach the filter function to the search input 'input' event (for both pages)
     if (searchInput) {
@@ -476,6 +496,7 @@ if (IS_BUILDINGS_PAGE) {
     // ----------------------------------------------------
     // --- NEW: Sort Dropdown Logic (Refactored for both pages) ---
     // ----------------------------------------------------
+
     function initializeSortDropdown(btn, dropdown) {
         if (!btn || !dropdown) return;
 
@@ -502,6 +523,7 @@ if (IS_BUILDINGS_PAGE) {
             dropdown.classList.remove('active');
             
             // Re-render the list with the new sorting
+            // This single function handles re-rendering for both the index page and the buildings page
             filterAndRender(); 
         });
 
@@ -522,9 +544,10 @@ if (IS_BUILDINGS_PAGE) {
 
     // **NEW FUNCTION: Render Map Pins for Buildings**
     function renderMapPins(spots) {
+        // 🔑 IS_ROOMS_PAGE -> IS_BUILDINGS_PAGE
         if (!mapContent || IS_BUILDINGS_PAGE) return; 
 
-        // Remove all existing pins before adding new ones (needed for filtering)
+        // CRITICAL: Remove all existing pins before adding new ones (needed for filtering)
         document.querySelectorAll('.map-content .map-pin-container').forEach(pin => pin.remove()); 
         
         // Clear the floating popup root before rendering new pins
@@ -534,6 +557,7 @@ if (IS_BUILDINGS_PAGE) {
             // Ensure coordinates exist before trying to place a pin
             if (spot.x === undefined || spot.y === undefined) return; 
 
+            // 🌟 Rework: Pin is now a DIV container
             const pinContainer = document.createElement("div"); 
             pinContainer.classList.add("map-pin-container"); // Use a container class
             pinContainer.setAttribute('data-name', spot.name); 
@@ -549,7 +573,7 @@ if (IS_BUILDINGS_PAGE) {
             pinContainer.style.top = `${spot.y}%`;
             pinContainer.prepend(pinImage);
 
-            // Add the info card content
+            // --- 🌟 Add the Info Card Content ---
             const isOpen = isSpotOpen(spot.open, spot.close);
             const statusText = isOpen ? "Open" : "Closed";
             const statusClass = isOpen ? "open" : "closed";
@@ -569,14 +593,14 @@ if (IS_BUILDINGS_PAGE) {
 
             pinPopupRoot.appendChild(infoCard);
             
-            // Event listeners for hover/positioning 
+            // --- 🌟 NEW: Event Listeners for Hover/Positioning ---
             pinContainer.addEventListener('mouseenter', () => {
-                // Hide any currently visible popup
+                // 1. Hide any currently visible popup
                 if (currentPopup && currentPopup !== infoCard) {
                     currentPopup.classList.remove('visible');
                 }
 
-                // Calculate the exact screen position of the pin image
+                // 2. Calculate the exact screen position of the pin image
                 const rect = pinImage.getBoundingClientRect();
                 
                 // Calculate position for the info card relative to the viewport
@@ -612,6 +636,7 @@ if (IS_BUILDINGS_PAGE) {
 
             // Make the pin container clickable, linking to the Rooms page (UNCHANGED)
             pinContainer.addEventListener('click', (event) => {
+                // 🔑 NEW PATH: Rooms/Rooms.html -> Buildings/Buildings.html
                 window.location.href = `Buildings/Buildings.html?building=${encodeURIComponent(spot.name)}`;
             });
 
@@ -620,6 +645,7 @@ if (IS_BUILDINGS_PAGE) {
     }
 
 
+    // 🔑 RENAMED: renderRoomPins -> renderRoomPinsForBuilding
     function renderRoomPinsForBuilding(rooms) {
         if (!mapContent) return; 
 
@@ -633,6 +659,7 @@ if (IS_BUILDINGS_PAGE) {
         
         // Get the current building's map data (buildingData)
         const currentBuilding = getBuildingNameFromUrl();
+        // 🔑 Using the renamed buildingData array
         const spotData = buildingData.find(spot => spot.name.toLowerCase() === currentBuilding.toLowerCase());
         
         // Use a generic pin image for rooms, or define one in studyRooms
@@ -646,7 +673,7 @@ if (IS_BUILDINGS_PAGE) {
 
             // 1. Create Pin Container
             const pinContainer = document.createElement("div"); 
-            pinContainer.classList.add("map-pin-container", "room-pin-container");
+            pinContainer.classList.add("map-pin-container", "room-pin-container"); // Add a new class for room pins
             pinContainer.setAttribute('data-name', room.room); 
 
             // 2. Create Pin Icon
@@ -660,7 +687,7 @@ if (IS_BUILDINGS_PAGE) {
             pinContainer.style.top = `${room.y}%`;
             pinContainer.prepend(pinImage);
 
-            // Add info card
+            // --- Add Info Card (for hover functionality, using existing logic) ---
             const infoCard = document.createElement("div");
             infoCard.classList.add("floating-pin-info-card");
             
@@ -712,9 +739,9 @@ if (IS_BUILDINGS_PAGE) {
                 currentPopup = null;
             });
             
-            // Add event listeners 
+            // 4. Add Event Listeners 
             pinContainer.addEventListener('click', (event) => {
-                window.location.href = `../Rooms/rooms.html?id=${encodeURIComponent(room.room.replace(/\s/g, ''))}`;
+                window.location.href = `../Rooms/rooms.html?id=${encodeURIComponent(room.room.replace(/\s/g, ''))}`;                // In a real app, this would open a modal or navigate to a room detail page.
             });
 
 
@@ -722,117 +749,196 @@ if (IS_BUILDINGS_PAGE) {
         });
     }
 
+        // ----------------------------------------------------
+        // --- Reviews Page: Data-driven renderer ---
+        // ----------------------------------------------------
+        (function initReviewsModule() {
+            const reviewsGrid = document.querySelector('.reviews-grid');
+            if (!reviewsGrid) return; // nothing to do on other pages
 
+            const reviewSearch = document.getElementById('reviewSearch');
+            const reviewSort = document.getElementById('reviewSort');
+            const minUpInput = document.getElementById('minUp');
+            const showMoreBtn = document.getElementById('showMoreBtn');
+            const VISIBLE_COUNT = 10;
 
-// Handle bookmark page rendering
-function renderBookmarkedRooms(rooms) {
-    if (!roomListContainer) return;
-    
-    roomListContainer.innerHTML = '';
+            // Data array for reviews (rendered by JS)
+            const reviewsData = [
+                { location: 'Dafoe', roomId: 'D008', text: 'Great spot for focused studying — minimal distractions and comfy chairs.', date: '2025-11-01', up: 12, down: 2 },
+                { location: 'Engineering', roomId: 'EITC2123', text: 'Good for group work, whiteboards available. Could use better lighting.', date: '2025-10-22', up: 8, down: 1 },
+                { location: 'Tier', roomId: 'T100', text: 'Nice vibe but can be noisy during lunchtime. Power outlets are limited.', date: '2025-09-30', up: 5, down: 4 },
+                { location: 'Agriculture', text: 'Small booths with great acoustics. Booking recommended during finals.', date: '2025-08-14', up: 20, down: 0 },
+                { location: 'Machray Hall', roomId: 'M211', text: 'Peaceful small room with cushions and soft lighting — excellent for short focus sessions.', date: '2025-07-20', up: 7, down: 0 },
+                { location: 'Dafoe', roomId: 'D008', text: 'Individual pods with desks and power outlets; great for concentrated work.', date: '2025-07-02', up: 10, down: 1 },
+                { location: 'Engineering', roomId: 'EITC2123', text: 'Large open hall with many tables; can be noisy but useful when you need space.', date: '2025-06-29', up: 4, down: 2 },
+                { location: 'Tier', roomId: 'T100', text: 'Reserved for grad students; comfy and quiet with a small kitchenette.', date: '2025-06-10', up: 13, down: 0 },
+                { location: 'Agriculture', text: 'Open common area with lab tables; useful when quiet is not required.', date: '2025-05-20', up: 3, down: 1 },
+                { location: 'Machray Hall', roomId: 'M211', text: 'Lovely outdoor spot in warm weather; benches and natural light.', date: '2025-07-02', up: 9, down: 1 },
+                { location: 'Dafoe', roomId: 'D008', text: 'Extremely quiet and focused; great for reading dense material.', date: '2025-06-18', up: 15, down: 0 },
+                { location: 'Engineering', roomId: 'EITC2123', text: 'Open late and well-equipped desks, but can be busy at peak hours.', date: '2025-05-05', up: 11, down: 3 },
+                { location: 'Tier', roomId: 'T100', text: 'Comfortable seating and projector available; booking advised.', date: '2025-04-12', up: 6, down: 0 }
+            ];
 
-    if (rooms.length === 0) {
-        // Show empty state
-        const emptyState = document.getElementById('empty-state');
-        if (emptyState) {
-            emptyState.style.display = 'block';
-        }
-        return;
-    }
+            // Keep an original copy for restoring order when search is cleared
+            const originalReviews = reviewsData.slice();
 
-    // Hide empty state
-    const emptyState = document.getElementById('empty-state');
-    if (emptyState) {
-        emptyState.style.display = 'none';
-    }
+            function createCardElement(review) {
+                const article = document.createElement('article');
+                article.className = 'review-card';
 
-    rooms.forEach(room => {
-        const btn = document.createElement("button");
-        btn.classList.add("room-btn");
+                article.innerHTML = `
+                    <div class="review-content">
+                        <h3 class="review-location">${escapeHtml(review.location)}</h3>
+                        ${review.roomId ? '<div class="review-room">Room: <span class="room-id">' + escapeHtml(review.roomId) + '</span></div>' : ''}
+                        <p class="review-text">${escapeHtml(review.text)}</p>
+                    </div>
+                    <div class="review-footer">
+                        <div class="review-meta">Posted: ${review.date}</div>
+                        <div class="thumbs">
+                            <div class="thumb-display up" aria-hidden="true">👍 <span class="thumb-count">${review.up}</span></div>
+                            <div class="thumb-display down" aria-hidden="true">👎 <span class="thumb-count">${review.down}</span></div>
+                        </div>
+                    </div>
+                `;
 
-        let stars = Math.floor(room.rating);
-        let amountStars = "⭐".repeat(stars);
-        
-        const isBookmarked = bookmarkState[room.room] || false;
-        
-        const filledSVG = `<svg class="bookmark-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="gold" width="24" height="24"><path d="M6 4a2 2 0 0 0-2 2v16l8-4 8 4V6a2 2 0 0 0-2-2H6z"/></svg>`;
-        const emptySVG = `<svg class="bookmark-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="gold" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="24" height="24"><path d="M19 21l-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>`;
-        
-        let roomImage = room.image;
-        if (IS_BOOKMARK_PAGE) {
-            // If we're on the bookmark page, adjust the image path
-            if (room.image.startsWith('../')) {
-                // Remove the leading '../' to make paths relative to root
-                roomImage = room.image.substring(3);
+                // Make the card clickable and keyboard-accessible.
+                article.style.cursor = 'pointer';
+                article.tabIndex = 0; // allow keyboard focus
+
+                function navigateToTarget() {
+                    if (review.roomId) {
+                        window.location.href = `Rooms/rooms.html?id=${encodeURIComponent(review.roomId)}`;
+                        return;
+                    }
+                    // Fallback to building page if no specific room exists
+                    window.location.href = `Buildings/Buildings.html?building=${encodeURIComponent(review.location)}`;
+                }
+
+                article.addEventListener('click', (e) => {
+                    // If click originated from an interactive element, don't navigate
+                    if (e.target.closest('button, a, input, select, textarea')) return;
+                    navigateToTarget();
+                });
+
+                article.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        navigateToTarget();
+                    }
+                });
+
+                return article;
             }
-            // If image path doesn't start with '../', leave it as is
-        }
-        
-        btn.innerHTML = `
-            <div class="room-img-wrapper">
-                <img src="${roomImage}" alt="${room.room}" class="room-img">
-            </div>
-            <div class="room-info">
-                <span class="room-building">${room.building}</span>
-                <span class ="room-number">${room.room}</span>
-                <span class="room-rating">${amountStars} ${room.rating}</span>
-                <span class="room-bookmark" data-bookmarked="${isBookmarked}">
-                    ${isBookmarked ? filledSVG : emptySVG}
-                </span>
-            </div>
-        `;
 
-        // --- SINGLE UNIFIED CLICK HANDLER ---
-        btn.addEventListener("click", (e) => {
-    const bookmarkIconSpan = e.target.closest(".room-bookmark"); 
+            function escapeHtml(str) {
+                return String(str).replace(/[&<>\"']/g, function (s) {
+                    return ({
+                        '&': '&amp;',
+                        '<': '&lt;',
+                        '>': '&gt;',
+                        '\"': '&quot;',
+                        "'": '&#39;'
+                    })[s];
+                });
+            }
 
-    if (bookmarkIconSpan) {
-        // Logic for handling the bookmark click
-        e.stopPropagation(); 
-        e.preventDefault();
-        
-        const currentState = bookmarkIconSpan.dataset.bookmarked === "true";
-        const newState = !currentState; 
+            function renderVisibleList(list) {
+                // Clear grid
+                reviewsGrid.innerHTML = '';
 
-        // Update state
-        bookmarkState[room.room] = newState; 
-        
-        // Save to localStorage
-        saveBookmarkState();
-        
-        bookmarkIconSpan.dataset.bookmarked = newState.toString();
-        bookmarkIconSpan.innerHTML = newState ? filledSVG : emptySVG;
-        
-        const action = newState ? 'Bookmarked' : 'Unbookmarked';
-        const message = `Room ${room.room} has been ${action}.`;
-        showToast(message);
+                const visible = list.slice(0, VISIBLE_COUNT);
+                visible.forEach(r => reviewsGrid.appendChild(createCardElement(r)));
 
-        // If unbookmarking on bookmark page, remove the card
-        if (!newState) {
-            btn.remove();
-            
-            // Show empty state if no more bookmarks
-            const remainingRooms = roomListContainer.querySelectorAll('.room-btn');
-            if (remainingRooms.length === 0) {
-                const emptyState = document.getElementById('empty-state');
-                if (emptyState) {
-                    emptyState.style.display = 'block';
+                const extra = list.slice(VISIBLE_COUNT);
+                if (extra.length > 0) {
+                    const moreDiv = document.createElement('div');
+                    moreDiv.className = 'more-reviews';
+                    // append extra cards (CSS will control visibility)
+                    extra.forEach(r => moreDiv.appendChild(createCardElement(r)));
+                    reviewsGrid.appendChild(moreDiv);
+                    if (showMoreBtn) {
+                        showMoreBtn.style.display = 'inline-block';
+                        showMoreBtn.setAttribute('aria-expanded', 'false');
+                        showMoreBtn.textContent = 'Show more reviews';
+                    }
+                } else {
+                    if (showMoreBtn) showMoreBtn.style.display = 'none';
                 }
             }
-        }
-        return; 
-    }
 
-    // Logic for handling the navigation click
-    window.location.href = `Rooms/Rooms.html?id=${encodeURIComponent(room.room)}`;
-});
+            function applyFiltersAndSort() {
+                const searchTerm = (reviewSearch?.value || '').toLowerCase().trim();
+                const minUp = parseInt(minUpInput?.value || '0', 10) || 0;
 
-        roomListContainer.appendChild(btn);
+                // Start from original array so filtering is deterministic
+                let working = originalReviews.slice();
+
+                // Filter by min up
+                if (minUp > 0) {
+                    working = working.filter(r => r.up >= minUp);
+                }
+
+                // Filter by search term
+                if (searchTerm) {
+                    working = working.filter(r => (
+                        r.location.toLowerCase().includes(searchTerm) ||
+                        r.text.toLowerCase().includes(searchTerm)
+                    ));
+                }
+
+                // Sorting
+                const sortVal = reviewSort?.value || 'date_desc';
+                const [key, dir] = sortVal.split('_');
+
+                // Only perform a sort if user selected something other than default or if searching
+                if (searchTerm || sortVal !== 'date_desc') {
+                    working.sort((a, b) => {
+                        if (key === 'date') {
+                            return dir === 'asc' ? new Date(a.date) - new Date(b.date) : new Date(b.date) - new Date(a.date);
+                        }
+                        if (key === 'up') {
+                            return dir === 'asc' ? a.up - b.up : b.up - a.up;
+                        }
+                        if (key === 'location') {
+                            const la = a.location.toLowerCase();
+                            const lb = b.location.toLowerCase();
+                            if (la < lb) return dir === 'asc' ? -1 : 1;
+                            if (la > lb) return dir === 'asc' ? 1 : -1;
+                            return 0;
+                        }
+                        return 0;
+                    });
+                }
+
+                renderVisibleList(working);
+            }
+
+            function debounce(fn, wait = 150) {
+                let t;
+                return (...args) => {
+                    clearTimeout(t);
+                    t = setTimeout(() => fn(...args), wait);
+                };
+            }
+
+            const debouncedApply = debounce(applyFiltersAndSort, 120);
+
+            if (reviewSearch) reviewSearch.addEventListener('input', debouncedApply);
+            if (reviewSort) reviewSort.addEventListener('change', applyFiltersAndSort);
+            if (minUpInput) minUpInput.addEventListener('input', debouncedApply);
+
+            if (showMoreBtn) {
+                showMoreBtn.addEventListener('click', (e) => {
+                    const more = reviewsGrid.querySelector('.more-reviews');
+                    if (!more) return;
+                    const isShown = more.classList.toggle('show');
+                    showMoreBtn.setAttribute('aria-expanded', isShown ? 'true' : 'false');
+                    showMoreBtn.textContent = isShown ? 'Show fewer reviews' : 'Show more reviews';
+                });
+            }
+
+            // Initial render
+            applyFiltersAndSort();
+        })();
+
     });
-}
-
-
-function saveBookmarkState() {
-    localStorage.setItem('bookmarkState', JSON.stringify(bookmarkState));
-}
-
-});
