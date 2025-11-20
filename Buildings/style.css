@@ -1,0 +1,820 @@
+:root {
+  --navbar-height: 3.5rem; /* adjust once, affects both nav and content spacing */
+  --secondary-height: 2rem; /* height of secondary navbar */
+}
+
+
+body{
+    background-image: url('../Images/BG.png'); 
+    
+    /* These three lines ensure the image covers the whole screen, 
+       doesn't repeat, and stays fixed when the user scrolls. */
+    background-size: cover;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    
+    /* This color overlay will ensure the image remains subtle */
+    background-color: rgba(28, 27, 26, 0.211); /* #CDBCA8 with 40% transparency */
+    background-blend-mode: overlay;
+    /* min-height: 500vh; */
+}
+
+.navbar-custom{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: var(--navbar-height);
+  box-sizing: border-box;
+
+
+  /* Navbar styling INSIDE*/
+  background-color: #CDBCA8;
+  backdrop-filter: blur(4px);
+  box-shadow: 0 3px 8px rgba(222, 221, 221, 0.6); /* 👈 visible under-shadow */
+  z-index: 1000; /* ensure navbar is above other content */
+
+  display: flex;
+  align-items: center;
+  justify-content: center; /* center the inner container horizontally */
+}
+
+/* Inner container for spacing */
+.nav-inner {
+    width: 93%;
+
+    padding-left: 0;   /* logo touches left edge */
+    padding-right: 2rem; /* keep some space for links */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+.navbar-Logo {
+    display: flex;             /* places image and text side-by-side */
+    align-items: center;       /* centers them vertically */
+    color: inherit;
+    gap: 8px;                  /* 👈 adds 5px space between image and text */
+
+    transition: transform 0.3s ease; /* smooth scaling effect */
+    margin: 0%;
+}
+
+
+.navbar-LogoImg {
+    height: 3rem; /* adjust logo size */
+    width: auto;
+    object-fit: contain;
+
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    text-decoration: none; /* remove underline from link */
+}
+
+.navbar-LogoText {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #766838;
+    text-decoration: none;
+
+    font-family: 'Brush Script MT', cursive;
+    /*backdrop-filter: blur(4px);*/
+    text-shadow: 0 3px 8px rgba(155, 155, 155, 0.851); /* 👈 visible under-shadow */
+}
+
+.navbar-Logo:hover {
+    text-decoration: none;
+    transform: scale(1.08); /* grows to 110% of original size */
+
+}
+
+
+.search-bar-wrapper {
+    display: flex;
+    align-items: center;
+    width: 50%; /* total width of search + button */
+    position: relative;
+    
+    /* NEW: Add a small gap between the search input and the sort button */
+    gap: 10px;
+}
+
+
+/* ---------------------------------------------------- */
+/* --- Rooms Page: Search Input Group FIX --- */
+/* ---------------------------------------------------- */
+
+/* ⭐ NEW RULE: Style the container for the icon and input */
+.search-input-group {
+    position: relative; 
+    flex-grow: 1; 
+    order: 1; 
+}
+
+/* ⭐ NEW RULE: Target the input inside the new group */
+.search-input-group input { 
+    width: 100%; /* Fill parent group width */
+    padding: 10px 12px 10px 36px; 
+    border-radius: 25px; /* Fully rounded */
+    border: 1px solid #ccc;
+    outline: none;
+    font-size: 0.95rem;
+}
+
+
+.sort-dropdown {
+    /* Position the dropdown right below the button */
+    position: absolute;
+    top: 100%; /* Place it right below the sort button */
+    right: 0;
+    
+    /* Appearance */
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    list-style: none;
+    padding: 6px 0;
+    margin: 0;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    min-width: 180px; /* Ensure enough width for text */
+    
+    /* CRITICAL: Hides the list by default */
+    display: none; 
+    z-index: 950; /* Ensure it appears above other elements */
+}
+
+.sort-dropdown.active {
+    display: block;
+}
+
+/* --- Style the list items (li) inside the dropdown --- */
+.sort-dropdown li {
+    padding: 8px 15px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: #333;
+    
+    /* Ensure the star emoji and text are aligned */
+    display: flex;
+    align-items: center;
+    gap: 8px; /* space between emoji and text */
+}
+
+.sort-dropdown li:hover {
+    background-color: #f0f0f0;
+}
+
+/* ⭐ NEW RULE: Style the sort wrapper to position it correctly */
+.sort-dropdown-wrapper {
+    position: relative;
+    z-index: 900;
+    order: 2;
+}
+
+/* ⭐ NEW RULE: Style the sort button as a standalone, fully rounded button */
+.sort-btn {
+    background-color: #766838;
+    color: #fff;
+    border: none; /* Remove border reliance */
+    border-radius: 25px; /* Fully rounded */
+    padding: 10px 15px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+
+.search-bar-wrapper .sort-btn:hover {
+    background-color: #b09c5e;
+    color: #ffffff;
+    transform: scale(1.02);
+}
+
+.search-bar-wrapper .search-icon {
+    position: absolute;
+    left: 10px;
+    z-index: 10; /* Added z-index for consistency with other page */
+    font-size: 18px;
+    color: gray;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+
+.navbar-profile {
+  height: 90%;
+  width: 2.5rem;
+  border-radius: 50%;
+  object-fit: cover;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+
+.profile-wrapper {
+    position: relative;
+    /* Ensure the wrapper respects the size of the image, 
+       and that the card doesn't get clipped by nearby elements */
+    z-index: 1000; 
+}
+
+/* 2. The Card itself */
+.profile-info-card {
+    /* Positioning */
+    position: absolute;
+    top: 100%;
+    right: 0;
+    
+    /* Appearance */
+    width: 200px;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    padding: 15px;
+    
+    /* Visibility Control */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-5px); /* Start slightly above its final position */
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    
+    /* Font */
+    font-family: sans-serif; /* Adjust to match your desired site font */
+    color: #333;
+    z-index: 1000; 
+}
+
+/* 3. Card content styling */
+.profile-info-card p, .profile-info-card a {
+    margin: 0;
+    padding: 0;
+    font-size: 0.95rem;
+    line-height: 1.4;
+}
+
+.profile-info-card .card-name {
+    font-weight: bold;
+    color: #766838; /* Use your brand color */
+    margin-bottom: 5px;
+    font-size: 1.1rem;
+}
+
+.profile-info-card hr {
+    margin: 10px 0;
+    border: 0;
+    border-top: 1px solid #eee;
+}
+
+.profile-info-card .card-link {
+    display: block;
+    color: #007bff;
+    text-decoration: none;
+    padding: 5px 0;
+}
+
+.profile-info-card .card-link:hover {
+    text-decoration: underline;
+    background-color: #f7f7f7;
+}
+
+.profile-info-card .logout {
+    color: #d32f2f; /* Red for logout */
+}
+
+/* 4. Display the card on hover (CSS-only approach for simplicity) */
+.profile-wrapper:hover .profile-info-card {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0); /* Move to final position */
+}
+
+
+/*---------------------------*/
+/* --- language selector --- */
+/*---------------------------*/
+
+.language-selector {
+    position: relative;
+}
+
+.lang-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: none;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    padding: 6px 10px;
+    cursor: pointer;
+}
+
+.lang-btn:hover {
+  background: #f9f9f9;
+}
+
+.flag-icon {
+    width: 20px;
+    height: 15px;
+}
+
+.dropdown {
+    position: absolute;
+    top: 110%;
+    right: 0;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    list-style: none;
+    padding: 6px 0;
+    margin: 0;
+    display: none;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+}
+
+.dropdown li {
+  padding: 6px 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.dropdown li:hover {
+  background-color: #f3f3f3;
+}
+
+/* show dropdown on hover */
+.language-selector:hover .dropdown {
+  display: block;
+}
+
+/* ===== Secondary Navbar ===== */
+.navbar-secondary {
+  position: fixed;
+  top: var(--navbar-height); /* 👈 sits right below the primary navbar */
+  left: 0;
+  width: 100%;
+  height: var(--secondary-height);
+  background-color: rgb(238, 218, 195);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  z-index: 999; /* just below main navbar */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.HamburgerMenu {
+    height: 2rem; /* adjust logo size */
+    width: auto;
+    object-fit: contain;
+    cursor: pointer;
+    color: #766838;
+    background: none;
+
+    
+    transition: transform 0.3s ease;
+}
+
+.HamburgerMenu:hover {
+    transform: scale(1.1); /* grows to 110% of original size */
+}
+
+
+.help-btn {
+  background-color: #ffffff;
+  color: #766838;
+  border: none;
+  border-radius: 1.5rem;
+  padding: 0.2rem 1.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+  text-decoration: none;
+}
+
+.help-btn:hover {
+  background-color: #8d7c4a;
+  transform: scale(1.05);
+  color: white;
+}
+
+
+
+.breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.95rem;
+  color: #666;
+  margin-left: 1rem; /* space from hamburger icon */
+}
+
+.breadcrumbs a {
+  color: #0077cc;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.breadcrumbs a:hover {
+  color: #005fa3;
+  text-decoration: underline;
+  transform: scale(1.05);
+  transform: translateY(-1px);
+}
+
+.breadcrumbs span {
+  color: #333; /* current page */
+  font-weight: 500;
+}
+
+/*------------*/
+/* SLIDER BAR */
+/*------------*/
+
+.sidebar {
+  position: fixed;
+  top: calc((var(--navbar-height) + var(--secondary-height))); /* below both navbars */
+  left: -250px; /* hidden off-screen */
+  width: 250px;
+  
+  /* FIX: Calculate the height from the bottom of the secondary navbar to the bottom of the screen (100vh) */
+  height: calc(100vh - (var(--navbar-height) + var(--secondary-height))); 
+  
+  background-color: #f7f7f7;
+  box-shadow: 3px 0 8px rgba(0,0,0,0.25);
+  padding-top: 2rem;
+  transition: left 0.3s ease;
+  z-index: 998;
+  
+  /* These two are correct for positioning the button: */
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar a {
+  padding: 1rem;
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  transition: background 0.2s ease;
+}
+
+.sidebar a:hover {
+  background-color: #e0e0e0;
+  transform : scale(1.02);
+}
+
+
+/* Active class when open */
+.sidebar.active {
+  left: 0;
+  transform: translateX(0);
+
+}
+
+/* Optional animation for hamburger toggle */
+.hamburger.active.active {
+  transform: rotate(45deg) translateY(8px);
+}
+
+.closeBtn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #333;
+  cursor: pointer;
+  
+  /* CRITICAL: Pushes the button down to the bottom */
+  margin-top: auto; 
+  
+  /* Keeps the button aligned to the right */
+  align-self: flex-end; 
+  
+  /* Adds space around the button at the bottom right corner */
+  margin-right: 1rem; 
+  margin-bottom: 2rem; 
+  
+  font-family: 'Brush Script MT', cursive;
+  transition: transform 0.2s ease;
+}
+
+.closeBtn:hover {
+    transform: scale(1.1);
+}
+
+/*-----------------*/
+/* Main Content */
+/*-----------------*/
+
+
+.map-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 2rem;
+
+    position: relative; /* or absolute, if you want it over the page */
+    /* top: calc(var(--navbar-height) + var(--secondary-height)); */
+}
+
+
+.map-content {
+    /* Critical: Ensures absolute children (pins) are positioned relative to this block */
+    position: relative; 
+    
+    /* Critical: Makes the container shrink-wrap around the map-image's true size, 
+       even when scaled, so 100% width/height is the image size. */
+    display: inline-block;
+    
+    /* Apply initial scaling/transformation, driven by JS variable */
+    transform: scale(var(--current-zoom, 1.2)); 
+    transform-origin: center center; /* Ensure scaling centers on the map */
+    transition: transform 0.3s ease; /* Smooth zoom animation */
+    
+    /* Optional: Ensure nothing overflows and messes up placement */
+    overflow: hidden; 
+    
+    /* Use the same sizing as the map-image for boundaries */
+    width: 80%; 
+    max-width: 1000px; 
+    max-height: 600px;
+}
+
+/* 2. The image inside the map-content */
+/* Change your existing .map-image to this: */
+.map-content .map-image {
+    width: 100%;
+    height: auto; 
+    /* Remove redundant transform properties that are now on .map-content */
+    /* Remove border/box-shadow if they are wanted on the .map-content instead */
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+/* 3. The pin container (positioned relative to .map-content) */
+.map-pin-container, .room-pin-container {
+    position: absolute;
+    /* This centers the pin icon's bottom edge on the X,Y coordinate */
+    transform: translate(-50%, -100%); 
+    
+    /* Define the size of the clickable area */
+    width: 30px; 
+    height: 30px; 
+    cursor: pointer;
+    z-index: 10; /* Make sure it sits above the map image */
+}
+
+/* 4. The actual icon image inside the container */
+.map-pin-icon {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* --- Floating Info Card (for hover) --- */
+#pin-popup-root {
+    position: fixed; /* Fixed relative to the viewport, above all else */
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none; /* Allows clicks to pass through empty space */
+    z-index: 2000; /* Highest priority */
+}
+
+.floating-pin-info-card {
+    position: absolute; /* Positioned relative to the fixed #pin-popup-root */
+    pointer-events: auto; /* Allows interaction when card is visible */
+    
+    /* Styling */
+    background-color: white;
+    border: 1px solid #766838;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    padding: 10px;
+    width: 250px;
+    
+    /* Visibility Control (driven by JS) */
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s, visibility 0.2s, transform 0.2s;
+    transform: translate(0, -50%); /* Center vertically on the mouse/pin */
+}
+
+.floating-pin-info-card.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.info-card-img {
+    width: 100%;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 6px;
+    margin-bottom: 8px;
+}
+
+.info-card-details {
+    display: flex;
+    flex-direction: column;
+    font-size: 0.9rem;
+    color: #333;
+}
+
+.info-name {
+    font-weight: bold;
+    color: #766838;
+    font-size: 1.1rem;
+}
+
+.info-status {
+    padding-top: 4px;
+    font-style: italic;
+    color: #666;
+}
+
+.info-action {
+    margin-top: 5px;
+    color: #0077cc;
+    font-weight: 500;
+}
+
+
+/* ---------------------------------------------------- */
+/* --- New Rule for Room Pin Hover Effect --- */
+/* ---------------------------------------------------- */
+
+/* 1. Ensure the pin container has a smooth transition */
+.map-pin-container, .room-pin-container {
+    /* ... existing properties ... */
+    
+    /* Ensure transition is applied to the pin container */
+    transition: transform 0.2s ease; 
+}
+
+/* 2. Apply the scale transform on hover specifically to room pins */
+/* Using .room-pin-container ensures we target only the pins on the rooms map */
+.room-pin-container:hover {
+    transform: translate(-50%, -100%) scale(1.2); /* Keep the positioning transform, and add scale */
+    z-index: 15; /* Optional: Raise the z-index slightly to ensure it overlaps nearby elements */
+}
+
+/* 3. If you want ALL pins (index page and room page) to scale similarly: */
+/* If you want the scale to apply to ALL pin containers, use this rule: */
+.map-pin-container:hover {
+    transform: translate(-50%, -100%) scale(1.2); 
+    z-index: 15;
+}
+
+/*-----------------*/
+/* Room Buttons */
+
+.room-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* center all content horizontally */
+  margin-top: calc(var(--navbar-height) + var(--secondary-height));
+  padding: 1rem;
+
+}
+
+.room-button-list {
+  display: grid;
+  grid-template-columns: repeat(3,1fr); /*3 per row*/
+  width: 90%;
+  max-width: 800px;
+  gap: 1rem; /* space between buttons */
+  justify-items: center;
+  margin-top: 2rem;
+}
+
+.room-btn {
+  width: 100%;
+  aspect-ratio: 1/1;
+  display: flex;           /* horizontal layout */
+  flex-direction: column;
+  align-items: center;     /* vertically center image + text */
+  justify-content: space-between; /* align content to left */
+  gap: 0.2rem;               /* space between image and text */
+  padding: 0;              /* remove default padding */
+  border: none;
+  border-radius: 0.5rem;
+  background-color: #6B7A89;
+  color: #eadfd2;
+  cursor: pointer;
+  box-shadow: 0 8px 8px rgba(47, 44, 44, 0.796);
+  transition: all 0.2s ease;
+}
+
+.room-btn:hover {
+  background-color: #b09c5e;
+  transform: scale(1.02);
+}
+
+.room-img-wrapper {
+  width: 100%;
+  height: 70%; /* top part for image */
+  overflow: hidden;
+
+  border-top-left-radius: 0.2rem;
+  border-top-right-radius: 0.2rem;
+  border-bottom-left-radius: 0.2rem; /* Match button's bottom-left */
+  border-bottom-right-radius: 0.2rem;
+}
+
+.room-img {
+  height: 100%;        /* fills the button height */
+  width: 100%;         /* keeps aspect ratio */
+  object-fit: cover;
+}
+
+.room-info {
+  position: relative;
+  height: 30%; /* bottom 30% for text box */
+  width: 100%;
+  background-color: #6B7A89;
+  display: block;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.room-building {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+  
+  font-size: large;
+  font-weight: bold;
+  text-shadow: 1px 2px 5px rgba(0, 0, 0, 0.708);
+}
+
+.room-rating {
+  position: absolute;
+  bottom: 0.5rem;
+  right: 0.5rem;
+  padding: 0.2rem 0.4rem;
+  font-weight: bold;
+  text-shadow: 1px 2px 5px rgba(0, 0, 0, 0.708);
+}
+
+.room-bookmark {
+  position: absolute;
+  top: 0;
+  right: 0.2rem;
+  cursor: pointer;
+  
+  
+}
+
+.room-number{
+  position: absolute;
+  bottom: 0.5rem;
+  left: 0.5rem;
+  
+  font-size: large;
+  font-weight: bold;
+  text-shadow: 1px 2px 5px rgba(0, 0, 0, 0.708);
+
+}
+
+
+
+.toast {
+    position: fixed;
+    top: 0; 
+    left: 50%;
+    /* Start hidden: Move it up by 100% of its own height */
+    transform: translate(-50%, -100%); 
+    
+    /* Styling */
+    background-color: #4CAF50; /* Green background */
+    color: white;
+    text-align: center;
+    padding: 15px 30px;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 0 0 8px 8px;
+    z-index: 2000; /* Must be high to sit above navbar and all content */
+    
+    /* Animation: Makes the slide-in/slide-out smooth */
+    transition: transform 0.2s ease-out; 
+}
+
+/* Class to make the toast visible */
+.toast.show {
+    /* Bring it down to the top of the viewport (0% Y translation) */
+    transform: translate(-50%, 0); 
+}
+
+#toast-message {
+    font-size: 1.1em;
+    font-weight: bold;
+}

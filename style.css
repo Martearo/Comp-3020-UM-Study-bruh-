@@ -227,8 +227,8 @@ body{
 .profile-info-card {
     /* Positioning */
     position: absolute;
-    top: calc(100% + 10px); /* Position 10px below the wrapper/pfp */
-    right: 0; /* Align to the right edge of the pfp */
+    top: 100%;
+    right: 0;
     
     /* Appearance */
     width: 200px;
@@ -544,6 +544,7 @@ body{
 .map-content {
     position: relative; /* Allows scaling from the center without affecting layout */
     width: 100%;
+    border-radius: 12px;
     
     padding-bottom: 62.5%; /* Example: For a 800px wide x 500px tall map (500/800 = 0.625) */
     height: 0; /* Necessary for padding-bottom to work */
@@ -575,11 +576,6 @@ body{
   border: 2px solid #ccc;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-}
-
-.map-image:hover {
-    /*transform: scale(1.02);*/
-    box-shadow: 0 6px 16px rgba(0,0,0,0.25);
 }
 
 
@@ -915,111 +911,4 @@ body{
 
 .spot-status.closed {
   background-color: #D32F2F; /* Red (Not Available) */
-}
-
-
-
-/*Reviews */
-
-.white-box {
-    background: white;
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
-    margin-bottom: 25px;
-}
-
-.review-content {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    padding-top: 150px;
-}
-
-.review-section {
-  width: 100%;
-  max-width: 700px;
-  margin: 0 auto;
-}
-
-.review-header {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    background: white;
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0 2px 7px rgba(0,0,0,0.1);
-}
-
-.room-image {
-    width: 150px;
-    border-radius: 10px;
-}
-
-.room-name {
-    margin: 0;
-}
-
-.rating-container {
-    margin-top: 10px;
-}
-
-.stars {
-  display: flex;
-    font-size: 30px;
-    cursor: pointer;
-    gap: 10px;
-}
-
-.star {
-  font-size: 32px;
-  color: #ccc;
-  cursor: pointer;
-
-  border: 2px solid #ccc;
-  padding: 8px 15px;
-  border-radius: 8px;
-  
-  transition: 0.2s;
-  user-select: none;
-}
-
-.star.active,
-.star.hover {
-    color: gold;
-    border-color: gold;
-}
-
-/* REVIEW INPUT */
-
-.review-input-row {
-    margin-top: 25px;
-    display: flex;
-    gap: 15px;
-}
-
-.review-box {
-    width: 100%;
-    height: 120px;
-    resize: none;
-    padding: 15px;
-    border-radius: 10px;
-    border: 1px solid #ccc;
-}
-
-.post-btn {
-    background: #6B7A89;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    height: 50px;
-    border-radius: 10px;
-    cursor: pointer;
-
-    transition: 0.2s;
-}
-.post-btn:hover {
-  background: #43678b;
-  transform: scale(1.02);
 }
