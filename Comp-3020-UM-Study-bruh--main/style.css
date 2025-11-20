@@ -1008,16 +1008,16 @@ body{
   padding-top: 2.8rem; /* increased to place the start of the content below the thumbs */
   /* Reserve space on the right so the top-right thumbs don't overlap the content */
   padding-right: 6rem;
-  transition: transform 0.14s ease, box-shadow 0.14s ease, border-color 0.14s ease, background 0.14s ease;
+  transition: transform 0.16s cubic-bezier(.2,.9,.2,1), border-color 0.12s ease;
+  will-change: transform, opacity;
+  transform: translateZ(0); /* promote to its own layer for smoother animation in Chrome */
 }
 
 /* Hover / focus state to make cards feel interactive */
 .review-card:hover {
   transform: translateY(-6px);
-  /* outer drop shadow + subtle brand-colored glow to indicate clickability */
-  box-shadow: 0 14px 30px rgba(76,63,52,0.14), 0 0 0 6px rgba(118,104,56,0.08);
-  border-color: rgba(76,63,52,0.12);
-  background: linear-gradient(180deg, #ffffff, #fbfaf8);
+  box-shadow: 0 12px 26px rgba(76,63,52,0.12);
+  border-color: rgba(76,63,52,0.10);
 }
 
 .review-card:active {
@@ -1027,10 +1027,30 @@ body{
 /* Accessible focus ring */
 .review-card:focus {
   outline: none;
-  /* Stronger focus ring with brand color for accessibility */
-  box-shadow: 0 0 0 6px rgba(118,104,56,0.12), 0 16px 36px rgba(76,63,52,0.14);
-  border-color: rgba(118,104,56,0.22);
+  box-shadow: 0 12px 28px rgba(76,63,52,0.12);
+  border-color: rgba(118,104,56,0.16);
 }
+
+/* Use a pseudo-element for the brand glow (opacity-only transition - GPU friendly in Chrome) */
+.review-card::after {
+  content: '';
+  position: absolute;
+  inset: -6px; /* slightly larger than the card to show glow */
+  border-radius: inherit;
+  pointer-events: none;
+  box-shadow: 0 0 18px 6px rgba(118,104,56,0.18);
+  opacity: 0;
+  transition: opacity 200ms ease;
+  z-index: 0;
+}
+
+.review-card:hover::after,
+.review-card:focus::after {
+  opacity: 1;
+}
+
+/* Ensure card contents stay above the pseudo-element glow */
+.review-card > * { position: relative; z-index: 1; }
 
 .review-card:hover .review-location,
 .review-card:focus .review-location {
