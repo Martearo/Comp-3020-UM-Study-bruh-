@@ -1011,6 +1011,7 @@ body{
   transition: transform 0.16s cubic-bezier(.2,.9,.2,1), border-color 0.12s ease;
   will-change: transform, opacity;
   transform: translateZ(0); /* promote to its own layer for smoother animation in Chrome */
+  z-index: 1; /* ensure the card sits above its pseudo-element glow */
 }
 
 /* Hover / focus state to make cards feel interactive */
@@ -1050,7 +1051,9 @@ body{
 }
 
 /* Ensure card contents stay above the pseudo-element glow */
-.review-card > * { position: relative; z-index: 1; }
+/* Remove per-child positioning so absolute .thumbs position remains relative to the card
+  (we set .review-card { position: relative } already), and keep the pseudo-element behind
+  the card by using z-index on the card itself. */
 
 .review-card:hover .review-location,
 .review-card:focus .review-location {
