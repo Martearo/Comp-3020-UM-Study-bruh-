@@ -1014,7 +1014,8 @@ body{
 /* Hover / focus state to make cards feel interactive */
 .review-card:hover {
   transform: translateY(-6px);
-  box-shadow: 0 14px 30px rgba(76,63,52,0.14);
+  /* outer drop shadow + subtle brand-colored glow to indicate clickability */
+  box-shadow: 0 14px 30px rgba(76,63,52,0.14), 0 0 0 6px rgba(118,104,56,0.08);
   border-color: rgba(76,63,52,0.12);
   background: linear-gradient(180deg, #ffffff, #fbfaf8);
 }
@@ -1026,8 +1027,9 @@ body{
 /* Accessible focus ring */
 .review-card:focus {
   outline: none;
-  box-shadow: 0 0 0 4px rgba(118,104,56,0.12), 0 14px 30px rgba(76,63,52,0.14);
-  border-color: rgba(118,104,56,0.18);
+  /* Stronger focus ring with brand color for accessibility */
+  box-shadow: 0 0 0 6px rgba(118,104,56,0.12), 0 16px 36px rgba(76,63,52,0.14);
+  border-color: rgba(118,104,56,0.22);
 }
 
 .review-card:hover .review-location,
