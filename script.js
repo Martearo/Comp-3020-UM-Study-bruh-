@@ -2,8 +2,6 @@ document.addEventListener("DOMContentLoaded", () => {
     // --- Configuration & Element Selectors ---
     // 🔑 NEW PATH: The Rooms folder is now Buildings
     const IS_BUILDINGS_PAGE = window.location.pathname.includes('Buildings/Buildings.html'); 
-    const IS_ROOMS_PAGE = window.location.pathname.includes('Rooms/rooms.html') || window.location.pathname.includes('Rooms/Rooms.html');
-    const IS_BOOKMARK_PAGE = window.location.pathname.includes('Bookmark.html');
     
     // Select elements (safely handle if they don't exist on one page)
     const hamburger = document.querySelector(".HamburgerMenu");
@@ -73,18 +71,11 @@ document.addEventListener("DOMContentLoaded", () => {
         { building: "Tier", room: "T100", image: "../Images/StudyRooms/Tier01.png", rating: 3.5, bookmark: false, x: 40, y: 70 },
     ];
 
-    // Initialize bookmarkState from localStorage if present, otherwise from roomData
-    const bookmarkState = (() => {
-        try {
-            const saved = localStorage.getItem('bookmarkState');
-            if (saved) return JSON.parse(saved);
-        } catch (e) {
-            // ignore parse errors and fall back to defaults
-        }
-        const initial = {};
-        roomData.forEach(r => { initial[r.room] = r.bookmark; });
-        return initial;
-    })();
+    const bookmarkState = {};
+    roomData.forEach(room => {
+        // Use room.room (e.g., "D401") as the unique key
+        bookmarkState[room.room] = room.bookmark;
+    });
 
 
     if (viewProfileLink) {
@@ -127,14 +118,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // Persist bookmarkState to localStorage
-    function saveBookmarkState() {
-        try {
-            localStorage.setItem('bookmarkState', JSON.stringify(bookmarkState));
-        } catch (e) {
-            // ignore storage errors
-        }
-    }
+    // (previously added localStorage helper removed)
 
     function filterAndRender() {
         if (!searchInput) return;
@@ -419,8 +403,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
                     // ⭐ FIX 1: Update the global state map
                     bookmarkState[room.room] = newState; 
-                    // Persist bookmark change
-                    saveBookmarkState();
                     
                     // toggle bookmark state in the DOM
                     bookmarkIconSpan.dataset.bookmarked = newState.toString();
