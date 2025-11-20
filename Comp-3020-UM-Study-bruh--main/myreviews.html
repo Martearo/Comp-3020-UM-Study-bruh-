@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>My Reviews | StudyDen</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Primary Navbar (copied from index to match framework) -->
+    <nav class="navbar-custom" role="navigation" aria-label="Top navigation">        
+        <div class="nav-inner">
+            <a href="index.html" class="navbar-Logo">
+                <img src="Images/UMLogo.png" alt="StudyDen Logo" class="navbar-LogoImg">
+                <div class="navbar-LogoText">StudyDen</div>
+            </a>
+
+            <div class="search-bar-wrapper">
+                <div class="search-input-group"> 
+                    <span class="search-icon">🔍</span>
+                    <input type="text" placeholder="Search Buildings..." id="searchInput"/>
+                </div>
+                <div class="sort-dropdown-wrapper">
+                    <button class="sort-btn" id="sortBtn">⇅ Sort</button>
+                </div>
+            </div>
+
+            <div class="language-selector">
+                <button class="lang-btn">
+                    <img src="https://flagcdn.com/w20/ca.png" alt="flag" class="flag-icon">
+                    <span>EN</span>
+                    <span class="arrow">▼</span>
+                </button>
+                <ul class="dropdown">
+                    <li class="dropdown-header">Change Language:</li>
+                    <li><img src="https://flagcdn.com/w20/fr.png" alt="French"> FR</li>
+                </ul>
+            </div>
+
+            <img src="Images/PFP.png" alt="Profile" class="navbar-profile">
+        </div>
+    </nav>
+
+    <!-- Secondary Navbar -->
+    <nav class="navbar-secondary">
+        <div class="nav-inner">
+            <img src="Images/HamburgerIco.png" alt="Menu" class="HamburgerMenu">
+            <div class="sidebar" id="sidebar">
+                <a href="index.html">🏠 Home</a>
+                <a href="myreviews.html">📚 My Reviews</a>
+                <a href="#">📑 Bookmarks</a>
+                <a href="Login/login.html">🔒 Login / SignUp</a>
+                <button class="closeBtn" id="closeBtn">← Close</button>
+            </div>
+
+            <div class="breadcrumbs">
+                <a href="index.html">Home</a> › <a href="myreviews.html">My Reviews</a>
+            </div>
+
+            <a href="Help/help.html" class="help-btn">Help</a>
+        </div>
+    </nav>
+
+    <main class="site-content">
+        <div class="reviews-container">
+            <div class="reviews-title-box">
+                <h1>MY REVIEWS</h1>
+            </div>
+
+            <div class="reviews-grid">
+                <article class="review-card">
+                    <div class="review-content">
+                        <h3 class="review-location">University Library - Quiet Room</h3>
+                        <p class="review-text">Great spot for focused studying — minimal distractions and comfy chairs.</p>
+                    </div>
+                    <div class="review-footer">
+                        <div class="review-meta">Posted: 2025-11-01</div>
+                        <div class="thumbs">
+                            <div class="thumb-display up" aria-hidden="true">👍 <span class="thumb-count">12</span></div>
+                            <div class="thumb-display down" aria-hidden="true">👎 <span class="thumb-count">2</span></div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="review-card">
+                    <div class="review-content">
+                        <h3 class="review-location">Engineering Building - Group Space</h3>
+                        <p class="review-text">Good for group work, whiteboards available. Could use better lighting.</p>
+                    </div>
+                    <div class="review-footer">
+                        <div class="review-meta">Posted: 2025-10-22</div>
+                        <div class="thumbs">
+                            <div class="thumb-display up" aria-hidden="true">👍 <span class="thumb-count">8</span></div>
+                            <div class="thumb-display down" aria-hidden="true">👎 <span class="thumb-count">1</span></div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="review-card">
+                    <div class="review-content">
+                        <h3 class="review-location">Student Centre - CafÃ© Area</h3>
+                        <p class="review-text">Nice vibe but can be noisy during lunchtime. Power outlets are limited.</p>
+                    </div>
+                    <div class="review-footer">
+                        <div class="review-meta">Posted: 2025-09-30</div>
+                        <div class="thumbs">
+                            <div class="thumb-display up" aria-hidden="true">👍 <span class="thumb-count">5</span></div>
+                            <div class="thumb-display down" aria-hidden="true">👎 <span class="thumb-count">4</span></div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="review-card">
+                    <div class="review-content">
+                        <h3 class="review-location">Science Tower - Quiet Booths</h3>
+                        <p class="review-text">Small booths with great acoustics. Booking recommended during finals.</p>
+                    </div>
+                    <div class="review-footer">
+                        <div class="review-meta">Posted: 2025-08-14</div>
+                        <div class="thumbs">
+                            <div class="thumb-display up" aria-hidden="true">👍 <span class="thumb-count">20</span></div>
+                            <div class="thumb-display down" aria-hidden="true">👎 <span class="thumb-count">0</span></div>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <!-- Counts are constant values (no client-side increment) -->
+</body>
+</html>
