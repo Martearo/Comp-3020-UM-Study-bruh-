@@ -1066,6 +1066,26 @@ body{
   font-size: 1.05rem;
 }
 
+.review-room {
+  margin: 0 0 0.4rem 0;
+  font-size: 0.9rem;
+  color: #5a4b39;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-weight: 600;
+}
+
+.room-id {
+  background: #f3f1e8;
+  color: #766838;
+  padding: 0.12rem 0.45rem;
+  border-radius: 6px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  border: 1px solid rgba(118,104,56,0.06);
+}
+
 .review-text {
   margin: 0 0 0.6rem 0;
   color: #333;

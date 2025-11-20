@@ -769,6 +769,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 article.innerHTML = `
                     <div class="review-content">
                         <h3 class="review-location">${escapeHtml(review.location)}</h3>
+                        ${review.roomId ? `<div class="review-room">Room: <span class="room-id">${escapeHtml(review.roomId)}</span></div>` : ''}
                         <p class="review-text">${escapeHtml(review.text)}</p>
                     </div>
                     <div class="review-footer">
