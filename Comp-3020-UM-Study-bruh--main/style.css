@@ -980,6 +980,8 @@ body{
   min-height: 140px;
   position: relative; /* for absolute-positioned thumbs */
   padding-top: 1.6rem; /* space for the top-right thumbs */
+  /* Reserve space on the right so the top-right thumbs don't overlap the content */
+  padding-right: 5.2rem;
 }
 
 .review-location {
@@ -1060,8 +1062,17 @@ body{
 .thumb-display.down { color: #a33232; }
 
 /* Hide extra reviews by default; reveal with `.show` */
-.more-reviews { display: none; }
-.more-reviews.show { display: block; }
+.more-reviews {
+  /* Use display: contents so the review cards inside behave like direct grid children,
+    which preserves the same sizing and spacing as the initially visible cards. */
+  display: contents;
+}
+
+/* Hide additional cards by default (they remain grid items via display: contents)
+  When the container has the .show class, reveal them again with the same
+  display style as the original .review-card (flex). */
+.more-reviews > .review-card { display: none; }
+.more-reviews.show > .review-card { display: flex; }
 
 .reviews-actions { display: flex; justify-content: center; margin-top: 1rem; }
 .show-more-btn {

@@ -730,7 +730,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
         // ----------------------------------------------------
-        // --- Reviews Page: Sort / Filter / Show-More Logic ---
+        // --- Reviews Page: Data-driven renderer ---
         // ----------------------------------------------------
         (function initReviewsModule() {
             const reviewsGrid = document.querySelector('.reviews-grid');
@@ -742,87 +742,130 @@ document.addEventListener("DOMContentLoaded", () => {
             const showMoreBtn = document.getElementById('showMoreBtn');
             const VISIBLE_COUNT = 10;
 
-            function parseCardData(card) {
-                const location = card.querySelector('.review-location')?.textContent?.trim() || '';
-                const text = card.querySelector('.review-text')?.textContent?.trim() || '';
-                const meta = card.querySelector('.review-meta')?.textContent || '';
-                // Expecting format like: "Posted: 2025-11-01"
-                const dateMatch = meta.match(/Posted:\s*(\d{4}-\d{2}-\d{2})/);
-                const date = dateMatch ? new Date(dateMatch[1]) : new Date(0);
-                const up = parseInt(card.querySelector('.thumb-display.up .thumb-count')?.textContent || '0', 10) || 0;
-                return { card, location, text, date, up };
+            // Data array for reviews (rendered by JS)
+            const reviewsData = [
+                { location: 'University Library - Quiet Room', text: 'Great spot for focused studying — minimal distractions and comfy chairs.', date: '2025-11-01', up: 12, down: 2 },
+                { location: 'Engineering Building - Group Space', text: 'Good for group work, whiteboards available. Could use better lighting.', date: '2025-10-22', up: 8, down: 1 },
+                { location: 'Student Centre - Café Area', text: 'Nice vibe but can be noisy during lunchtime. Power outlets are limited.', date: '2025-09-30', up: 5, down: 4 },
+                { location: 'Science Tower - Quiet Booths', text: 'Small booths with great acoustics. Booking recommended during finals.', date: '2025-08-14', up: 20, down: 0 },
+                { location: 'Meditation Room - Wellness Centre', text: 'Peaceful small room with cushions and soft lighting — excellent for short focus sessions.', date: '2025-07-20', up: 7, down: 0 },
+                { location: 'Engineering Annex - Study Pods', text: 'Individual pods with desks and power outlets; great for concentrated work.', date: '2025-07-02', up: 10, down: 1 },
+                { location: 'North Campus - Study Hall', text: 'Large open hall with many tables; can be noisy but useful when you need space.', date: '2025-06-29', up: 4, down: 2 },
+                { location: 'Graduate Lounge - Quiet Area', text: 'Reserved for grad students; comfy and quiet with a small kitchenette.', date: '2025-06-10', up: 13, down: 0 },
+                { location: 'Chemistry Building - Lab Commons', text: 'Open common area with lab tables; useful when quiet is not required.', date: '2025-05-20', up: 3, down: 1 },
+                { location: 'Campus Garden - Patio', text: 'Lovely outdoor spot in warm weather; benches and natural light.', date: '2025-07-02', up: 9, down: 1 },
+                { location: 'Law Library - Silent Floor', text: 'Extremely quiet and focused; great for reading dense material.', date: '2025-06-18', up: 15, down: 0 },
+                { location: 'Business School - 24/7 Study', text: 'Open late and well-equipped desks, but can be busy at peak hours.', date: '2025-05-05', up: 11, down: 3 },
+                { location: 'Arts Building - Seminar Room', text: 'Comfortable seating and projector available; booking advised.', date: '2025-04-12', up: 6, down: 0 }
+            ];
+
+            // Keep an original copy for restoring order when search is cleared
+            const originalReviews = reviewsData.slice();
+
+            function createCardElement(review) {
+                const article = document.createElement('article');
+                article.className = 'review-card';
+
+                article.innerHTML = `
+                    <div class="review-content">
+                        <h3 class="review-location">${escapeHtml(review.location)}</h3>
+                        <p class="review-text">${escapeHtml(review.text)}</p>
+                    </div>
+                    <div class="review-footer">
+                        <div class="review-meta">Posted: ${review.date}</div>
+                        <div class="thumbs">
+                            <div class="thumb-display up" aria-hidden="true">👍 <span class="thumb-count">${review.up}</span></div>
+                            <div class="thumb-display down" aria-hidden="true">👎 <span class="thumb-count">${review.down}</span></div>
+                        </div>
+                    </div>
+                `;
+
+                return article;
             }
 
-            function applyFiltersAndSort() {
-                // Collect all review-card nodes scoped under this reviewsGrid
-                const allCards = Array.from(reviewsGrid.querySelectorAll('.review-card'));
-                const items = allCards.map(parseCardData);
-
-                // Filters
-                const searchTerm = (reviewSearch?.value || '').toLowerCase().trim();
-                const minUp = parseInt(minUpInput?.value || '0', 10) || 0;
-
-                let filtered = items.filter(it => {
-                    if (it.up < minUp) return false;
-                    if (!searchTerm) return true;
-                    return it.location.toLowerCase().includes(searchTerm) || it.text.toLowerCase().includes(searchTerm);
+            function escapeHtml(str) {
+                return String(str).replace(/[&<>\"']/g, function (s) {
+                    return ({
+                        '&': '&amp;',
+                        '<': '&lt;',
+                        '>': '&gt;',
+                        '\"': '&quot;',
+                        "'": '&#39;'
+                    })[s];
                 });
+            }
 
-                // Sort
-                const sortVal = reviewSort?.value || 'date_desc';
-                const [key, dir] = sortVal.split('_'); // e.g., date_desc or up_asc or location_asc
-
-                filtered.sort((a, b) => {
-                    if (key === 'date') {
-                        return dir === 'asc' ? a.date - b.date : b.date - a.date;
-                    }
-                    if (key === 'up') {
-                        return dir === 'asc' ? a.up - b.up : b.up - a.up;
-                    }
-                    if (key === 'location') {
-                        const la = a.location.toLowerCase();
-                        const lb = b.location.toLowerCase();
-                        if (la < lb) return dir === 'asc' ? -1 : 1;
-                        if (la > lb) return dir === 'asc' ? 1 : -1;
-                        return 0;
-                    }
-                    return 0;
-                });
-
-                // Reflow DOM: keep first VISIBLE_COUNT visible, rest inside .more-reviews wrapper
-                // Clear reviewsGrid but preserve any non-review elements (unlikely here)
-                // We'll rebuild: append first N cards, then a .more-reviews with rest
-                const otherNodes = Array.from(reviewsGrid.childNodes).filter(n => !n.classList || !n.classList.contains('review-card'));
+            function renderVisibleList(list) {
+                // Clear grid
                 reviewsGrid.innerHTML = '';
 
-                // Append visible cards
-                const visible = filtered.slice(0, VISIBLE_COUNT);
-                visible.forEach(it => reviewsGrid.appendChild(it.card));
+                const visible = list.slice(0, VISIBLE_COUNT);
+                visible.forEach(r => reviewsGrid.appendChild(createCardElement(r)));
 
-                // Append hidden / more
-                const extra = filtered.slice(VISIBLE_COUNT);
+                const extra = list.slice(VISIBLE_COUNT);
                 if (extra.length > 0) {
                     const moreDiv = document.createElement('div');
                     moreDiv.className = 'more-reviews';
-                    extra.forEach(it => moreDiv.appendChild(it.card));
+                    // append extra cards (CSS will control visibility)
+                    extra.forEach(r => moreDiv.appendChild(createCardElement(r)));
                     reviewsGrid.appendChild(moreDiv);
                     if (showMoreBtn) {
                         showMoreBtn.style.display = 'inline-block';
-                        // Ensure correct aria state
                         showMoreBtn.setAttribute('aria-expanded', 'false');
                         showMoreBtn.textContent = 'Show more reviews';
                     }
                 } else {
-                    if (showMoreBtn) {
-                        showMoreBtn.style.display = 'none';
-                    }
+                    if (showMoreBtn) showMoreBtn.style.display = 'none';
                 }
-
-                // Re-append any non-review nodes (like the .more-reviews placeholder if present before)
-                otherNodes.forEach(n => reviewsGrid.appendChild(n));
             }
 
-            // Debounce helper
+            function applyFiltersAndSort() {
+                const searchTerm = (reviewSearch?.value || '').toLowerCase().trim();
+                const minUp = parseInt(minUpInput?.value || '0', 10) || 0;
+
+                // Start from original array so filtering is deterministic
+                let working = originalReviews.slice();
+
+                // Filter by min up
+                if (minUp > 0) {
+                    working = working.filter(r => r.up >= minUp);
+                }
+
+                // Filter by search term
+                if (searchTerm) {
+                    working = working.filter(r => (
+                        r.location.toLowerCase().includes(searchTerm) ||
+                        r.text.toLowerCase().includes(searchTerm)
+                    ));
+                }
+
+                // Sorting
+                const sortVal = reviewSort?.value || 'date_desc';
+                const [key, dir] = sortVal.split('_');
+
+                // Only perform a sort if user selected something other than default or if searching
+                if (searchTerm || sortVal !== 'date_desc') {
+                    working.sort((a, b) => {
+                        if (key === 'date') {
+                            return dir === 'asc' ? new Date(a.date) - new Date(b.date) : new Date(b.date) - new Date(a.date);
+                        }
+                        if (key === 'up') {
+                            return dir === 'asc' ? a.up - b.up : b.up - a.up;
+                        }
+                        if (key === 'location') {
+                            const la = a.location.toLowerCase();
+                            const lb = b.location.toLowerCase();
+                            if (la < lb) return dir === 'asc' ? -1 : 1;
+                            if (la > lb) return dir === 'asc' ? 1 : -1;
+                            return 0;
+                        }
+                        return 0;
+                    });
+                }
+
+                renderVisibleList(working);
+            }
+
             function debounce(fn, wait = 150) {
                 let t;
                 return (...args) => {
@@ -847,7 +890,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 });
             }
 
-            // Initial run
+            // Initial render
             applyFiltersAndSort();
         })();
 
