@@ -20,23 +20,23 @@ body{
 }
 
 .navbar-custom{
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: var(--navbar-height);
-  box-sizing: border-box;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: var(--navbar-height);
+    box-sizing: border-box;
 
 
-  /* Navbar styling INSIDE*/
-  background-color: #CDBCA8;
-  backdrop-filter: blur(4px);
-  box-shadow: 0 3px 8px rgba(222, 221, 221, 0.6); /* 👈 visible under-shadow */
-  z-index: 1000; /* ensure navbar is above other content */
+    /* Navbar styling INSIDE*/
+    background-color: #CDBCA8;
+    backdrop-filter: blur(4px);
+    box-shadow: 0 3px 8px rgba(222, 221, 221, 0.6); /* 👈 visible under-shadow */
+    z-index: 1000; /* ensure navbar is above other content */
 
-  display: flex;
-  align-items: center;
-  justify-content: center; /* center the inner container horizontally */
+    display: flex;
+    align-items: center;
+    justify-content: center; /* center the inner container horizontally */
 }
 
 /* Inner container for spacing */
@@ -90,84 +90,20 @@ body{
 
 }
 
-
-.search-bar-wrapper {
-    display: flex;
-    align-items: center;
-    width: 50%; /* total width of search + button */
-    position: relative;
-}
-
-
-/* ---------------------------------------------------- */
-/* --- Rooms Page: Search Input Group FIX --- */
-/* ---------------------------------------------------- */
-
-/* ⭐ NEW RULE: Style the container for the icon and input */
-.search-input-group {
-    position: relative; 
-    flex: 1; 
-    order: 1; 
-}
-
-/* ⭐ NEW RULE: Target the input inside the new group */
-.search-input-group input { 
-    width: 100%; /* Fill parent group width */
-    padding: 10px 12px 10px 36px; 
-    border-radius: 25px; /* Fully rounded */
-    border: 1px solid #ccc;
-    outline: none;
-    font-size: 0.95rem;
-}
-
-/* ⭐ NEW RULE: Style the sort wrapper to position it correctly */
-.sort-dropdown-wrapper {
-    position: relative;
-    z-index: 900;
-    order: 2;
-    margin-left: 10px; /* Space between input and button */
-}
-
-/* ⭐ NEW RULE: Style the sort button as a standalone, fully rounded button */
-.sort-btn {
-    background-color: #766838;
-    color: #fff;
-    border: none; /* Remove border reliance */
-    border-radius: 25px; /* Fully rounded */
-    padding: 10px 15px;
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    white-space: nowrap;
-}
-
-
-.search-bar-wrapper .sort-btn:hover {
-    background-color: #b09c5e;
-    color: #ffffff;
-    transform: scale(1.02);
-}
-
-.search-bar-wrapper .search-icon {
-    position: absolute;
-    left: 10px;
-    z-index: 10; /* Added z-index for consistency with other page */
-    font-size: 18px;
-    color: gray;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-
 .navbar-profile {
   height: 90%;
-  width: 2.2rem;
+  width: 2.5rem;
   border-radius: 50%;
   object-fit: cover;
   cursor: pointer;
   transition: transform 0.2s ease;
 }
 
+.user-actions-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Adds space between the Language Selector and the Profile Icon */
+}
 
 .profile-wrapper {
     position: relative;
@@ -180,8 +116,9 @@ body{
 .profile-info-card {
     /* Positioning */
     position: absolute;
-    top: calc(100% + 10px); /* Position 10px below the wrapper/pfp */
-    right: 0; /* Align to the right edge of the pfp */
+    top: 100%;
+    right: 0;
+
     
     /* Appearance */
     width: 200px;
@@ -246,7 +183,6 @@ body{
     visibility: visible;
     transform: translateY(0); /* Move to final position */
 }
-
 
 /*---------------------------*/
 /* --- language selector --- */
@@ -463,279 +399,593 @@ body{
     transform: scale(1.1);
 }
 
-/*-----------------*/
-/* Main Content */
-/*-----------------*/
 
-
-.map-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 2rem;
-
-    position: relative; /* or absolute, if you want it over the page */
-    /* top: calc(var(--navbar-height) + var(--secondary-height)); */
-}
-
-
-.map-content {
-    /* Critical: Ensures absolute children (pins) are positioned relative to this block */
-    position: relative; 
+/*===========================*/
+/* MAIN CONTENT GRID LAYOUT */
+/*===========================*/
+.site-content {
+    /* CRITICAL: Clears both fixed navbars and centers the content area */
+    margin-top: calc(var(--navbar-height) + var(--secondary-height) + 1.5rem); 
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 20px 30px;
     
-    /* Critical: Makes the container shrink-wrap around the map-image's true size, 
-       even when scaled, so 100% width/height is the image size. */
-    display: inline-block;
-    
-    /* Apply initial scaling/transformation, driven by JS variable */
-    transform: scale(var(--current-zoom, 1.2)); 
-    transform-origin: center center; /* Ensure scaling centers on the map */
-    transition: transform 0.3s ease; /* Smooth zoom animation */
-    
-    /* Optional: Ensure nothing overflows and messes up placement */
-    overflow: hidden; 
-    
-    /* Use the same sizing as the map-image for boundaries */
-    width: 80%; 
-    max-width: 1000px; 
-    max-height: 600px;
+    /* GRID: Creates the two-column layout */
+    display: grid;
+    /* Left column is 2 parts, right (reviews) is 1 part */
+    grid-template-columns: 2fr 1fr; 
+    gap: 30px;
 }
 
-/* 2. The image inside the map-content */
-/* Change your existing .map-image to this: */
-.map-content .map-image {
-    width: 100%;
-    height: auto; 
-    /* Remove redundant transform properties that are now on .map-content */
-    /* Remove border/box-shadow if they are wanted on the .map-content instead */
-    border: 2px solid #ccc;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-}
-
-/* 3. The pin container (positioned relative to .map-content) */
-.map-pin-container, .room-pin-container {
-    position: absolute;
-    /* This centers the pin icon's bottom edge on the X,Y coordinate */
-    transform: translate(-50%, -100%); 
-    
-    /* Define the size of the clickable area */
-    width: 30px; 
-    height: 30px; 
-    cursor: pointer;
-    z-index: 10; /* Make sure it sits above the map image */
-}
-
-/* 4. The actual icon image inside the container */
-.map-pin-icon {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-}
-
-/* --- Floating Info Card (for hover) --- */
-#pin-popup-root {
-    position: fixed; /* Fixed relative to the viewport, above all else */
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    pointer-events: none; /* Allows clicks to pass through empty space */
-    z-index: 2000; /* Highest priority */
-}
-
-.floating-pin-info-card {
-    position: absolute; /* Positioned relative to the fixed #pin-popup-root */
-    pointer-events: auto; /* Allows interaction when card is visible */
-    
-    /* Styling */
-    background-color: white;
-    border: 1px solid #766838;
-    border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-    padding: 10px;
-    width: 250px;
-    
-    /* Visibility Control (driven by JS) */
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.2s, visibility 0.2s, transform 0.2s;
-    transform: translate(0, -50%); /* Center vertically on the mouse/pin */
-}
-
-.floating-pin-info-card.visible {
-    opacity: 1;
-    visibility: visible;
-}
-
-.info-card-img {
-    width: 100%;
-    height: 100px;
-    object-fit: cover;
-    border-radius: 6px;
-    margin-bottom: 8px;
-}
-
-.info-card-details {
+.left-column {
     display: flex;
     flex-direction: column;
-    font-size: 0.9rem;
-    color: #333;
+    gap: 25px; /* Vertical spacing between Carousel card and Info card */
 }
 
-.info-name {
-    font-weight: bold;
-    color: #766838;
+/* Card General Style */
+.card {
+    background: white;
+    border-radius: 10px;
+    padding: 25px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+/* Using StudyDen color scheme */
+.gallery-card {
+    border-left: 5px solid #766838;
+}
+
+.facility-card {
+    border-left: 5px solid #766838;
+}
+
+.reviews-card {
+    border-left: 5px solid #766838;
+    display: flex;
+    flex-direction: column;
+    height: 650px; /* Increased height to cover more space */
+    position: relative;
+}
+
+.info-item {
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px dashed #ecf0f1;
+}
+
+.info-item:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.info-label {
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+}
+
+.info-label i {
+    margin-right: 8px;
+    width: 20px;
+    text-align: center;
+    color: #353232;
+}
+
+.info-value {
+    color: #555;
     font-size: 1.1rem;
+    padding-left: 28px;
 }
 
-.info-status {
-    padding-top: 4px;
-    font-style: italic;
-    color: #666;
+.rating {
+    color: #f39c12;
+    font-weight: bold;
+    font-size: 1.2rem;
 }
 
-.info-action {
-    margin-top: 5px;
-    color: #0077cc;
-    font-weight: 500;
+.rating-change {
+    font-size: 0.9rem;
+    margin-left: 10px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: normal;
+    opacity: 0;
+    transition: opacity 0.3s ease;
 }
 
+.rating-change.positive {
+    background-color: rgba(46, 204, 113, 0.2);
+    color: #27ae60;
+    opacity: 1;
+}
 
-/* ---------------------------------------------------- */
-/* --- New Rule for Room Pin Hover Effect --- */
-/* ---------------------------------------------------- */
+.rating-change.negative {
+    background-color: rgba(231, 76, 60, 0.2);
+    color: #c0392b;
+    opacity: 1;
+}
 
-/* 1. Ensure the pin container has a smooth transition */
-.map-pin-container, .room-pin-container {
-    /* ... existing properties ... */
+.hours {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.hour-item {
+    background: #ecf0f1;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    color: #2c3e50;
+}
+
+/* --- Info Items (used in both cards) --- */
+
+
+
+
+
+
+/* --- Reviews Card Specifics --- */
+
+
+/* Image Carousel Styles */
+.carousel-container {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    margin-top: 10px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.carousel-slide {
+    height: 100%;
+    display: flex;
+    transition: transform 0.5s ease;
+}
+
+.carousel-image {
+    min-width: 100%;
+    width: 100%;
+    flex-shrink: 0;  /* Prevents images from squishing */
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+  
+}
+
+.carousel-nav {
+    position: static; /* Remove absolute/width/padding issues here */
+    height: 0;        /* Ensure it doesn't take up layout space */
+    padding: 0;
+    margin: 0;
+    width: auto;
+}
+
+.carousel-btn {
+    position: absolute; /* Float on top of the image */
+    top: 50%;           /* Move down 50% */
+    transform: translateY(-50%); /* Center vertically */
+    z-index: 20;        /* Ensure it's on top of images */
     
-    /* Ensure transition is applied to the pin container */
-    transition: transform 0.2s ease; 
+    /* Visual Styles (Kept from your original) */
+    background: rgba(255, 255, 255, 0.7);
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1.2rem;
+    color: #2c3e50;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
-/* 2. Apply the scale transform on hover specifically to room pins */
-/* Using .room-pin-container ensures we target only the pins on the rooms map */
-.room-pin-container:hover {
-    transform: translate(-50%, -100%) scale(1.2); /* Keep the positioning transform, and add scale */
-    z-index: 15; /* Optional: Raise the z-index slightly to ensure it overlaps nearby elements */
+.carousel-btn:hover {
+    background: white;
+    transform: translateY(-50%) scale(1.1); /* Maintain vertical center on hover */
 }
 
-/* 3. If you want ALL pins (index page and room page) to scale similarly: */
-/* If you want the scale to apply to ALL pin containers, use this rule: */
-.map-pin-container:hover {
-    transform: translate(-50%, -100%) scale(1.2); 
-    z-index: 15;
+#prevBtn {
+    left: 10px;
 }
 
-/*-----------------*/
-/* Room Buttons */
-
-.room-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* center all content horizontally */
-  margin-top: calc(var(--navbar-height) + var(--secondary-height));
-  padding: 1rem;
-
+/* 4. Pin Next Button to Right */
+#nextBtn {
+    right: 10px;
 }
 
-.room-button-list {
-  display: grid;
-  grid-template-columns: repeat(3,1fr); /*3 per row*/
-  width: 90%;
-  max-width: 800px;
-  gap: 1rem; /* space between buttons */
-  justify-items: center;
-  margin-top: 2rem;
+.carousel-dots {
+    position: absolute;
+    bottom: 15px;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
 }
 
-.room-btn {
-  width: 100%;
-  aspect-ratio: 1/1;
-  display: flex;           /* horizontal layout */
-  flex-direction: column;
-  align-items: center;     /* vertically center image + text */
-  justify-content: space-between; /* align content to left */
-  gap: 0.2rem;               /* space between image and text */
-  padding: 0;              /* remove default padding */
-  border: none;
-  border-radius: 0.5rem;
-  background-color: #6B7A89;
-  color: #eadfd2;
-  cursor: pointer;
-  box-shadow: 0 8px 8px rgba(47, 44, 44, 0.796);
-  transition: all 0.2s ease;
+.dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    transition: all 0.3s ease;
 }
 
-.room-btn:hover {
-  background-color: #b09c5e;
-  transform: scale(1.02);
+.dot.active {
+    background: white;
+    transform: scale(1.2);
 }
 
-.room-img-wrapper {
-  width: 100%;
-  height: 70%; /* top part for image */
-  overflow: hidden;
-
-  border-top-left-radius: 0.2rem;
-  border-top-right-radius: 0.2rem;
-  border-bottom-left-radius: 0.2rem; /* Match button's bottom-left */
-  border-bottom-right-radius: 0.2rem;
+/* Reviews Section Styles */
+.reviews-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #ecf0f1;
 }
 
-.room-img {
-  height: 100%;        /* fills the button height */
-  width: 100%;         /* keeps aspect ratio */
-  object-fit: cover;
+.reviews-header h3 {
+    color: #2c3e50;
+    font-size: 1.3rem;
 }
 
-.room-info {
-  position: relative;
-  height: 30%; /* bottom 30% for text box */
-  width: 100%;
-  background-color: #6B7A89;
-  display: block;
-  padding: 0;
-  box-sizing: border-box;
+.scroll-indicator {
+    color: #3498db;
+    cursor: pointer;
+    transition: transform 0.3s ease;
 }
 
-.room-building {
-  position: absolute;
-  top: 0.5rem;
-  left: 0.5rem;
-  
-  font-size: large;
-  font-weight: bold;
-  text-shadow: 1px 2px 5px rgba(0, 0, 0, 0.708);
+.scroll-indicator:hover {
+    transform: translateY(3px);
 }
 
-.room-rating {
-  position: absolute;
-  bottom: 0.5rem;
-  right: 0.5rem;
-  padding: 0.2rem 0.4rem;
-  font-weight: bold;
-  text-shadow: 1px 2px 5px rgba(0, 0, 0, 0.708);
+.reviews-container {
+    flex: 1;
+    overflow-y: auto;
+    max-height: 500px; /* Increased height to match larger card */
+    padding-right: 10px;
+    margin-bottom: 15px;
 }
 
-.room-bookmark {
-  position: absolute;
-  top: 0;
-  right: 0.2rem;
-  cursor: pointer;
-  
-  
+/* Custom scrollbar for reviews container */
+.reviews-container::-webkit-scrollbar {
+    width: 6px;
 }
 
-.room-number{
-  position: absolute;
-  bottom: 0.5rem;
-  left: 0.5rem;
-  
-  font-size: large;
-  font-weight: bold;
-  text-shadow: 1px 2px 5px rgba(0, 0, 0, 0.708);
-
+.reviews-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
 }
 
+.reviews-container::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 10px;
+}
+
+.reviews-container::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
+
+.review-item {
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #ecf0f1;
+}
+
+.review-item:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.reviewer {
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.review-date {
+    color: #7f8c8d;
+    font-size: 0.9rem;
+}
+
+.review-text {
+    color: #555;
+    line-height: 1.5;
+    margin-bottom: 10px;
+}
+
+.review-rating {
+    color: #f39c12;
+    margin-bottom: 10px;
+}
+
+.vote-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.vote-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2rem;
+    color: #7f8c8d;
+    transition: color 0.2s ease;
+    padding: 5px;
+    border-radius: 4px;
+}
+
+.vote-btn:hover {
+    background: #ecf0f1;
+}
+
+.upvote-btn:hover {
+    color: #27ae60;
+}
+
+.downvote-btn:hover {
+    color: #e74c3c;
+}
+
+.vote-count {
+    font-weight: 600;
+    color: #2c3e50;
+    min-width: 30px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.vote-count.changed {
+    transform: scale(1.2);
+}
+
+.vote-btn.active {
+    color: #3498db;
+}
+
+.upvote-btn.active {
+    color: #27ae60;
+}
+
+.downvote-btn.active {
+    color: #e74c3c;
+}
+
+/* Floating Write Review Button */
+.write-review-container {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 100;
+}
+
+.write-review-btn {
+    background: #3498db;
+    color: white;
+    border: none;
+    padding: 15px 25px;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 6px 15px rgba(52, 152, 219, 0.4);
+    position: relative;
+    overflow: hidden;
+}
+
+.write-review-btn:hover {
+    background: #2980b9;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(52, 152, 219, 0.5);
+}
+
+.write-review-btn:active {
+    transform: translateY(-1px);
+}
+
+/* Add a subtle pulse animation to attract attention */
+@keyframes pulse {
+    0% {
+        box-shadow: 0 6px 15px rgba(52, 152, 219, 0.4);
+    }
+    50% {
+        box-shadow: 0 6px 20px rgba(52, 152, 219, 0.6);
+    }
+    100% {
+        box-shadow: 0 6px 15px rgba(52, 152, 219, 0.4);
+    }
+}
+
+.write-review-btn {
+    animation: pulse 2s infinite;
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background-color: white;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 500px;
+    padding: 30px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    position: relative;
+}
+
+.close-modal {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #999;
+}
+
+.close-modal:hover {
+    color: #e74c3c;
+}
+
+.modal-content h2 {
+    margin-bottom: 20px;
+    color: #2c3e50;
+    text-align: center;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: #3498db;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+}
+
+.rating-stars {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 10px;
+}
+
+.star {
+    font-size: 2rem;
+    color: #ddd;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.star:hover,
+.star.active {
+    color: #f39c12;
+}
+
+#ratingStars .star {
+    cursor: pointer;
+    font-size: 2em; /* Adjust as needed */
+    color: #ccc; /* Default grey color */
+    transition: color 0.2s ease; /* Smooth transition for color change */
+}
+
+/* Style for the filled (gold) star */
+#ratingStars .star.filled {
+    color: gold; /* Gold color for selected stars */
+}
+
+.submit-review-btn {
+    background: #27ae60;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.submit-review-btn:hover {
+    background: #219653;
+}
+
+@media (max-width: 900px) {
+    .site-content {
+        grid-template-columns: 1fr;
+    }
+    
+    .carousel-container {
+        height: 250px;
+    }
+    
+    .reviews-card {
+        height: auto;
+        max-height: 600px;
+    }
+}
+
+@media (max-width: 768px) {
+    .nav-inner {
+        flex-wrap: wrap;
+    }
+    
+    .search-bar-wrapper {
+        order: 3;
+        flex: 1 1 100%;
+        margin-top: 10px;
+    }
+    
+    .reviews-container {
+        max-height: 400px;
+    }
+    
+    .write-review-container {
+        bottom: 20px;
+        right: 20px;
+    }
+    
+    .write-review-btn {
+        padding: 12px 20px;
+        font-size: 0.9rem;
+    }
+}

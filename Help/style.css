@@ -116,8 +116,8 @@ body{
 .profile-info-card {
     /* Positioning */
     position: absolute;
-    top: calc(100% + 10px); /* Position 10px below the wrapper/pfp */
-    right: 0; /* Align to the right edge of the pfp */
+    top: 100%;
+    right: 0;
     
     /* Appearance */
     width: 200px;
@@ -412,46 +412,91 @@ body{
 .help-content-wrapper {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 2rem 1rem;
+    padding: 0 20px 40px;
     
-    /* 🔑 KEY CHANGE: Set up the 20/80 grid/flex structure */
-    display: flex; 
-    gap: 2rem;
+    /* Grid Layout: Sidebar (fixed width) + Main Content (flex) */
+    display: flex;
+    gap: 30px;
+    align-items: flex-start;
     
     /* Ensure content starts below the navigation bars */
     margin-top: calc(var(--navbar-height) + var(--secondary-height) + 1.5rem); 
 }
 
 /* 2. Modify the Sidebar (20% width and remove sticky) */
-.help-side-card {
-    /* 🔑 KEY CHANGE: Set 20% width and make it scrollable (non-sticky) */
-    width: 20%; 
-    flex-shrink: 0;
+help-side-card {
+    flex: 0 0 260px; /* Fixed width */
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     
-    /* ❌ DELETED: position: sticky; and top: calc(...) */
-    background-color: transparent; /* Make the background transparent */
-    border-radius: 0; /* Remove rounded corners */
-    padding: 0; /* Remove padding */
-    box-shadow: none; /* Remove box-shadow */
-    height: auto; /* Let content define height */
+    /* Sticky Positioning: Stays visible while you scroll */
+    position: sticky;
+    top: calc(var(--navbar-height) + var(--secondary-height) + 20px);
+    
+    /* Brand Accent */
+    border-left: 5px solid #766838;
+}
+
+.help-side-card h3 {
+    margin-top: 0;
+    font-size: 1.2rem;
+    color: #2c3e50;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+.help-side-card ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.help-side-card li {
+    margin-bottom: 8px;
+}
+
+.help-side-card a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: #555;
+    font-weight: 500;
+    padding: 10px;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+.help-side-card a:hover {
+    background-color: #f4f4f4;
+    color: #766838;
+    transform: translateX(5px);
 }
 
 /* 3. Modify the Main Article (80% width) */
 .help-main-article {
-    /* 🔑 KEY CHANGE: Set 80% width */
-    width: 80%;
-    flex-grow: 1; /* This ensures it takes the remaining space */
+    flex: 1; /* Takes up all remaining width */
     
-    /* Keep existing styling for the box */
-    padding: 1.5rem;
-    background-color: white;
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    /* Card Styling */
+    background-color: #ffffff;
+    border-radius: 15px;
+    padding: 40px; /* Spacious padding */
     
-    /* Existing content layout */
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
+    /* Deep shadow to make it pop off the background */
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    
+    /* 🔑 The "Color": A nice thick top border in your brand color */
+    border-top: 8px solid #766838;
+}
+
+.help-main-article h1 {
+    margin-top: 0;
+    color: #2c3e50;
+    font-size: 2rem;
+    margin-bottom: 25px;
 }
 
 /* 4. Retain Card Button Styling (from previous step, but ensure no sticky conflict) */
@@ -488,10 +533,82 @@ body{
 }
 
 /* 6. Content Section Cards (Remain the same) */
+
+.help-nav-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.help-nav-buttons a {
+    background-color: #ecf0f1;
+    color: #2c3e50;
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.help-nav-buttons a:hover {
+    background-color: #766838;
+    color: white;
+    transform: translateY(-2px);
+}
+
+/* 4. Inner Section Styling */
 .help-section-card {
-    background-color: #fcfcfc;
-    padding: 2rem;
+    background-color: #fcfcfc; /* Slightly off-white to distinguish sections */
+    border: 1px solid #f0f0f0;
     border-radius: 10px;
-    border: 1px solid #eee;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    padding: 25px;
+    margin-bottom: 30px;
+    
+    /* Scroll margin ensures title isn't hidden behind navbar when clicking links */
+    scroll-margin-top: 180px; 
+}
+
+.help-section-card h2 {
+    color: #766838;
+    margin-top: 0;
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+}
+
+.help-section-card ul {
+    line-height: 1.7;
+    color: #555;
+    padding-left: 20px;
+}
+
+.help-section-card li {
+    margin-bottom: 8px;
+}
+
+/* Smooth Scroll */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Responsive Design (Mobile) */
+@media (max-width: 900px) {
+    .help-content-wrapper {
+        flex-direction: column;
+    }
+    
+    .help-side-card {
+        width: 100%;
+        flex: none;
+        position: static; /* Remove sticky on mobile */
+    }
+    
+    .help-main-article {
+        padding: 20px;
+    }
 }

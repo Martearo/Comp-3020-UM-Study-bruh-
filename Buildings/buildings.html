@@ -6,6 +6,11 @@
 </head>
 
 <body>
+
+    <div id="bookmark-toast" class="toast">
+        <span id="toast-message"></span>
+    </div>
+
     <nav class="navbar-custom" role="navigation" aria-label="Top navigation">        
 
         <div class="nav-inner">
@@ -23,8 +28,14 @@
                     <input type="text" placeholder="Search Rooms..." id="searchInput"/>
                 </div>
                 
-                <div 
-                    class="sort-dropdown-wrapper"> <button class="sort-btn">⇅ Sort</button>
+                <div class="sort-dropdown-wrapper">
+                    <button class="sort-btn" id="roomSortBtn">⇅ Sort</button> 
+                    <ul class="sort-dropdown" id="roomSortDropdown">
+                        <li data-sort-by="rating" data-sort-order="desc">⭐ Rating (Highest)</li>
+                        <li data-sort-by="rating" data-sort-order="asc">⭐ Rating (Lowest)</li>
+                        <li data-sort-by="room" data-sort-order="asc">Room Number (A-Z)</li>
+                        <li data-sort-by="room" data-sort-order="desc">Room Number (Z-A)</li>
+                    </ul>
                 </div>
             </div>
 
@@ -49,10 +60,10 @@
                 <img src="../Images/PDid.png" alt="Profile" class="navbar-profile">
                 
                 <div id="profile-card" class="profile-info-card">
-                    <p class="card-name">John Doe</p>
-                    <p class="card-email">jdoe@umanitoba.ca</p>
+                    <p class="card-name">Sean Combs</p>
+                    <p class="card-email">P.Did@umanitoba.ca</p>
                     <hr>
-                    <a href="#" class="card-link">View Profile</a>
+                    <a href="#" class="card-link" id="viewProfileLink">View Profile</a>
                     <a href="../Login/login.html" class="card-link logout">Log Out</a>
                 </div>
             </div>
