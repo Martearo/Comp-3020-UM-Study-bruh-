@@ -77,11 +77,21 @@ document.addEventListener("DOMContentLoaded", () => {
         { building: "Tier", room: "T100", image: "../Images/StudyRooms/Tier01.png", rating: 3.5, bookmark: false, x: 40, y: 70 },
     ];
 
-    const bookmarkState = {};
+    // Initialize bookmarkState from localStorage or from roomData
+const bookmarkState = (() => {
+    // Try to load from localStorage first
+    const savedBookmarks = localStorage.getItem('bookmarkState');
+    if (savedBookmarks) {
+        return JSON.parse(savedBookmarks);
+    }
+    
+    // If no saved state, initialize from roomData
+    const initialState = {};
     roomData.forEach(room => {
-        // Use room.room (e.g., "D401") as the unique key
-        bookmarkState[room.room] = room.bookmark;
+        initialState[room.room] = room.bookmark;
     });
+    return initialState;
+})();
 
 
     if (viewProfileLink) {
@@ -378,35 +388,38 @@ function renderRooms(rooms) {
 
         // --- UNIFIED CLICK HANDLER (Combines Navigation and Bookmark Logic) ---
         btn.addEventListener("click", (e) => {
-            const bookmarkIconSpan = e.target.closest(".room-bookmark"); 
+    const bookmarkIconSpan = e.target.closest(".room-bookmark"); 
 
-            // Logic for handling the bookmark click
-            if (bookmarkIconSpan) {
-                e.stopPropagation(); 
-                
-                const currentState = bookmarkIconSpan.dataset.bookmarked === "true";
-                const newState = !currentState; 
+    // Logic for handling the bookmark click
+    if (bookmarkIconSpan) {
+        e.stopPropagation(); 
+        
+        const currentState = bookmarkIconSpan.dataset.bookmarked === "true";
+        const newState = !currentState; 
 
-                bookmarkState[room.room] = newState; 
-                
-                // toggle bookmark state in the DOM
-                bookmarkIconSpan.dataset.bookmarked = newState.toString();
+        bookmarkState[room.room] = newState; 
+        
+        // Save to localStorage
+        saveBookmarkState();
+        
+        // toggle bookmark state in the DOM
+        bookmarkIconSpan.dataset.bookmarked = newState.toString();
 
-                // swap SVG (use the variables already defined above in the function)
-                bookmarkIconSpan.innerHTML = newState ? filledSVG : emptySVG;
-                
-                const action = newState ? 'Bookmarked' : 'Unbookmarked';
-                const message = `Room ${room.room} has been ${action}.`;
-                showToast(message);
+        // swap SVG
+        bookmarkIconSpan.innerHTML = newState ? filledSVG : emptySVG;
+        
+        const action = newState ? 'Bookmarked' : 'Unbookmarked';
+        const message = `Room ${room.room} has been ${action}.`;
+        showToast(message);
 
-                filterAndRender();
-                
-                return; 
-            }
+        filterAndRender();
+        
+        return; 
+    }
 
-           // Logic for handling the navigation click (only runs if it wasn't a bookmark)
-            window.location.href = `../Rooms/Rooms.html?id=${encodeURIComponent(room.room)}`;
-        });
+    // Logic for handling the navigation click
+    window.location.href = `../Rooms/Rooms.html?id=${encodeURIComponent(room.room)}`;
+});
 
         roomListContainer.appendChild(btn); 
     }); 
@@ -431,7 +444,7 @@ if (IS_BUILDINGS_PAGE) {
     renderRoomPinsForBuilding(roomsToRender);
 
 } else if (IS_BOOKMARK_PAGE) {
-    // Handle bookmark page
+    // Handle bookmark page - use the actual bookmarkState, not roomData bookmarks
     const bookmarkedRooms = roomData.filter(room => bookmarkState[room.room]);
     
     if (searchInput) {
@@ -770,48 +783,56 @@ function renderBookmarkedRooms(rooms) {
 
         // --- SINGLE UNIFIED CLICK HANDLER ---
         btn.addEventListener("click", (e) => {
-            const bookmarkIconSpan = e.target.closest(".room-bookmark"); 
+    const bookmarkIconSpan = e.target.closest(".room-bookmark"); 
 
-            if (bookmarkIconSpan) {
-                // Logic for handling the bookmark click
-                e.stopPropagation(); 
-                e.preventDefault(); // Prevent any default behavior
-                
-                const currentState = bookmarkIconSpan.dataset.bookmarked === "true";
-                const newState = !currentState; 
+    if (bookmarkIconSpan) {
+        // Logic for handling the bookmark click
+        e.stopPropagation(); 
+        e.preventDefault();
+        
+        const currentState = bookmarkIconSpan.dataset.bookmarked === "true";
+        const newState = !currentState; 
 
-                // Update state
-                bookmarkState[room.room] = newState; 
-                bookmarkIconSpan.dataset.bookmarked = newState.toString();
-                bookmarkIconSpan.innerHTML = newState ? filledSVG : emptySVG;
-                
-                const action = newState ? 'Bookmarked' : 'Unbookmarked';
-                const message = `Room ${room.room} has been ${action}.`;
-                showToast(message);
+        // Update state
+        bookmarkState[room.room] = newState; 
+        
+        // Save to localStorage
+        saveBookmarkState();
+        
+        bookmarkIconSpan.dataset.bookmarked = newState.toString();
+        bookmarkIconSpan.innerHTML = newState ? filledSVG : emptySVG;
+        
+        const action = newState ? 'Bookmarked' : 'Unbookmarked';
+        const message = `Room ${room.room} has been ${action}.`;
+        showToast(message);
 
-                // If unbookmarking on bookmark page, remove the card
-                if (!newState) {
-                    btn.remove();
-                    
-                    // Show empty state if no more bookmarks
-                    const remainingRooms = roomListContainer.querySelectorAll('.room-btn');
-                    if (remainingRooms.length === 0) {
-                        const emptyState = document.getElementById('empty-state');
-                        if (emptyState) {
-                            emptyState.style.display = 'block';
-                        }
-                    }
+        // If unbookmarking on bookmark page, remove the card
+        if (!newState) {
+            btn.remove();
+            
+            // Show empty state if no more bookmarks
+            const remainingRooms = roomListContainer.querySelectorAll('.room-btn');
+            if (remainingRooms.length === 0) {
+                const emptyState = document.getElementById('empty-state');
+                if (emptyState) {
+                    emptyState.style.display = 'block';
                 }
-                return; 
             }
+        }
+        return; 
+    }
 
-            // Logic for handling the navigation click (only runs if it wasn't a bookmark)
-            window.location.href = `Rooms/Rooms.html?id=${encodeURIComponent(room.room)}`;
-        });
+    // Logic for handling the navigation click
+    window.location.href = `Rooms/Rooms.html?id=${encodeURIComponent(room.room)}`;
+});
 
         roomListContainer.appendChild(btn);
     });
 }
 
+
+function saveBookmarkState() {
+    localStorage.setItem('bookmarkState', JSON.stringify(bookmarkState));
+}
 
 });
