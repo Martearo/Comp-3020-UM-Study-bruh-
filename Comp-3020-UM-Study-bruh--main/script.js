@@ -744,19 +744,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
             // Data array for reviews (rendered by JS)
             const reviewsData = [
-                { location: 'University Library - Quiet Room', text: 'Great spot for focused studying — minimal distractions and comfy chairs.', date: '2025-11-01', up: 12, down: 2 },
-                { location: 'Engineering Building - Group Space', text: 'Good for group work, whiteboards available. Could use better lighting.', date: '2025-10-22', up: 8, down: 1 },
-                { location: 'Student Centre - Café Area', text: 'Nice vibe but can be noisy during lunchtime. Power outlets are limited.', date: '2025-09-30', up: 5, down: 4 },
-                { location: 'Science Tower - Quiet Booths', text: 'Small booths with great acoustics. Booking recommended during finals.', date: '2025-08-14', up: 20, down: 0 },
-                { location: 'Meditation Room - Wellness Centre', text: 'Peaceful small room with cushions and soft lighting — excellent for short focus sessions.', date: '2025-07-20', up: 7, down: 0 },
-                { location: 'Engineering Annex - Study Pods', text: 'Individual pods with desks and power outlets; great for concentrated work.', date: '2025-07-02', up: 10, down: 1 },
-                { location: 'North Campus - Study Hall', text: 'Large open hall with many tables; can be noisy but useful when you need space.', date: '2025-06-29', up: 4, down: 2 },
-                { location: 'Graduate Lounge - Quiet Area', text: 'Reserved for grad students; comfy and quiet with a small kitchenette.', date: '2025-06-10', up: 13, down: 0 },
-                { location: 'Chemistry Building - Lab Commons', text: 'Open common area with lab tables; useful when quiet is not required.', date: '2025-05-20', up: 3, down: 1 },
-                { location: 'Campus Garden - Patio', text: 'Lovely outdoor spot in warm weather; benches and natural light.', date: '2025-07-02', up: 9, down: 1 },
-                { location: 'Law Library - Silent Floor', text: 'Extremely quiet and focused; great for reading dense material.', date: '2025-06-18', up: 15, down: 0 },
-                { location: 'Business School - 24/7 Study', text: 'Open late and well-equipped desks, but can be busy at peak hours.', date: '2025-05-05', up: 11, down: 3 },
-                { location: 'Arts Building - Seminar Room', text: 'Comfortable seating and projector available; booking advised.', date: '2025-04-12', up: 6, down: 0 }
+                { location: 'Dafoe', text: 'Great spot for focused studying — minimal distractions and comfy chairs.', date: '2025-11-01', up: 12, down: 2 },
+                { location: 'Engineering', text: 'Good for group work, whiteboards available. Could use better lighting.', date: '2025-10-22', up: 8, down: 1 },
+                { location: 'Tier', text: 'Nice vibe but can be noisy during lunchtime. Power outlets are limited.', date: '2025-09-30', up: 5, down: 4 },
+                { location: 'Agriculture', text: 'Small booths with great acoustics. Booking recommended during finals.', date: '2025-08-14', up: 20, down: 0 },
+                { location: 'Machray Hall', text: 'Peaceful small room with cushions and soft lighting — excellent for short focus sessions.', date: '2025-07-20', up: 7, down: 0 },
+                { location: 'Dafoe', text: 'Individual pods with desks and power outlets; great for concentrated work.', date: '2025-07-02', up: 10, down: 1 },
+                { location: 'Engineering', text: 'Large open hall with many tables; can be noisy but useful when you need space.', date: '2025-06-29', up: 4, down: 2 },
+                { location: 'Tier', text: 'Reserved for grad students; comfy and quiet with a small kitchenette.', date: '2025-06-10', up: 13, down: 0 },
+                { location: 'Agriculture', text: 'Open common area with lab tables; useful when quiet is not required.', date: '2025-05-20', up: 3, down: 1 },
+                { location: 'Machray Hall', text: 'Lovely outdoor spot in warm weather; benches and natural light.', date: '2025-07-02', up: 9, down: 1 },
+                { location: 'Dafoe', text: 'Extremely quiet and focused; great for reading dense material.', date: '2025-06-18', up: 15, down: 0 },
+                { location: 'Engineering', text: 'Open late and well-equipped desks, but can be busy at peak hours.', date: '2025-05-05', up: 11, down: 3 },
+                { location: 'Tier', text: 'Comfortable seating and projector available; booking advised.', date: '2025-04-12', up: 6, down: 0 }
             ];
 
             // Keep an original copy for restoring order when search is cleared
