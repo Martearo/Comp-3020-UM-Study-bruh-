@@ -1008,6 +1008,31 @@ body{
   padding-top: 2.8rem; /* increased to place the start of the content below the thumbs */
   /* Reserve space on the right so the top-right thumbs don't overlap the content */
   padding-right: 6rem;
+  transition: transform 0.14s ease, box-shadow 0.14s ease, border-color 0.14s ease, background 0.14s ease;
+}
+
+/* Hover / focus state to make cards feel interactive */
+.review-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 14px 30px rgba(76,63,52,0.14);
+  border-color: rgba(76,63,52,0.12);
+  background: linear-gradient(180deg, #ffffff, #fbfaf8);
+}
+
+.review-card:active {
+  transform: translateY(-2px) scale(0.998);
+}
+
+/* Accessible focus ring */
+.review-card:focus {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(118,104,56,0.12), 0 14px 30px rgba(76,63,52,0.14);
+  border-color: rgba(118,104,56,0.18);
+}
+
+.review-card:hover .review-location,
+.review-card:focus .review-location {
+  color: #5a482a; /* slightly darker on hover */
 }
 
 .review-location {
