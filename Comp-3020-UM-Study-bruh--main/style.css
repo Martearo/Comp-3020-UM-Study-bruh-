@@ -979,9 +979,10 @@ body{
   justify-content: space-between;
   min-height: 140px;
   position: relative; /* for absolute-positioned thumbs */
-  padding-top: 1.6rem; /* space for the top-right thumbs */
+  /* Reserve vertical space at the top so the top-right thumbs don't overlap the title/text */
+  padding-top: 2.8rem; /* increased to place the start of the content below the thumbs */
   /* Reserve space on the right so the top-right thumbs don't overlap the content */
-  padding-right: 5.2rem;
+  padding-right: 6rem;
 }
 
 .review-location {
