@@ -37,7 +37,17 @@
                 </ul>
             </div>
 
-            <img src="Images/PFP.png" alt="Profile" class="navbar-profile">
+            <div class="profile-wrapper">
+                <img src="Images/PDid.png" alt="Profile" class="navbar-profile">
+
+                <div id="profile-card" class="profile-info-card">
+                    <p class="card-name">Sean Combs</p>
+                    <p class="card-email">P.Did@umanitoba.ca</p>
+                    <hr>
+                    <a href="Login/login.html" class="card-link" id="viewProfileLink">View Profile</a>
+                    <a href="Login/login.html" class="card-link logout">Log Out</a>
+                </div>
+            </div>
         </div>
     </nav>
 
@@ -65,6 +75,19 @@
         <div class="reviews-container">
             <div class="reviews-title-box">
                 <h1>MY REVIEWS</h1>
+            </div>
+
+            <div class="reviews-controls">
+                <input id="reviewSearch" type="search" placeholder="Search reviews (location or text)..." />
+                <select id="reviewSort" aria-label="Sort reviews">
+                    <option value="date_desc">Most recent</option>
+                    <option value="date_asc">Oldest</option>
+                    <option value="up_desc">Most 👍</option>
+                    <option value="up_asc">Least 👍</option>
+                    <option value="location_asc">Location A-Z</option>
+                    <option value="location_desc">Location Z-A</option>
+                </select>
+                <input id="minUp" type="number" min="0" placeholder="Min 👍" />
             </div>
 
             <div class="reviews-grid">
@@ -123,10 +146,146 @@
                         </div>
                     </div>
                 </article>
+
+                <!-- Extra visible reviews to reach 10 shown initially -->
+                <article class="review-card">
+                    <div class="review-content">
+                        <h3 class="review-location">Meditation Room - Wellness Centre</h3>
+                        <p class="review-text">Peaceful small room with cushions and soft lighting — excellent for short focus sessions.</p>
+                    </div>
+                    <div class="review-footer">
+                        <div class="review-meta">Posted: 2025-07-20</div>
+                        <div class="thumbs">
+                            <div class="thumb-display up" aria-hidden="true">👍 <span class="thumb-count">7</span></div>
+                            <div class="thumb-display down" aria-hidden="true">👎 <span class="thumb-count">0</span></div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="review-card">
+                    <div class="review-content">
+                        <h3 class="review-location">Engineering Annex - Study Pods</h3>
+                        <p class="review-text">Individual pods with desks and power outlets; great for concentrated work.</p>
+                    </div>
+                    <div class="review-footer">
+                        <div class="review-meta">Posted: 2025-07-02</div>
+                        <div class="thumbs">
+                            <div class="thumb-display up" aria-hidden="true">👍 <span class="thumb-count">10</span></div>
+                            <div class="thumb-display down" aria-hidden="true">👎 <span class="thumb-count">1</span></div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="review-card">
+                    <div class="review-content">
+                        <h3 class="review-location">North Campus - Study Hall</h3>
+                        <p class="review-text">Large open hall with many tables; can be noisy but useful when you need space.</p>
+                    </div>
+                    <div class="review-footer">
+                        <div class="review-meta">Posted: 2025-06-29</div>
+                        <div class="thumbs">
+                            <div class="thumb-display up" aria-hidden="true">👍 <span class="thumb-count">4</span></div>
+                            <div class="thumb-display down" aria-hidden="true">👎 <span class="thumb-count">2</span></div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="review-card">
+                    <div class="review-content">
+                        <h3 class="review-location">Graduate Lounge - Quiet Area</h3>
+                        <p class="review-text">Reserved for grad students; comfy and quiet with a small kitchenette.</p>
+                    </div>
+                    <div class="review-footer">
+                        <div class="review-meta">Posted: 2025-06-10</div>
+                        <div class="thumbs">
+                            <div class="thumb-display up" aria-hidden="true">👍 <span class="thumb-count">13</span></div>
+                            <div class="thumb-display down" aria-hidden="true">👎 <span class="thumb-count">0</span></div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="review-card">
+                    <div class="review-content">
+                        <h3 class="review-location">Chemistry Building - Lab Commons</h3>
+                        <p class="review-text">Open common area with lab tables; useful when quiet is not required.</p>
+                    </div>
+                    <div class="review-footer">
+                        <div class="review-meta">Posted: 2025-05-20</div>
+                        <div class="thumbs">
+                            <div class="thumb-display up" aria-hidden="true">👍 <span class="thumb-count">3</span></div>
+                            <div class="thumb-display down" aria-hidden="true">👎 <span class="thumb-count">1</span></div>
+                        </div>
+                    </div>
+                </article>
+
+
+                <!-- Additional dummy reviews (hidden by default, revealed by Show more) -->
+                <div class="more-reviews">
+                <article class="review-card">
+                    <div class="review-content">
+                        <h3 class="review-location">Campus Garden - Patio</h3>
+                        <p class="review-text">Lovely outdoor spot in warm weather; benches and natural light.</p>
+                    </div>
+                    <div class="review-footer">
+                        <div class="review-meta">Posted: 2025-07-02</div>
+                        <div class="thumbs">
+                            <div class="thumb-display up" aria-hidden="true">👍 <span class="thumb-count">9</span></div>
+                            <div class="thumb-display down" aria-hidden="true">👎 <span class="thumb-count">1</span></div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="review-card">
+                    <div class="review-content">
+                        <h3 class="review-location">Law Library - Silent Floor</h3>
+                        <p class="review-text">Extremely quiet and focused; great for reading dense material.</p>
+                    </div>
+                    <div class="review-footer">
+                        <div class="review-meta">Posted: 2025-06-18</div>
+                        <div class="thumbs">
+                            <div class="thumb-display up" aria-hidden="true">👍 <span class="thumb-count">15</span></div>
+                            <div class="thumb-display down" aria-hidden="true">👎 <span class="thumb-count">0</span></div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="review-card">
+                    <div class="review-content">
+                        <h3 class="review-location">Business School - 24/7 Study</h3>
+                        <p class="review-text">Open late and well-equipped desks, but can be busy at peak hours.</p>
+                    </div>
+                    <div class="review-footer">
+                        <div class="review-meta">Posted: 2025-05-05</div>
+                        <div class="thumbs">
+                            <div class="thumb-display up" aria-hidden="true">👍 <span class="thumb-count">11</span></div>
+                            <div class="thumb-display down" aria-hidden="true">👎 <span class="thumb-count">3</span></div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="review-card">
+                    <div class="review-content">
+                        <h3 class="review-location">Arts Building - Seminar Room</h3>
+                        <p class="review-text">Comfortable seating and projector available; booking advised.</p>
+                    </div>
+                    <div class="review-footer">
+                        <div class="review-meta">Posted: 2025-04-12</div>
+                        <div class="thumbs">
+                            <div class="thumb-display up" aria-hidden="true">👍 <span class="thumb-count">6</span></div>
+                            <div class="thumb-display down" aria-hidden="true">👎 <span class="thumb-count">0</span></div>
+                        </div>
+                    </div>
+                </article>
+                </div>
+            </div>
+
+            <div class="reviews-actions" aria-hidden="false">
+                <button id="showMoreBtn" class="show-more-btn" aria-expanded="false">Show more reviews</button>
             </div>
         </div>
     </main>
 
     <!-- Counts are constant values (no client-side increment) -->
+    <script src="script.js"></script>
 </body>
 </html>

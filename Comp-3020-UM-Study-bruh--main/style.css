@@ -948,6 +948,26 @@ body{
   gap: 1rem;
 }
 
+.reviews-controls {
+  width: 100%;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.reviews-controls input[type="search"], .reviews-controls input[type="number"], .reviews-controls select {
+  padding: 0.45rem 0.6rem;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  font-size: 0.95rem;
+}
+
+.reviews-controls input[type="search"] { flex: 1 1 40%; }
+.reviews-controls select { flex: 0 0 220px; }
+.reviews-controls input[type="number"] { width: 90px; }
+
 .review-card {
   background: #ffffff;
   border: 1px solid #e9e4dd;
@@ -958,6 +978,8 @@ body{
   flex-direction: column;
   justify-content: space-between;
   min-height: 140px;
+  position: relative; /* for absolute-positioned thumbs */
+  padding-top: 1.6rem; /* space for the top-right thumbs */
 }
 
 .review-location {
@@ -978,7 +1000,7 @@ body{
   align-items: center;
   justify-content: space-between;
   gap: 0.75rem;
-  margin-top: 0.5rem;
+  margin-top: 1.25rem; /* extra space so footer clears the absolute thumbs */
 }
 
 .review-meta {
@@ -990,6 +1012,9 @@ body{
   display: flex;
   gap: 0.5rem;
   align-items: center;
+  position: absolute;
+  top: 12px;
+  right: 12px;
 }
 
 .thumb-btn {
@@ -1019,15 +1044,34 @@ body{
 
 /* non-interactive thumb display (constant counts) */
 .thumb-display {
-  background: transparent;
-  border: none;
-  padding: 0.25rem 0.45rem;
-  border-radius: 8px;
+  background: #f6f6f4;
+  border: 1px solid #e7e4df;
+  padding: 0.18rem 0.5rem;
+  border-radius: 999px;
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  font-size: 1rem;
+  font-size: 0.95rem;
   color: inherit;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+  font-weight: 700;
 }
 .thumb-display.up { color: #2e7d32; }
 .thumb-display.down { color: #a33232; }
+
+/* Hide extra reviews by default; reveal with `.show` */
+.more-reviews { display: none; }
+.more-reviews.show { display: block; }
+
+.reviews-actions { display: flex; justify-content: center; margin-top: 1rem; }
+.show-more-btn {
+  background: #766838;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.12);
+  transition: background 0.15s ease, transform 0.08s ease;
+}
+.show-more-btn:hover { background: #8f7a4f; transform: translateY(-2px); }

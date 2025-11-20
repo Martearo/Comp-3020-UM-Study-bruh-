@@ -729,4 +729,126 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-});
+        // ----------------------------------------------------
+        // --- Reviews Page: Sort / Filter / Show-More Logic ---
+        // ----------------------------------------------------
+        (function initReviewsModule() {
+            const reviewsGrid = document.querySelector('.reviews-grid');
+            if (!reviewsGrid) return; // nothing to do on other pages
+
+            const reviewSearch = document.getElementById('reviewSearch');
+            const reviewSort = document.getElementById('reviewSort');
+            const minUpInput = document.getElementById('minUp');
+            const showMoreBtn = document.getElementById('showMoreBtn');
+            const VISIBLE_COUNT = 10;
+
+            function parseCardData(card) {
+                const location = card.querySelector('.review-location')?.textContent?.trim() || '';
+                const text = card.querySelector('.review-text')?.textContent?.trim() || '';
+                const meta = card.querySelector('.review-meta')?.textContent || '';
+                // Expecting format like: "Posted: 2025-11-01"
+                const dateMatch = meta.match(/Posted:\s*(\d{4}-\d{2}-\d{2})/);
+                const date = dateMatch ? new Date(dateMatch[1]) : new Date(0);
+                const up = parseInt(card.querySelector('.thumb-display.up .thumb-count')?.textContent || '0', 10) || 0;
+                return { card, location, text, date, up };
+            }
+
+            function applyFiltersAndSort() {
+                // Collect all review-card nodes scoped under this reviewsGrid
+                const allCards = Array.from(reviewsGrid.querySelectorAll('.review-card'));
+                const items = allCards.map(parseCardData);
+
+                // Filters
+                const searchTerm = (reviewSearch?.value || '').toLowerCase().trim();
+                const minUp = parseInt(minUpInput?.value || '0', 10) || 0;
+
+                let filtered = items.filter(it => {
+                    if (it.up < minUp) return false;
+                    if (!searchTerm) return true;
+                    return it.location.toLowerCase().includes(searchTerm) || it.text.toLowerCase().includes(searchTerm);
+                });
+
+                // Sort
+                const sortVal = reviewSort?.value || 'date_desc';
+                const [key, dir] = sortVal.split('_'); // e.g., date_desc or up_asc or location_asc
+
+                filtered.sort((a, b) => {
+                    if (key === 'date') {
+                        return dir === 'asc' ? a.date - b.date : b.date - a.date;
+                    }
+                    if (key === 'up') {
+                        return dir === 'asc' ? a.up - b.up : b.up - a.up;
+                    }
+                    if (key === 'location') {
+                        const la = a.location.toLowerCase();
+                        const lb = b.location.toLowerCase();
+                        if (la < lb) return dir === 'asc' ? -1 : 1;
+                        if (la > lb) return dir === 'asc' ? 1 : -1;
+                        return 0;
+                    }
+                    return 0;
+                });
+
+                // Reflow DOM: keep first VISIBLE_COUNT visible, rest inside .more-reviews wrapper
+                // Clear reviewsGrid but preserve any non-review elements (unlikely here)
+                // We'll rebuild: append first N cards, then a .more-reviews with rest
+                const otherNodes = Array.from(reviewsGrid.childNodes).filter(n => !n.classList || !n.classList.contains('review-card'));
+                reviewsGrid.innerHTML = '';
+
+                // Append visible cards
+                const visible = filtered.slice(0, VISIBLE_COUNT);
+                visible.forEach(it => reviewsGrid.appendChild(it.card));
+
+                // Append hidden / more
+                const extra = filtered.slice(VISIBLE_COUNT);
+                if (extra.length > 0) {
+                    const moreDiv = document.createElement('div');
+                    moreDiv.className = 'more-reviews';
+                    extra.forEach(it => moreDiv.appendChild(it.card));
+                    reviewsGrid.appendChild(moreDiv);
+                    if (showMoreBtn) {
+                        showMoreBtn.style.display = 'inline-block';
+                        // Ensure correct aria state
+                        showMoreBtn.setAttribute('aria-expanded', 'false');
+                        showMoreBtn.textContent = 'Show more reviews';
+                    }
+                } else {
+                    if (showMoreBtn) {
+                        showMoreBtn.style.display = 'none';
+                    }
+                }
+
+                // Re-append any non-review nodes (like the .more-reviews placeholder if present before)
+                otherNodes.forEach(n => reviewsGrid.appendChild(n));
+            }
+
+            // Debounce helper
+            function debounce(fn, wait = 150) {
+                let t;
+                return (...args) => {
+                    clearTimeout(t);
+                    t = setTimeout(() => fn(...args), wait);
+                };
+            }
+
+            const debouncedApply = debounce(applyFiltersAndSort, 120);
+
+            if (reviewSearch) reviewSearch.addEventListener('input', debouncedApply);
+            if (reviewSort) reviewSort.addEventListener('change', applyFiltersAndSort);
+            if (minUpInput) minUpInput.addEventListener('input', debouncedApply);
+
+            if (showMoreBtn) {
+                showMoreBtn.addEventListener('click', (e) => {
+                    const more = reviewsGrid.querySelector('.more-reviews');
+                    if (!more) return;
+                    const isShown = more.classList.toggle('show');
+                    showMoreBtn.setAttribute('aria-expanded', isShown ? 'true' : 'false');
+                    showMoreBtn.textContent = isShown ? 'Show fewer reviews' : 'Show more reviews';
+                });
+            }
+
+            // Initial run
+            applyFiltersAndSort();
+        })();
+
+    });
