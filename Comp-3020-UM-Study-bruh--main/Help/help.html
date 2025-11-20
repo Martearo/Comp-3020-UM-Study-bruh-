@@ -1,0 +1,176 @@
+<html> 
+
+<head> 
+    <title>Help & Support - StudyDen</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+
+<body>
+    <nav class="navbar-custom" role="navigation" aria-label="Top navigation">        
+
+        <div class="nav-inner">
+            <a href="../index.html" class="navbar-Logo">
+
+                <img src="../Images/UMLogo.png" alt="StudyDen Logo" class="navbar-LogoImg">
+                <div class="navbar-LogoText">StudyDen</div>
+
+            </a>
+
+            
+
+
+            <div class="user-actions-wrapper"> 
+
+                <div class="language-selector">
+                    <button class="lang-btn">
+                        <img src="https://flagcdn.com/w20/ca.png" alt="flag" class="flag-icon">
+                        <span>EN</span>
+                        <span class="arrow">▼</span> 
+                    </button>
+
+                    <ul class="dropdown">
+                        <li class="dropdown-header">Change Language:</li> 
+                        <li><img src="https://flagcdn.com/w20/fr.png" alt="French"> FR</li>
+                    </ul>
+                </div>
+
+
+            <div class="profile-wrapper"> 
+                <img src="../Images/PDid.png" alt="Profile" class="navbar-profile">
+                
+                <div id="profile-card" class="profile-info-card">
+                    <p class="card-name">Sean Combs</p>
+                    <p class="card-email">P.Did@umanitoba.ca</p>
+                    <hr>
+                    <a href="#" class="card-link" id="viewProfileLink">View Profile</a>
+                    <a href="../Login/login.html" class="card-link logout">Log Out</a>
+                </div>
+            </div>
+
+
+            <!-- <img src="Images/PFP.png" alt="Profile" class="navbar-profile"> -->
+        </div>
+    </nav>
+
+    <!-- Secondary Navbar -->
+
+    <!--<img src="Images/HamburgerIco.png" alt="Menu" class="HamburgerMenu">
+-->>
+    <nav class="navbar-secondary">
+        <div class="nav-inner">    
+
+            <img src="../Images/HamburgerIco.png" alt="Menu" class="HamburgerMenu">
+            
+            <!-- Sidebar Menu -->
+            <div class="sidebar" id="sidebar">
+                <a href="../index.html">🏠 Home</a>
+                <a href="#">📚 My Reviews</a>
+                <a href="#">📑 Bookmarks</a>
+                <a href="../Login/login.html">🔒 Login / SignUp</a>
+
+                <button class="closeBtn" id="closeBtn">← Close</button>
+            </div>
+
+
+            <div class="breadcrumbs">
+                <a href="../index.html">Home</a> ›
+                <span> Help</span>
+            </div>
+            
+            <a href="#" class="help-btn">Help</a>
+       
+        </div>
+    </nav>
+
+    <main class="site-content">
+        <div class="help-content-wrapper">
+        
+        <div class="help-side-card">
+            <h3>Quick Jumps 🚀</h3>
+            <ul>
+                <li><a href="#getting-started"><i class="fas fa-play-circle"></i> Getting Started</a></li>
+                <li><a href="#map-navigation"><i class="fas fa-map-marked-alt"></i> Map & Controls</a></li>
+                <li><a href="#status-ratings"><i class="fas fa-info-circle"></i> Spot & Room Status</a></li>
+                <li><a href="#account-features"><i class="fas fa-user"></i> Account & Bookmarks</a></li>
+                <li><a href="#contact-support"><i class="fas fa-headset"></i> Contact Support</a></li>
+            </ul>
+        </div>
+        
+        <div class="help-main-article">
+            
+            <h1>Welcome! How can we help you find the best spot?</h1>
+            
+            <div class="help-nav-buttons">
+                <a href="#getting-started">Getting Started</a>
+                <a href="#map-navigation">Map & Controls</a>
+                <a href="#status-ratings">Spot & Room Status</a>
+                <a href="#account-features">Account</a>
+                <a href="#contact-support">Support</a>
+            </div>
+
+            <hr>
+
+            <div class="help-section-card"> 
+                <h2 id="getting-started">Getting Started with StudyDen 🧭</h2>
+                <p>StudyDen is designed to quickly connect you with available study spots and rooms on campus. There are two main views:</p>
+                <ul>
+                    <li><strong>The Main Map (Homepage):</strong> Displays large campus areas or buildings, which we call **Study Spots**.</li>
+                    <li><strong>The Rooms Page:</strong> Accessed by clicking a spot on the map, this shows the reservable **Study Rooms** inside that building.</li>
+                    <li><strong>Current Status:</strong> We use your device's current time to determine the open/closed status of locations in real-time.</li>
+                </ul>
+            </div>
+            
+            <div class="help-section-card">
+                <h2 id="map-navigation">Map & Navigation Controls 🗺️</h2>
+                <p>The map provides an interactive view of campus locations. Use the controls and pins to find your next study spot:</p>
+                <ul>
+                    <li><strong>Red Pins:</strong> Each red pin marks a major campus building or **Study Spot**. Click a pin or hover over it to see an information card.</li>
+                    <li><strong>Zoom In/Out (<i class="fas fa-plus"></i> / <i class="fas fa-minus"></i>):</strong> Use these buttons (top right of the map) to adjust your view.</li>
+                    <li><strong>Reset View (<i class="fas fa-redo-alt"></i>):</strong> Click this button to instantly return the map to its default zoom level and center position.</li>
+                    <li><strong>Search Bar:</strong> Use the search bar in the main navbar to quickly filter spots by **Building Name**.</li>
+                </ul>
+            </div>
+
+            <div class="help-section-card">
+                <h2 id="status-ratings">Spot & Room Status 🟢/🔴 & Ratings ⭐</h2>
+                <p>Understanding the location status and user ratings is key to choosing your spot.</p>
+                
+                <h3>Status Indicators</h3>
+                <ul>
+                    <li><strong>Open (<span style="color:#4CAF50;">Green</span>):</strong> The location is currently within its defined operating hours and accessible.</li>
+                    <li><strong>Closed (<span style="color:#D32F2F;">Red</span>):</strong> The location is currently outside its operating hours.</li>
+                </ul>
+                
+                <h3>Ratings</h3>
+                <p>Ratings are based on user feedback (out of 5.0) and help you gauge the popularity and quality of the study environment. You can submit your own rating after visiting a spot.</p>
+            </div>
+
+            <div class="help-section-card">
+                <h2 id="account-features">Account, Bookmarks, and Reviews 👤</h2>
+                <p>Your sidebar menu (<i class="fas fa-bars"></i>) and profile icon give you access to personalized features:</p>
+                <ul>
+                    <li><strong>Login / Sign Up:</strong> Access your account using your profile icon (top right).</li>
+                    <li><strong>Bookmarks:</strong> Click the <i class="far fa-bookmark" style="color: gold;"></i> icon on any study room to save it to your Bookmarks list for quick access later.</li>
+                    <li><strong>My Reviews:</strong> View and manage all the ratings and reviews you have submitted for spots and rooms.</li>
+                </ul>
+            </div>
+
+            <div class="help-section-card">
+                <h2 id="contact-support">Contact Support 📧</h2>
+                <p>Still have questions or found a bug? We're here to help!</p>
+                <ul>
+                    <li><strong>Report a Problem:</strong> If you find incorrect hours, broken links, or map issues, please email us at <a href="mailto:support@studyden.com">support@studyden.com</a>.</li>
+                    <li><strong>Feedback:</strong> We love hearing suggestions! Send us your ideas for new features or improvements.</li>
+                </ul>
+            </div>
+            
+        </div>
+        
+    </div>
+    </main>
+
+</body>
+
+
+</html>

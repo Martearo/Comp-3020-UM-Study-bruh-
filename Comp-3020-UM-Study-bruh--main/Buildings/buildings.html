@@ -1,0 +1,135 @@
+<html> 
+
+<head> 
+    <title>StudyDen/Rooms</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div id="bookmark-toast" class="toast">
+        <span id="toast-message"></span>
+    </div>
+
+    <nav class="navbar-custom" role="navigation" aria-label="Top navigation">        
+
+        <div class="nav-inner">
+            <a href="../index.html" class="navbar-Logo">
+
+                <img src="../Images/UMLogo.png" alt="StudyDen Logo" class="navbar-LogoImg">
+                <div class="navbar-LogoText">StudyDen</div>
+
+            </a>
+
+            <div class="search-bar-wrapper">
+                
+                <div class="search-input-group"> 
+                    <span class="search-icon">🔍</span>
+                    <input type="text" placeholder="Search Rooms..." id="searchInput"/>
+                </div>
+                
+                <div class="sort-dropdown-wrapper">
+                    <button class="sort-btn" id="roomSortBtn">⇅ Sort</button> 
+                    <ul class="sort-dropdown" id="roomSortDropdown">
+                        <li data-sort-by="rating" data-sort-order="desc">⭐ Rating (Highest)</li>
+                        <li data-sort-by="rating" data-sort-order="asc">⭐ Rating (Lowest)</li>
+                        <li data-sort-by="room" data-sort-order="asc">Room Number (A-Z)</li>
+                        <li data-sort-by="room" data-sort-order="desc">Room Number (Z-A)</li>
+                    </ul>
+                </div>
+            </div>
+
+
+            <div class="language-selector">
+
+                <button class="lang-btn">
+                    <img src="https://flagcdn.com/w20/ca.png" alt="flag" class="flag-icon">
+                    <span>EN</span>
+                    <span class="arrow">▼</span> <!-- 👈 dropdown arrow -->
+                </button>
+                
+                <ul class="dropdown">
+                    <li class="dropdown-header">Change Language:</li> 
+                    <li><img src="https://flagcdn.com/w20/fr.png" alt="French"> FR</li> 
+                </ul>
+                
+            </div>
+
+
+            <div class="profile-wrapper"> 
+                <img src="../Images/PDid.png" alt="Profile" class="navbar-profile">
+                
+                <div id="profile-card" class="profile-info-card">
+                    <p class="card-name">Sean Combs</p>
+                    <p class="card-email">P.Did@umanitoba.ca</p>
+                    <hr>
+                    <a href="#" class="card-link" id="viewProfileLink">View Profile</a>
+                    <a href="../Login/login.html" class="card-link logout">Log Out</a>
+                </div>
+            </div>
+
+            <!-- <img src="../Images/PFP.png" alt="Profile" class="navbar-profile"> -->
+        </div>
+    </nav>
+
+    <!-- Secondary Navbar -->
+
+    <!--<img src="Images/HamburgerIco.png" alt="Menu" class="HamburgerMenu">
+-->>
+    <nav class="navbar-secondary">
+        <div class="nav-inner">    
+
+            <img src="../Images/HamburgerIco.png" alt="Menu" class="HamburgerMenu">
+            
+            <!-- Sidebar Menu -->
+            <div class="sidebar" id="sidebar">
+                <a href="../index.html ">🏠 Home</a>
+                <a href="#">📚 My Reviews</a>
+                <a href="#">📑 Bookmarks</a>
+                <a href="../Login/login.html">🔒 Login / SignUp</a>
+
+                <button class="closeBtn" id="closeBtn">← Close</button>
+            </div>
+
+
+            <div class="breadcrumbs">
+                <a href="../index.html">Home</a> › 
+                <span href="#">Study Spots</span> 
+            </div>
+            
+            <a href="../Help/help.html" class="help-btn">Help</a>
+       
+        </div>
+    </nav>
+
+    <main class="room-content">
+        <div class="map-container">
+            <div class="map-content">
+                <img src="" alt="Map of study spots" class="map-image">
+            </div>
+            <div id="pin-popup-root"></div>   
+        </div>
+
+        <div class="room-button-list" id="room-button-list">
+            <!-- <button class="room-btn">430</button>
+            <button class="room-btn">Cafeteria</button>
+            <button class="room-btn">Study Hall</button>
+            <button class="room-btn">Lounge</button>
+            <button class="room-btn">Gym</button> -->
+            <!-- Add more buttons here -->
+        </div>
+    </main>
+
+    <!-- <nav class="navbar-bottom">
+        <div class="nav-inner">
+            <span>© 2024 StudyDen. All rights reserved.</span>
+        </div>
+    </nav> -->
+
+    <script src="../script.js"></script>
+</body>
+
+
+
+
+</html>
