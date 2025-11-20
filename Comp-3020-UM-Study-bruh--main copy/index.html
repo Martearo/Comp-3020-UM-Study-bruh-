@@ -1,0 +1,152 @@
+<html> 
+
+<head> 
+    <title>StudyDen</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <nav class="navbar-custom" role="navigation" aria-label="Top navigation">        
+
+        <div class="nav-inner">
+            <a href="index.html" class="navbar-Logo">
+
+                <img src="Images/UMLogo.png" alt="StudyDen Logo" class="navbar-LogoImg">
+                <div class="navbar-LogoText">StudyDen</div>
+
+            </a>
+
+            <div class="search-bar-wrapper">
+    
+                <div class="search-input-group"> 
+                    <span class="search-icon">🔍</span>
+                    <input type="text" placeholder="Search Buildings..." id="searchInput"/>
+                </div>
+                <div class="sort-dropdown-wrapper">
+                    <button class="sort-btn" id="sortBtn">⇅ Sort</button>
+                    <ul class="sort-dropdown" id="sortDropdown">
+                        <li data-sort-by="rating" data-sort-order="desc">⭐ Rating (Highest)</li>
+                        <li data-sort-by="rating" data-sort-order="asc">⭐ Rating (Lowest)</li>
+                        <li data-sort-by="name" data-sort-order="asc">A-Z Name</li>
+                        <li data-sort-by="name" data-sort-order="desc">Z-A Name</li>
+                    </ul>
+                </div>
+            </div>
+
+
+            <div class="language-selector">
+
+                <button class="lang-btn">
+                    <img src="https://flagcdn.com/w20/ca.png" alt="flag" class="flag-icon">
+                    <span>EN</span>
+                    <span class="arrow">▼</span> <!-- 👈 dropdown arrow -->
+                </button>
+                
+                <ul class="dropdown">
+                    <li class="dropdown-header">Change Language:</li> 
+                    <li><img src="https://flagcdn.com/w20/fr.png" alt="French"> FR</li> 
+                </ul>       
+            </div>
+
+
+            <div class="profile-wrapper"> 
+                <img src="Images/PDid.png" alt="Profile" class="navbar-profile">
+                
+                <div id="profile-card" class="profile-info-card">
+                    <p class="card-name">Sean Combs</p>
+                    <p class="card-email">P.Did@umanitoba.ca</p>
+                    <hr>
+                    <a href="Login/login.html" class="card-link" id="viewProfileLink">View Profile</a>
+                    <a href="Login/login.html" class="card-link logout">Log Out</a>
+                </div>
+            </div>
+
+
+            <!-- <img src="Images/PFP.png" alt="Profile" class="navbar-profile"> -->
+        </div>
+    </nav>
+
+    <!-- Secondary Navbar -->
+
+    <!--<img src="Images/HamburgerIco.png" alt="Menu" class="HamburgerMenu">
+-->>
+    <nav class="navbar-secondary">
+        <div class="nav-inner">    
+
+            <img src="Images/HamburgerIco.png" alt="Menu" class="HamburgerMenu">
+            
+            <!-- Sidebar Menu -->
+            <div class="sidebar" id="sidebar">
+                <a href="index.html">🏠 Home</a>
+                <a href="myreviews.html">📚 My Reviews</a>
+                <a href="#">📑 Bookmarks</a>
+                <a href="Login/login.html">🔒 Login / SignUp</a>
+
+                <button class="closeBtn" id="closeBtn">← Close</button>
+            </div>
+
+
+            <div class="breadcrumbs">
+                <span href="#">Home</span> › 
+                <!--<a href="#">Study Spots</a> › --> 
+                <!--<span>Library</span>-->
+            </div>
+            
+            <a href="Help/help.html" class="help-btn">Help</a>
+       
+        </div>
+    </nav>
+
+    <main class="site-content">
+        <div class="map-and-legend-wrapper"> 
+            <div class="map-container">
+                <!-- WRAPPER FIX: Add this new div -->
+                <div class="map-content">
+                    <img src="Images/Map.png" alt="Map of study spots" class="map-image">
+                </div>
+                <!-- Controls stay outside map-content so they don't scale -->
+                <div class="map-controls">
+                    <button id="zoomInBtn" class="control-btn">+</button>
+                    <button id="zoomOutBtn" class="control-btn">-</button>
+                    <button id="resetViewBtn" class="control-btn">⟲</button>
+                </div>
+            </div>
+
+            <div class="map-legend"> <h3>Map Guide</h3>
+                <p>Click on a pin to view available study rooms in that building.</p>
+                
+                <div class="legend-item">
+                    <img src="Images/PinIcon.png" alt="Pin icon" class="legend-pin-icon"> <span>Clickable Study Spot</span>
+                </div>
+                
+                <p>Map Controls:</p>
+                <div class="legend-item">
+                    <span class="legend-control-icon">+</span> <span>Zoom In (Max)</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-control-icon">-</span> <span>Zoom Out (Min)</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-control-icon">⟲</span> <span>Reset View</span>
+                </div>
+                
+                <p>You can also use the search bar above to filter spots.</p>
+            </div>
+        </div>
+
+        <div class="button-list" id="button-list"> </div>
+    </main>
+
+    <!-- <nav class="navbar-bottom">
+        <div class="nav-inner">
+            <span>© 2024 StudyDen. All rights reserved.</span>
+        </div>
+    </nav> -->
+
+    <div id="pin-popup-root"></div>
+
+    <script src="script.js"></script>
+</body>
+
+
+</html>

@@ -1,0 +1,400 @@
+<html> 
+
+<head> 
+    <title>StudyDen</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <nav class="navbar-custom" role="navigation" aria-label="Top navigation">        
+
+        <div class="nav-inner">
+            <a href="../index.html" class="navbar-Logo">
+
+                <img src="../Images/UMLogo.png" alt="StudyDen Logo" class="navbar-LogoImg">
+                <div class="navbar-LogoText">StudyDen</div>
+
+            </a>
+
+            
+
+
+            <div class="user-actions-wrapper"> 
+
+                <div class="language-selector">
+                    <button class="lang-btn">
+                        <img src="https://flagcdn.com/w20/ca.png" alt="flag" class="flag-icon">
+                        <span>EN</span>
+                        <span class="arrow">▼</span> 
+                    </button>
+
+                    <ul class="dropdown">
+                        <li class="dropdown-header">Change Language:</li> 
+                        <li><img src="https://flagcdn.com/w20/fr.png" alt="French"> FR</li>
+                    </ul>
+                </div>
+
+
+            <div class="profile-wrapper"> 
+                <img src="../Images/PDid.png" alt="Profile" class="navbar-profile">
+                
+                <div id="profile-card" class="profile-info-card">
+                    <p class="card-name">Sean Combs</p>
+                    <p class="card-email">P.Did@umanitoba.ca</p>
+                    <hr>
+                    <a href="../Login/login.html" class="card-link" id="viewProfileLink">View Profile</a>
+                    <a href="../Login/login.html" class="card-link logout">Log Out</a>
+                </div>
+            </div>
+
+
+            <!-- <img src="Images/PFP.png" alt="Profile" class="navbar-profile"> -->
+        </div>
+    </nav>
+
+    <!-- Secondary Navbar -->
+
+    <!--<img src="Images/HamburgerIco.png" alt="Menu" class="HamburgerMenu">
+-->>
+    <nav class="navbar-secondary">
+        <div class="nav-inner">    
+
+            <img src="../Images/HamburgerIco.png" alt="Menu" class="HamburgerMenu">
+            
+            <!-- Sidebar Menu -->
+            <div class="sidebar" id="sidebar">
+                <a href="../index.html">🏠 Home</a>
+                <a href="../myreviews.html">📚 My Reviews</a>
+                <a href="#">📑 Bookmarks</a>
+                <a href="../Login/login.html">🔒 Login / SignUp</a>
+
+                <button class="closeBtn" id="closeBtn">← Close</button>
+            </div>
+
+
+            <div class="breadcrumbs">
+                <a href="../index.html">Home</a> ›
+                <span id="buildingCrumbPlaceholder">
+                    </span>
+                ›
+                <span id="roomCrumb">Room</span>
+            </div>
+            
+            <a href="../Help/help.html" class="help-btn">Help</a>
+       
+        </div>
+    </nav>
+
+    
+
+    <main class="site-content">
+        <div class="left-column">
+            <div class="card gallery-card">
+                <div class="carousel-container">
+                    <div class="carousel-slide" id="carouselSlide">
+                        <div class="carousel-image" style="background-image: url('https://images.unsplash.com/photo-1562774053-701939374585?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80');">
+
+                        </div>
+                        <div class="carousel-image" style="background-image: url('https://images.unsplash.com/photo-1589998059171-988d887df646?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80');">
+                            
+                        </div>
+                        <div class="carousel-image" style="background-image: url('https://images.unsplash.com/photo-1507842217343-583bb7270b66?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80');">
+                           
+                        </div>
+                        <div class="carousel-image" style="background-image: url('https://images.unsplash.com/photo-1559925393-8be0ec4767c8?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80');">
+                           
+                        </div>
+                        <div class="carousel-image" style="background-image: url('https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80');">
+                            
+                        </div>
+                    </div>
+                    
+                    <div class="carousel-nav">
+                        <button class="carousel-btn" id="prevBtn">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <button class="carousel-btn" id="nextBtn">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="carousel-dots" id="carouselDots">
+                        <!-- Dots will be generated by JavaScript -->
+                    </div>
+                </div>
+                
+                <div class="info-item" style="margin-top: 20px;">
+                    <div class="info-label">
+                        <i class="fas fa-info-circle"></i> DESCRIPTION:
+                    </div>
+                    <div class="info-value" id="roomDescription">Modern campus facility with state-of-the-art amenities and collaborative spaces. Features include study rooms, computer labs, and comfortable seating areas.</div>                </div>
+            </div>
+            
+            <div class="card facility-card">
+                <div class="info-item">
+                    <div class="info-label">
+                        <i class="fas fa-star"></i> RATING:
+                    </div>
+                    <div class="info-value rating">
+                        <span id="facilityRating">4.7</span>/5
+                        <span class="rating-change" id="ratingChange"></span>
+                    </div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-label">
+                        <i class="fas fa-door-open"></i> ROOM No:
+                    </div>
+                    <div class="info-value" id="roomNumberDisplay">A-304</div>                
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-label">
+                        <i class="fas fa-clock"></i> OPEN HOURS:
+                    </div>
+                    <div class="info-value hours">
+                        <span class="hour-item">Mon-Fri: 8AM-10PM</span>
+                        <span class="hour-item">Sat: 9AM-6PM</span>
+                        <span class="hour-item">Sun: 10AM-4PM</span>
+                    </div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-label">
+                        <i class="fas fa-map-marker-alt"></i> ADDRESS:
+                    </div>
+                    <div class="info-value" id="roomAddress">123 University Ave, Campus Center, Building A</div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-label">
+                        <i class="fas fa-wifi"></i> AMENITIES:
+                    </div>
+                    <div class="info-value" id="roomAmenities">Free WiFi, Printing Services, Study Rooms, Coffee Station, Charging Ports</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Increased size of reviews card -->
+        <div class="card reviews-card">
+            <div class="reviews-header">
+                <h3>REVIEWS & FEEDBACK</h3>
+                <div class="scroll-indicator">
+                    <i class="fas fa-chevron-down" id="scrollDownBtn"></i>
+                </div>
+            </div>
+            
+            <div class="reviews-container" id="reviewsContainer">
+                <div class="review-item">
+                    <div class="review-header">
+                        <div class="reviewer">Alex Johnson</div>
+                        <div class="review-date">Oct 12, 2023</div>
+                    </div>
+                    <div class="review-text">
+                        "Great facility with excellent resources! The study areas are well-maintained and the staff is always helpful."
+                    </div>
+                    <div class="review-rating">★★★★★</div>
+                    <div class="vote-container">
+                        <button class="vote-btn upvote-btn" data-review="1">
+                            <i class="fas fa-thumbs-up"></i>
+                        </button>
+                        <span class="vote-count" id="voteCount1">12</span>
+                        <button class="vote-btn downvote-btn" data-review="1">
+                            <i class="fas fa-thumbs-down"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="review-item">
+                    <div class="review-header">
+                        <div class="reviewer">Sam Davis</div>
+                        <div class="review-date">Oct 8, 2023</div>
+                    </div>
+                    <div class="review-text">
+                        "Always clean and well-maintained. The extended hours during exam season are a lifesaver!"
+                    </div>
+                    <div class="review-rating">★★★★☆</div>
+                    <div class="vote-container">
+                        <button class="vote-btn upvote-btn" data-review="2">
+                            <i class="fas fa-thumbs-up"></i>
+                        </button>
+                        <span class="vote-count" id="voteCount2">8</span>
+                        <button class="vote-btn downvote-btn" data-review="2">
+                            <i class="fas fa-thumbs-down"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="review-item">
+                    <div class="review-header">
+                        <div class="reviewer">Taylor Wilson</div>
+                        <div class="review-date">Oct 5, 2023</div>
+                    </div>
+                    <div class="review-text">
+                        "Love the collaborative spaces. Perfect for group projects. The printing facilities could use some upgrades though."
+                    </div>
+                    <div class="review-rating">★★★★☆</div>
+                    <div class="vote-container">
+                        <button class="vote-btn upvote-btn" data-review="3">
+                            <i class="fas fa-thumbs-up"></i>
+                        </button>
+                        <span class="vote-count" id="voteCount3">5</span>
+                        <button class="vote-btn downvote-btn" data-review="3">
+                            <i class="fas fa-thumbs-down"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="review-item">
+                    <div class="review-header">
+                        <div class="reviewer">Jordan Miller</div>
+                        <div class="review-date">Oct 1, 2023</div>
+                    </div>
+                    <div class="review-text">
+                        "The coffee station is a nice touch. Would be great if they offered more snack options."
+                    </div>
+                    <div class="review-rating">★★★☆☆</div>
+                    <div class="vote-container">
+                        <button class="vote-btn upvote-btn" data-review="4">
+                            <i class="fas fa-thumbs-up"></i>
+                        </button>
+                        <span class="vote-count" id="voteCount4">2</span>
+                        <button class="vote-btn downvote-btn" data-review="4">
+                            <i class="fas fa-thumbs-down"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="review-item">
+                    <div class="review-header">
+                        <div class="reviewer">Casey Rodriguez</div>
+                        <div class="review-date">Sep 28, 2023</div>
+                    </div>
+                    <div class="review-text">
+                        "Perfect quiet study environment. The individual cubicles are excellent for focused work sessions."
+                    </div>
+                    <div class="review-rating">★★★★★</div>
+                    <div class="vote-container">
+                        <button class="vote-btn upvote-btn" data-review="5">
+                            <i class="fas fa-thumbs-up"></i>
+                        </button>
+                        <span class="vote-count" id="voteCount5">15</span>
+                        <button class="vote-btn downvote-btn" data-review="5">
+                            <i class="fas fa-thumbs-down"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="review-item">
+                    <div class="review-header">
+                        <div class="reviewer">Morgan Lee</div>
+                        <div class="review-date">Sep 25, 2023</div>
+                    </div>
+                    <div class="review-text">
+                        "Good location but often crowded. Wish there were more power outlets available near seating areas."
+                    </div>
+                    <div class="review-rating">★★★☆☆</div>
+                    <div class="vote-container">
+                        <button class="vote-btn upvote-btn" data-review="6">
+                            <i class="fas fa-thumbs-up"></i>
+                        </button>
+                        <span class="vote-count" id="voteCount6">3</span>
+                        <button class="vote-btn downvote-btn" data-review="6">
+                            <i class="fas fa-thumbs-down"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="review-item">
+                    <div class="review-header">
+                        <div class="reviewer">Riley Chen</div>
+                        <div class="review-date">Sep 20, 2023</div>
+                    </div>
+                    <div class="review-text">
+                        "Excellent natural lighting throughout the facility. The large windows make it feel very open and inviting."
+                    </div>
+                    <div class="review-rating">★★★★★</div>
+                    <div class="vote-container">
+                        <button class="vote-btn upvote-btn" data-review="7">
+                            <i class="fas fa-thumbs-up"></i>
+                        </button>
+                        <span class="vote-count" id="voteCount7">9</span>
+                        <button class="vote-btn downvote-btn" data-review="7">
+                            <i class="fas fa-thumbs-down"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="review-item">
+                    <div class="review-header">
+                        <div class="reviewer">Jamie Patel</div>
+                        <div class="review-date">Sep 18, 2023</div>
+                    </div>
+                    <div class="review-text">
+                        "The group study rooms are fantastic for collaborative work. Easy to book and well-equipped."
+                    </div>
+                    <div class="review-rating">★★★★☆</div>
+                    <div class="vote-container">
+                        <button class="vote-btn upvote-btn" data-review="8">
+                            <i class="fas fa-thumbs-up"></i>
+                        </button>
+                        <span class="vote-count" id="voteCount8">11</span>
+                        <button class="vote-btn downvote-btn" data-review="8">
+                            <i class="fas fa-thumbs-down"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="info-item" style="margin-top: 20px;">
+                <div class="info-label">
+                    <i class="fas fa-chart-line"></i> UTILIZATION:
+                </div>
+                <div class="info-value" id="roomUtilization">Peak hours: 10AM-2PM (75% capacity)</div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Floating Write Review Button -->
+    <div class="write-review-container">
+        <button class="write-review-btn" id="writeReviewBtn">
+            <i class="fas fa-pen"></i> Write a Review
+        </button>
+    </div>
+
+    <!-- Write Review Modal -->
+    <div class="modal" id="reviewModal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeReviewModal">&times;</span>
+            <h2>Write a Review</h2>
+            <form id="reviewForm">
+                <div class="form-group">
+                    <label for="reviewerName">Your Name</label>
+                    <input type="text" id="reviewerName" class="form-control" placeholder="Enter your name" required>
+                </div>
+                <div class="form-group">
+                    <label for="reviewRating">Rating</label>
+                    <div class="rating-stars" id="ratingStars">
+                        <span class="star" data-rating="1">☆</span>
+                        <span class="star" data-rating="2">☆</span>
+                        <span class="star" data-rating="3">☆</span>
+                        <span class="star" data-rating="4">☆</span>
+                        <span class="star" data-rating="5">☆</span>
+                    </div>
+                    <input type="hidden" id="reviewRating" value="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="reviewText">Your Review</label>
+                    <textarea id="reviewText" class="form-control" rows="5" placeholder="Share your experience with this facility..." required></textarea>
+                </div>
+                <button type="submit" class="btn submit-review-btn">Submit Review</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

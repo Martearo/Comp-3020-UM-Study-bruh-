@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | StudyDen</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Top Navbar -->
+    <nav class="navbar-custom" role="navigation" aria-label="Top navigation">        
+        <div class="nav-inner">
+            <a href="../index.html" class="navbar-Logo"> 
+                <img src="../Images/UMLogo.png" alt="StudyDen Logo" class="navbar-LogoImg">
+                <div class="navbar-LogoText">StudyDen</div>
+            </a>
+
+            <div class="nav-right">
+            
+                <div class="language-selector">
+
+                    <button class="lang-btn">
+                        <img src="https://flagcdn.com/w20/ca.png" alt="flag" class="flag-icon">
+                        <span>EN</span>
+                        <span class="arrow">▼</span>
+                    </button>
+                    <ul class="dropdown">
+                        <li class="dropdown-header">Change Language:</li> 
+                        <li><img src="https://flagcdn.com/w20/fr.png" alt="French"> FR</li>
+                    </ul>
+                    
+                </div>
+
+                <img src="../Images/PFP.png" alt="Profile" class="navbar-profile">
+            </div>
+        </div>
+    </nav>
+
+    <!-- Login Section -->
+    <main class="login-container">
+        <div class="login-card">
+            <h2>Welcome Back</h2>
+            <p class="login-subtext">Sign in to continue to StudyDen</p>
+
+            <form class="login-form">
+                <label for="email">Email</label>
+                <input type="email" id="email" placeholder="Enter your email" required>
+
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Enter your password" required>
+
+                <a href="../index.html" type="submit" class="login-btn">Login</a>
+
+                <p class="login-footer">
+                    Don’t have an account? <a href="signup.html">Sign Up</a><br>
+                    <a href="forgot.html" class="forgot-link">Forgot Password?</a>
+                </p>
+            </form>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

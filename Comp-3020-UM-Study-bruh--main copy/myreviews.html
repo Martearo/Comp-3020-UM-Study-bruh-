@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>My Reviews | StudyDen</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Primary Navbar (copied from index to match framework) -->
+    <nav class="navbar-custom" role="navigation" aria-label="Top navigation">        
+        <div class="nav-inner">
+            <a href="index.html" class="navbar-Logo">
+                <img src="Images/UMLogo.png" alt="StudyDen Logo" class="navbar-LogoImg">
+                <div class="navbar-LogoText">StudyDen</div>
+            </a>
+
+            <div class="search-bar-wrapper">
+                <div class="search-input-group"> 
+                    <span class="search-icon">🔍</span>
+                    <input type="text" placeholder="Search Buildings..." id="searchInput"/>
+                </div>
+                <div class="sort-dropdown-wrapper">
+                    <button class="sort-btn" id="sortBtn">⇅ Sort</button>
+                </div>
+            </div>
+
+            <div class="language-selector">
+                <button class="lang-btn">
+                    <img src="https://flagcdn.com/w20/ca.png" alt="flag" class="flag-icon">
+                    <span>EN</span>
+                    <span class="arrow">▼</span>
+                </button>
+                <ul class="dropdown">
+                    <li class="dropdown-header">Change Language:</li>
+                    <li><img src="https://flagcdn.com/w20/fr.png" alt="French"> FR</li>
+                </ul>
+            </div>
+
+            <div class="profile-wrapper">
+                <img src="Images/PDid.png" alt="Profile" class="navbar-profile">
+
+                <div id="profile-card" class="profile-info-card">
+                    <p class="card-name">Sean Combs</p>
+                    <p class="card-email">P.Did@umanitoba.ca</p>
+                    <hr>
+                    <a href="Login/login.html" class="card-link" id="viewProfileLink">View Profile</a>
+                    <a href="Login/login.html" class="card-link logout">Log Out</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Secondary Navbar -->
+    <nav class="navbar-secondary">
+        <div class="nav-inner">
+            <img src="Images/HamburgerIco.png" alt="Menu" class="HamburgerMenu">
+            <div class="sidebar" id="sidebar">
+                <a href="index.html">🏠 Home</a>
+                <a href="myreviews.html">📚 My Reviews</a>
+                <a href="#">📑 Bookmarks</a>
+                <a href="Login/login.html">🔒 Login / SignUp</a>
+                <button class="closeBtn" id="closeBtn">← Close</button>
+            </div>
+
+            <div class="breadcrumbs">
+                <a href="index.html">Home</a> › <a href="myreviews.html">My Reviews</a>
+            </div>
+
+            <a href="Help/help.html" class="help-btn">Help</a>
+        </div>
+    </nav>
+
+    <main class="site-content">
+        <div class="reviews-container">
+            <div class="reviews-title-box">
+                <h1>MY REVIEWS</h1>
+            </div>
+
+            <div class="reviews-controls">
+                <input id="reviewSearch" type="search" placeholder="Search reviews (location or text)..." />
+                <select id="reviewSort" aria-label="Sort reviews">
+                    <option value="date_desc">Most recent</option>
+                    <option value="date_asc">Oldest</option>
+                    <option value="up_desc">Most 👍</option>
+                    <option value="up_asc">Least 👍</option>
+                    <option value="location_asc">Location A-Z</option>
+                    <option value="location_desc">Location Z-A</option>
+                </select>
+                <input id="minUp" type="number" min="0" placeholder="Min 👍" />
+            </div>
+
+            <div class="reviews-grid">
+                <!-- Reviews are rendered dynamically from `reviewsData` in script.js -->
+            </div>
+
+            <div class="reviews-actions" aria-hidden="false">
+                <button id="showMoreBtn" class="show-more-btn" aria-expanded="false">Show more reviews</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Counts are constant values (no client-side increment) -->
+    <script src="script.js"></script>
+</body>
+</html>
