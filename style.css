@@ -1324,8 +1324,17 @@ body{
   position: fixed;
   bottom: 20px;
   left: 50%;
-  transform: translateX(-50%);
-  background-color: #333; /* or match your toast background */
+  
+  /* --- CRITICAL: Initial Hidden State & Transition --- */
+  /* Start it below the screen and invisible */
+  transform: translate(-50%, 100px); /* 100px down */
+  opacity: 0; 
+  
+  /* Add transition property to the base element */
+  transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+
+  /* --- Existing Styles (keep these) --- */
+  background-color: #333;
   color: #fff;
   padding: 12px 16px;
   border-radius: 4px;
