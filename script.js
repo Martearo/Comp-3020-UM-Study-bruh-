@@ -76,7 +76,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         { building: "Tier", room: "T100", image: "../Images/StudyRooms/Tier01.png", rating: 3.5, bookmark: false, x: 40, y: 70 },
 
-        { building: "Agriculture", room: "A205", image: "../Images/StudyRooms/Agriculture125.png", rating: 4.2, bookmark: true, x: 20, y: 30 },
+        { building: "Agriculture", room: "A205", image: "../Images/StudyRooms/Agriculture125.png", rating: 4.2, bookmark: true, x: 25, y: 80 },
 
     ];
 
