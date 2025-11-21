@@ -1327,14 +1327,14 @@ body{
   transform: translateX(-50%);
   background-color: #333; /* or match your toast background */
   color: #fff;
-  padding: 10px 20px;
+  padding: 8px 16px;
   border-radius: 4px;
   display: flex;
   align-items: center;
   gap: 10px;
   box-shadow: 0 4px 10px rgba(0,0,0,0.3);
   font-family: inherit;
-  font-size: 14px;
+  font-size: 16px;
   z-index: 1000;
 }
 

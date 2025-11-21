@@ -839,21 +839,21 @@ function renderBookmarkedRooms(rooms) {
                 // Undo callback: restore the bookmark
                 bookmarkState[room.room] = true;
                 saveBookmarkState();
-                bookmarkIconSpan.dataset.bookmarked = "true";
-                bookmarkIconSpan.innerHTML = filledSVG;
-                // Re-render the list if on bookmark page
-                if (IS_BOOKMARK_PAGE) filterAndRender();
+                // Re-render bookmark page
+                filterAndRender();
             });
 
-            btn.remove();
-            
-            // Show empty state if no more bookmarks
-            const remainingRooms = roomListContainer.querySelectorAll('.room-btn');
-            if (remainingRooms.length === 0) {
+            bookmarkIconSpan.dataset.bookmarked = "false";
+            bookmarkIconSpan.innerHTML = emptySVG;
+
+            btn.style.display = 'none';
+
+            // Show empty state if no more visible bookmarks
+            const remainingVisible = [...roomListContainer.querySelectorAll('.room-btn')]
+                .filter(b => b.style.display !== 'none');
+            if (remainingVisible.length === 0) {
                 const emptyState = document.getElementById('empty-state');
-                if (emptyState) {
-                    emptyState.style.display = 'block';
-                }
+                if (emptyState) emptyState.style.display = 'block';
             }
         }
         return; 
