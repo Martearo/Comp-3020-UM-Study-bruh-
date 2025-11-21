@@ -128,38 +128,30 @@ document.addEventListener("DOMContentLoaded", () => {
             // Hide the toast after 3 seconds
             setTimeout(() => {
                 toast.classList.remove("show");
-            }, 3000); // 3 seconds
+            }, 4000); // 3 seconds
         }
     }
 
     function showUndoToast(undoCallback) {
         let toast = document.getElementById('undo-toast');
-        let btn;
+        let btn = document.getElementById('undo-btn');
 
         if (!toast) {
             toast = document.createElement('div');
             toast.id = 'undo-toast';
             toast.classList.add('toast');
-            toast.innerHTML = '<span id="undo-message">Action undone!</span><button id="undo-btn">Undo</button>';
+            toast.innerHTML = '<span id="undo-message"></span><button id="undo-btn">Undo</button>';
             document.body.appendChild(toast);
-            btn = toast.querySelector('#undo-btn');
-        } else {
             btn = toast.querySelector('#undo-btn');
         }
 
-        // Remove any previous click listeners first
-        const newBtn = btn.cloneNode(true);
-        btn.parentNode.replaceChild(newBtn, btn);
-        newBtn.addEventListener('click', () => {
+        toast.classList.add('show');
+        btn.onclick = () => {
             undoCallback();
             toast.classList.remove('show');
-        });
+        };
 
-        toast.classList.add('show');
-
-        // Auto-hide after 5 seconds
-        clearTimeout(toast.hideTimeout);
-        toast.hideTimeout = setTimeout(() => {
+        setTimeout(() => {
             toast.classList.remove('show');
         }, 5000);
     }
@@ -184,9 +176,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     } else if (IS_BOOKMARK_PAGE) {
         let filteredRooms = roomData.filter(room => {
-            // const isBookmarked = bookmarkState[room.room];
+            const isBookmarked = bookmarkState[room.room];
             const matchesSearch = room.room.toLowerCase().includes(searchTerm) || room.building.toLowerCase().includes(searchTerm);
-            return matchesSearch;
+            return isBookmarked && matchesSearch;
         });
 
         filteredRooms = sortBuildingOrRoomData(filteredRooms, currentSortBy, currentSortOrder);
@@ -854,7 +846,7 @@ function renderBookmarkedRooms(rooms) {
             bookmarkIconSpan.dataset.bookmarked = "false";
             bookmarkIconSpan.innerHTML = emptySVG;
 
-            filterAndRender();
+            btn.style.display = 'none';
 
             // Show empty state if no more visible bookmarks
             const remainingVisible = [...roomListContainer.querySelectorAll('.room-btn')]
