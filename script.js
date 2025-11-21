@@ -48,9 +48,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const MAX_ZOOM = 3.0;
     const MIN_ZOOM = 1.0; 
     const ZOOM_STEP = 0.2;
-    
 
-    // Add this at the top of your DOMContentLoaded event for debugging
+    let removalTimeout;
+    
 
     // --- Data Definitions ---
     // Buildings:
@@ -114,6 +114,10 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    function saveBookmarkState() {
+        localStorage.setItem('bookmarkState', JSON.stringify(bookmarkState));
+    }
+
     function showToast(message) {
         const toast = document.getElementById("bookmark-toast");
         const toastMessage = document.getElementById("toast-message");
@@ -132,27 +136,40 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    function showUndoToast(undoCallback) {
+    function showUndoToast(message, undoCallback, finalAction) { 
         let toast = document.getElementById('undo-toast');
         let btn = document.getElementById('undo-btn');
+        let toastMessage = document.getElementById('undo-message');
 
-        if (!toast) {
-            toast = document.createElement('div');
-            toast.id = 'undo-toast';
-            toast.classList.add('toast');
-            toast.innerHTML = '<span id="undo-message"></span><button id="undo-btn">Undo</button>';
-            document.body.appendChild(toast);
-            btn = toast.querySelector('#undo-btn');
+        // Safety check for critical elements
+        if (!toast || !btn || !toastMessage) {
+            console.error("Undo toast elements not found.");
+            return;
         }
 
+        // 1. Clear any existing timer AND the previous button listener
+        clearTimeout(toast.hideTimeout);
+        btn.onclick = null; // <-- CRITICAL CHANGE: Reliably clear old click handler
+
+        // Set the message and show the toast
+        toastMessage.textContent = message;
         toast.classList.add('show');
-        btn.onclick = () => {
-            undoCallback();
+
+        // 2. Attach the NEW undo logic
+        btn.onclick = () => { 
+            // 🚨 This MUST be called when 'Undo' is pressed
+            clearTimeout(toast.hideTimeout);
             toast.classList.remove('show');
+            undoCallback();
         };
 
-        setTimeout(() => {
+        // 3. Start a new timer and store its ID on the toast element
+        toast.hideTimeout = setTimeout(() => {
             toast.classList.remove('show');
+            
+            if (typeof finalAction === 'function') {
+                finalAction();
+            }
         }, 5000);
     }
 
@@ -247,9 +264,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const params = new URLSearchParams(window.location.search);
         return params.get('building'); 
     }
-
-    
-
     
     function sortBuildingOrRoomData(data, sortBy, sortOrder) {
         // Clone the array to avoid modifying the original array in place
@@ -750,11 +764,10 @@ if (IS_BUILDINGS_PAGE) {
     }
 
 
-
 // Handle bookmark page rendering
 function renderBookmarkedRooms(rooms) {
     if (!roomListContainer) return;
-    
+
     roomListContainer.innerHTML = '';
 
     if (rooms.length === 0) {
@@ -773,27 +786,25 @@ function renderBookmarkedRooms(rooms) {
     }
 
     rooms.forEach(room => {
+        // --- EXISTING CODE TO CREATE BUTTON ---
         const btn = document.createElement("button");
         btn.classList.add("room-btn");
 
         let stars = Math.floor(room.rating);
         let amountStars = "⭐".repeat(stars);
-        
+
         const isBookmarked = bookmarkState[room.room] || false;
-        
+
         const filledSVG = `<svg class="bookmark-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="gold" width="24" height="24"><path d="M6 4a2 2 0 0 0-2 2v16l8-4 8 4V6a2 2 0 0 0-2-2H6z"/></svg>`;
         const emptySVG = `<svg class="bookmark-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="gold" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="24" height="24"><path d="M19 21l-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>`;
-        
+
         let roomImage = room.image;
         if (IS_BOOKMARK_PAGE) {
-            // If we're on the bookmark page, adjust the image path
             if (room.image.startsWith('../')) {
-                // Remove the leading '../' to make paths relative to root
                 roomImage = room.image.substring(3);
             }
-            // If image path doesn't start with '../', leave it as is
         }
-        
+
         btn.innerHTML = `
             <div class="room-img-wrapper">
                 <img src="${roomImage}" alt="${room.room}" class="room-img">
@@ -807,70 +818,73 @@ function renderBookmarkedRooms(rooms) {
                 </span>
             </div>
         `;
+        // --- END OF EXISTING CODE TO CREATE BUTTON ---
 
-        // --- SINGLE UNIFIED CLICK HANDLER ---
+        // --- NEW CLICK HANDLER FOR BOOKMARK PAGE ---
         btn.addEventListener("click", (e) => {
-    const bookmarkIconSpan = e.target.closest(".room-bookmark"); 
+            const bookmarkIconSpan = e.target.closest(".room-bookmark");
 
-    if (bookmarkIconSpan) {
-        // Logic for handling the bookmark click
-        e.stopPropagation(); 
-        e.preventDefault();
-        
-        const currentState = bookmarkIconSpan.dataset.bookmarked === "true";
-        const newState = !currentState; 
+            if (bookmarkIconSpan) {
+                e.stopPropagation();
 
-        // Update state
-        bookmarkState[room.room] = newState; 
-        
-        // Save to localStorage
-        saveBookmarkState();
-        
-        bookmarkIconSpan.dataset.bookmarked = newState.toString();
-        bookmarkIconSpan.innerHTML = newState ? filledSVG : emptySVG;
-        
-        const action = newState ? 'Bookmarked' : 'Unbookmarked';
-        const message = `Room ${room.room} has been ${action}.`;
-        showToast(message);
+                const currentState = bookmarkState[room.room] || false;
+                const newState = !currentState; // Should be false when unbookmarking
 
-        // If unbookmarking on bookmark page, remove the card
-        if (!newState) {
-            showUndoToast(() => {
-                // Undo callback: restore the bookmark
-                bookmarkState[room.room] = true;
-                saveBookmarkState();
-                // Re-render bookmark page
-                filterAndRender();
-            });
+                // --- UNBOOKMARKING LOGIC (Only runs on Bookmark page and when changing state to false) ---
+                if (!newState && IS_BOOKMARK_PAGE) {
 
-            bookmarkIconSpan.dataset.bookmarked = "false";
-            bookmarkIconSpan.innerHTML = emptySVG;
+                    // 2. Add class for visual effect (Optional: You'll need CSS for 'pending-removal')
+                    btn.classList.add('pending-removal'); 
+                    btn.style.display = 'none'; // <--- ADD THIS LINE
 
-            btn.style.display = 'none';
+                    // 3. Update the button's icon immediately
+                    bookmarkIconSpan.dataset.bookmarked = newState.toString();
+                    bookmarkIconSpan.innerHTML = emptySVG;
 
-            // Show empty state if no more visible bookmarks
-            const remainingVisible = [...roomListContainer.querySelectorAll('.room-btn')]
-                .filter(b => b.style.display !== 'none');
-            if (remainingVisible.length === 0) {
-                const emptyState = document.getElementById('empty-state');
-                if (emptyState) emptyState.style.display = 'block';
+                    const message = `Room ${room.room} unbookmarked.`;
+                    
+                    // Action to undo: reset state and re-render
+                    const undoAction = () => {
+                        bookmarkState[room.room] = true;
+                        saveBookmarkState();
+
+                        btn.style.display = '';
+
+                        filterAndRender(); 
+                    };
+                    
+                    // Final action: Re-render the whole list without the unbookmarked item
+                    const finalRemoval = () => {
+                        bookmarkState[room.room] = false; // Officially unbookmark
+                        saveBookmarkState();
+
+                        filterAndRender(); 
+                    };
+                    
+                    showUndoToast(message, undoAction, finalRemoval);
+                    
+                    return;
+
+                } else if (IS_BOOKMARK_PAGE && newState) {
+                    // This handles re-bookmarking if the user clicks Undo but the room is still there
+                    // or if the element somehow remained on the page when it shouldn't have.
+                    bookmarkState[room.room] = newState; 
+                    saveBookmarkState();
+                    // We don't need a toast here, just re-render to ensure list is stable
+                    showToast(`Room ${room.room} has been Bookmarked.`); 
+                    filterAndRender();
+                    return;
+                }
             }
-        }
-        return; 
-    }
 
-    // Logic for handling the navigation click
-    window.location.href = `Rooms/Rooms.html?id=${encodeURIComponent(room.room)}`;
-});
-
-        roomListContainer.appendChild(btn);
+            // Logic for handling the navigation click (if not bookmark icon)
+            window.location.href = `../Rooms/Rooms.html?id=${encodeURIComponent(room.room)}`;
+        });
+        
+        roomListContainer.appendChild(btn); 
     });
 }
 
-
-function saveBookmarkState() {
-    localStorage.setItem('bookmarkState', JSON.stringify(bookmarkState));
-}
 
 // ----------------------------------------------------
         // --- Reviews Page: Data-driven renderer ---
