@@ -134,24 +134,32 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function showUndoToast(undoCallback) {
         let toast = document.getElementById('undo-toast');
-        let btn = document.getElementById('undo-btn');
+        let btn;
 
         if (!toast) {
             toast = document.createElement('div');
             toast.id = 'undo-toast';
             toast.classList.add('toast');
-            toast.innerHTML = '<span id="undo-message"></span><button id="undo-btn">Undo</button>';
+            toast.innerHTML = '<span id="undo-message">Action undone!</span><button id="undo-btn">Undo</button>';
             document.body.appendChild(toast);
+            btn = toast.querySelector('#undo-btn');
+        } else {
             btn = toast.querySelector('#undo-btn');
         }
 
-        toast.classList.add('show');
-        btn.onclick = () => {
+        // Remove any previous click listeners first
+        const newBtn = btn.cloneNode(true);
+        btn.parentNode.replaceChild(newBtn, btn);
+        newBtn.addEventListener('click', () => {
             undoCallback();
             toast.classList.remove('show');
-        };
+        });
 
-        setTimeout(() => {
+        toast.classList.add('show');
+
+        // Auto-hide after 5 seconds
+        clearTimeout(toast.hideTimeout);
+        toast.hideTimeout = setTimeout(() => {
             toast.classList.remove('show');
         }, 5000);
     }

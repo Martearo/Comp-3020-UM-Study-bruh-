@@ -1327,7 +1327,7 @@ body{
   transform: translateX(-50%);
   background-color: #333; /* or match your toast background */
   color: #fff;
-  padding: 8px 16px;
+  padding: 12px 16px;
   border-radius: 4px;
   display: flex;
   align-items: center;
@@ -1339,13 +1339,13 @@ body{
 }
 
 #undo-toast.show {
-  transform: translateY(0);
+  transform: translate(-50%, 0);
   opacity: 1;
   transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
 #undo-toast.hide {
-  transform: translateY(100px);
+  transform: translate(-50%, 100px);
   opacity: 0;
 }
 
