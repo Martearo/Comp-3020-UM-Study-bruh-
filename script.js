@@ -75,6 +75,9 @@ document.addEventListener("DOMContentLoaded", () => {
         { building: "Machray Hall", room: "M211", image: "../Images/StudyRooms/Machray211.jpg", rating: 3.0, bookmark: false, x: 70, y: 80 },
 
         { building: "Tier", room: "T100", image: "../Images/StudyRooms/Tier01.png", rating: 3.5, bookmark: false, x: 40, y: 70 },
+
+        { building: "Agriculture", room: "A205", image: "../Images/StudyRooms/Agriculture125.png", rating: 4.2, bookmark: true, x: 20, y: 30 },
+
     ];
 
     // Initialize bookmarkState from localStorage or from roomData

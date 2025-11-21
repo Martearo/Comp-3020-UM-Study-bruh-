@@ -10,6 +10,21 @@ const viewProfileLink = document.getElementById('viewProfileLink');
 
 const ALL_ROOM_DATA = [
     {
+        id: "A205", 
+        buildingNameForLink: "Agriculture", 
+        roomNumber: "A-205",
+        title: "Dafoe Study Room 008",
+        rating: "3.9",
+        address: "008 Dafoe Hall, Central Campus",
+        amenities: "Outlets, Study Rooms, Vending",
+        description: "Large, quiet study area in the basement floor of Dafoe Hall.",
+        utilization: "Busy Hours (9:00AM - 1:00PM)",
+        imageUrls: [
+            '../Images/StudyRooms/Agriculture123.2.png',
+            '../Images/StudyRooms/Agriculture125.png',
+        ]
+    },
+    {
         id: "D008", 
         buildingNameForLink: "Dafoe", 
         roomNumber: "D-008",
@@ -18,7 +33,7 @@ const ALL_ROOM_DATA = [
         address: "008 Dafoe Hall, Central Campus",
         amenities: "Free WiFi, Study Rooms, Vending",
         description: "Large, quiet study area in the basement floor of Dafoe Hall.",
-        utilization: "Capacity: 60% (Moderate)",
+        utilization: "Busy Hours (8:00AM - 3:00PM)",
         imageUrls: [
             '../Images/StudyRooms/Dafoe008.jpg',
         ]
@@ -32,7 +47,7 @@ const ALL_ROOM_DATA = [
         address: "401 Dafoe Hall, Central Campus",
         amenities: "Free WiFi, Study Rooms, Vending",
         description: "Large, quiet study area on the top floor of Dafoe Hall.",
-        utilization: "Capacity: 60% (Moderate)",
+        utilization: "Busy Hours (8:00AM - 3:00PM)",
         imageUrls: [
             '../Images/StudyRooms/Dafoe008.jpg',
         ]
@@ -46,7 +61,7 @@ const ALL_ROOM_DATA = [
         address: "402 Dafoe Hall, Central Campus",
         amenities: "Free WiFi, Study Rooms, Vending",
         description: "Large, quiet study area on the top floor of Dafoe Hall.",
-        utilization: "Capacity: 60% (Moderate)",
+        utilization: "Busy Hours (8:00AM - 3:00PM)",
         imageUrls: [
             '../Images/StudyRooms/Dafoe008.jpg',
         ]
@@ -60,7 +75,7 @@ const ALL_ROOM_DATA = [
         address: "211 Machray Hall, Central Campus",
         amenities: "Free WiFi, Study Rooms, Vending",
         description: "Large, quiet study area on the top floor of Dafoe Hall.",
-        utilization: "Capacity: 45% (Moderate)",
+        utilization: "Busy Hours (11:00AM - 2:00PM)",
         imageUrls: [
             '../Images/StudyRooms/Machray211.jpg',
         ]
@@ -74,7 +89,7 @@ const ALL_ROOM_DATA = [
         address: "123 Engineering, EITC II",
         amenities: "Projector, Whiteboard, Charging Ports",
         description: "Dedicated group study room in the newer Engineering complex.",
-        utilization: "Capacity: 75% (High)",
+        utilization: "Busy Hours (9:00AM - 4:00PM)",
         imageUrls: [
             '../Images/StudyRooms/EITC.png'
         ]
@@ -88,7 +103,7 @@ const ALL_ROOM_DATA = [
         address: "222 Engineering, EITC II",
         amenities: "Projector, Whiteboard, Charging Ports",
         description: "Dedicated group study room in the newer Engineering complex.",
-        utilization: "Capacity: 75% (High)",
+        utilization: "Busy Hours (9:00AM - 4:00PM)",
         imageUrls: [
             '../Images/StudyRooms/EITC.png'
         ]
@@ -102,7 +117,7 @@ const ALL_ROOM_DATA = [
         address: "100 Tier, campus central",
         amenities: "Projector, Whiteboard, Charging Ports",
         description: "Dedicated group study room in the newer Engineering complex.",
-        utilization: "Capacity: 75% (High)",
+        utilization: "Busy Hours (9:00AM - 4:00PM)",
         imageUrls: [
             "../Images/StudyRooms/Tier01.png"
         ]
