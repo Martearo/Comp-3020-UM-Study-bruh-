@@ -459,7 +459,7 @@ function renderRooms(rooms) {
     }
 
     // Logic for handling the navigation click
-    window.location.href = `Rooms/Rooms.html?id=${encodeURIComponent(room.room)}`;
+    window.location.href = `../Rooms/Rooms.html?id=${encodeURIComponent(room.room)}`;
 });
 
         roomListContainer.appendChild(btn); 
