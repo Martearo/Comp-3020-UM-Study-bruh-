@@ -1339,8 +1339,14 @@ body{
 }
 
 #undo-toast.show {
-  transform: translateY(0);
-  opacity: 1;
+    transform: translateY(0);
+    opacity: 1;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+#undo-toast.hide {
+    transform: translateY(100px);
+    opacity: 0;
 }
 
 #undo-toast button {
