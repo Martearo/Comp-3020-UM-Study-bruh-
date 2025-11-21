@@ -91,7 +91,7 @@ const ALL_ROOM_DATA = [
         description: "Dedicated group study room in the newer Engineering complex.",
         utilization: "(9:00AM - 4:00PM)",
         imageUrls: [
-            '../Images/StudyRooms/EITC.png'
+            '../Images/StudyRooms/StudyRoom.png'
         ]
     },
     {
@@ -105,7 +105,7 @@ const ALL_ROOM_DATA = [
         description: "Dedicated group study room in the newer Engineering complex.",
         utilization: "(9:00AM - 4:00PM)",
         imageUrls: [
-            '../Images/StudyRooms/EITC.png'
+            '../Images/StudyRooms/StudyRoom.png'
         ]
     },
     {
