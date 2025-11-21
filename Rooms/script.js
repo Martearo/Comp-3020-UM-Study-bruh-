@@ -242,6 +242,112 @@ function initializeCarousel() {
 }
 
 
+
+// Add escapeHtml function (put this with your other global functions at the top)
+function escapeHtml(str) {
+    if (str === null || str === undefined) return '';
+    return String(str).replace(/[&<>\"']/g, function (s) {
+        return ({
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '\"': '&quot;',
+            "'": '&#39;'
+        })[s];
+    });
+}
+
+// Add this function to load reviews from localStorage (put with other global functions)
+function loadUserReviewsForRoom(roomId) {
+    const STORAGE_KEY = "userReviews";
+    try {
+        const allReviews = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+        // Filter reviews for this specific room
+        return allReviews.filter(review => review.roomId === roomId);
+    } catch (error) {
+        console.error('Error loading reviews from localStorage:', error);
+        return [];
+    }
+}
+
+// Function to render reviews from localStorage (put with other global functions)
+function renderSavedReviews(roomId) {
+    const reviewsContainer = document.getElementById('reviewsContainer');
+    if (!reviewsContainer) return;
+
+    const savedReviews = loadUserReviewsForRoom(roomId);
+    
+    // Clear existing reviews
+    reviewsContainer.innerHTML = '';
+    
+    if (savedReviews.length === 0) {
+        reviewsContainer.innerHTML = '<p class="no-reviews">No reviews yet. Be the first to write one!</p>';
+        return;
+    }
+
+    // Sort reviews by date (newest first)
+    savedReviews.sort((a, b) => new Date(b.date) - new Date(a.date));
+    
+    // Render each review
+    savedReviews.forEach(review => {
+        const dateFormatted = new Date(review.date).toLocaleDateString('en-US', { 
+            month: 'short', 
+            day: 'numeric', 
+            year: 'numeric' 
+        });
+        
+        // Generate star HTML
+        const rating = parseInt(review.rating) || 0;
+        let starsHtml = '';
+        for(let i = 0; i < 5; i++) starsHtml += i < rating ? '★' : '☆';
+
+        // Determine active vote state
+        const upvoteActive = (review.up || 0) > 0 ? 'active' : '';
+        const downvoteActive = (review.down || 0) > 0 ? 'active' : '';
+        
+        // Calculate total votes (up minus down)
+        const totalVotes = (review.up || 0) - (review.down || 0);
+
+        const reviewHTML = `
+            <div class="review-item">
+                <div class="review-header">
+                    <div class="reviewer">${escapeHtml(review.reviewerName || 'Anonymous')}</div>
+                    <div class="review-date">${dateFormatted}</div>
+                </div>
+                <div class="review-text">"${escapeHtml(review.text)}"</div>
+                <div class="review-rating">${starsHtml}</div>
+                <div class="vote-container">
+                    <button class="vote-btn upvote-btn ${upvoteActive}" data-review="${review.id}">
+                        <i class="fas fa-thumbs-up"></i>
+                    </button>
+                    <span class="vote-count" id="voteCount${review.id}">${totalVotes}</span>
+                    <button class="vote-btn downvote-btn ${downvoteActive}" data-review="${review.id}">
+                        <i class="fas fa-thumbs-down"></i>
+                    </button>
+                </div>
+            </div>
+        `;
+        
+        reviewsContainer.insertAdjacentHTML('beforeend', reviewHTML);
+    });
+}
+
+// Add this function to save reviews to localStorage (put with other global functions)
+function saveUserReview(review) {
+    const STORAGE_KEY = "userReviews";
+    try {
+        const saved = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+        saved.push(review);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(saved));
+        console.log('Review saved to localStorage:', review);
+    } catch (error) {
+        console.error('Error saving review to localStorage:', error);
+    }
+}
+
+
+
+
 // ==============================================
 // --- 3. DOM READY LOGIC (All Event Listeners) ---
 // ==============================================
@@ -249,6 +355,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Load the specific room data based on URL ID
     const roomId = getRoomIdFromUrl();
     loadRoomData(roomId); 
+
+    renderSavedReviews(roomId);
 
     // --- Sidebar Functionality ---
     if (hamburger && sidebar) {
@@ -328,58 +436,96 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Form submission
-    if (form && reviewsContainer) {
-        form.addEventListener('submit', (e) => {
-            e.preventDefault();
-            
-            const name = document.getElementById('reviewerName').value;
-            const rating = parseInt(ratingInput.value);
-            const text = document.getElementById('reviewText').value;
-            
-            if (rating === 0 || isNaN(rating)) {
-                alert("Please select a star rating.");
-                return;
-            }
+if (form && reviewsContainer) {
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        const name = document.getElementById('reviewerName').value;
+        const rating = parseInt(ratingInput.value);
+        const text = document.getElementById('reviewText').value;
+        
+        if (rating === 0 || isNaN(rating)) {
+            alert("Please select a star rating.");
+            return;
+        }
 
-            const date = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-            const newReviewId = Date.now(); 
-            
-            // Generate star HTML
-            let starsHtml = '';
-            for(let i=0; i<5; i++) starsHtml += i < rating ? '★' : '☆';
+        // Get current room information from the page
+        const roomId = getRoomIdFromUrl();
+        const currentRoom = ALL_ROOM_DATA.find(r => r.id === roomId);
+        
+        if (!currentRoom) {
+            alert("Error: Could not find room information.");
+            return;
+        }
 
-            // Construct the HTML for the new review
-            const newReviewHTML = `
-                <div class="review-item">
-                    <div class="review-header">
-                        <div class="reviewer">${name}</div>
-                        <div class="review-date">${date}</div>
-                    </div>
-                    <div class="review-text">"${text}"</div>
-                    <div class="review-rating">${starsHtml}</div>
-                    <div class="vote-container">
-                        <button class="vote-btn upvote-btn" data-review="${newReviewId}">
-                            <i class="fas fa-thumbs-up"></i>
-                        </button>
-                        <span class="vote-count" id="voteCount${newReviewId}">0</span>
-                        <button class="vote-btn downvote-btn" data-review="${newReviewId}">
-                            <i class="fas fa-thumbs-down"></i>
-                        </button>
-                    </div>
+        const date = new Date().toISOString().split('T')[0]; // YYYY-MM-DD format
+        const newReviewId = Date.now(); 
+        
+        // Generate star HTML for display
+        let starsHtml = '';
+        for(let i=0; i<5; i++) starsHtml += i < rating ? '★' : '☆';
+
+        // Construct the HTML for the new review
+        const newReviewHTML = `
+            <div class="review-item">
+                <div class="review-header">
+                    <div class="reviewer">${name}</div>
+                    <div class="review-date">${new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</div>
                 </div>
-            `;
+                <div class="review-text">"${text}"</div>
+                <div class="review-rating">${starsHtml}</div>
+                <div class="vote-container">
+                    <button class="vote-btn upvote-btn" data-review="${newReviewId}">
+                        <i class="fas fa-thumbs-up"></i>
+                    </button>
+                    <span class="vote-count" id="voteCount${newReviewId}">0</span>
+                    <button class="vote-btn downvote-btn" data-review="${newReviewId}">
+                        <i class="fas fa-thumbs-down"></i>
+                    </button>
+                </div>
+            </div>
+        `;
 
-            // Insert the new review at the TOP
-            reviewsContainer.insertAdjacentHTML('afterbegin', newReviewHTML);
-            reviewsContainer.scrollTop = 0;
+        // Insert the new review at the TOP
+        reviewsContainer.insertAdjacentHTML('afterbegin', newReviewHTML);
+        reviewsContainer.scrollTop = 0;
 
-            // Reset form and close modal
-            form.reset();
-            ratingInput.value = 0;
-            ratingStars.forEach(s => s.classList.remove('filled')); 
-            modal.style.display = 'none';
-        });
+        // Save to localStorage with complete information
+        const reviewData = {
+            location: currentRoom.buildingNameForLink,
+            roomId: currentRoom.id,
+            roomNumber: currentRoom.roomNumber,
+            text: text,
+            rating: rating.toString(),
+            date: date,
+            up: 0,
+            down: 0,
+            reviewerName: name,
+            id: newReviewId
+        };
+
+        saveUserReview(reviewData);
+
+        // Reset form and close modal
+        form.reset();
+        ratingInput.value = 0;
+        ratingStars.forEach(s => s.classList.remove('filled')); 
+        modal.style.display = 'none';
+    });
+}
+
+// Add this function to save reviews to localStorage
+function saveUserReview(review) {
+    const STORAGE_KEY = "userReviews";
+    try {
+        const saved = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+        saved.push(review);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(saved));
+        console.log('Review saved to localStorage:', review);
+    } catch (error) {
+        console.error('Error saving review to localStorage:', error);
     }
+}
 
     // Scroll down button
     const scrollDownBtn = document.getElementById('scrollDownBtn');
@@ -392,67 +538,100 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Review voting functionality (event delegation)
-    if (reviewsContainer) {
-        reviewsContainer.addEventListener('click', function(e) {
-            const button = e.target.closest('.vote-btn');
-            if (!button) return;
+    // Review voting functionality (event delegation) - UPDATED VERSION
+if (reviewsContainer) {
+    reviewsContainer.addEventListener('click', function(e) {
+        const button = e.target.closest('.vote-btn');
+        if (!button) return;
 
-            e.preventDefault();
-            
-            const reviewId = button.getAttribute('data-review');
-            const isUpvote = button.classList.contains('upvote-btn');
-            const voteCountElement = document.getElementById(`voteCount${reviewId}`);
-            
-            // Find the specific buttons for this review within the container
-            const upvoteBtn = reviewsContainer.querySelector(`.upvote-btn[data-review="${reviewId}"]`);
-            const downvoteBtn = reviewsContainer.querySelector(`.downvote-btn[data-review="${reviewId}"]`);
+        e.preventDefault();
+        
+        const reviewId = button.getAttribute('data-review');
+        const isUpvote = button.classList.contains('upvote-btn');
+        const voteCountElement = document.getElementById(`voteCount${reviewId}`);
+        
+        // Find the specific buttons for this review within the container
+        const upvoteBtn = reviewsContainer.querySelector(`.upvote-btn[data-review="${reviewId}"]`);
+        const downvoteBtn = reviewsContainer.querySelector(`.downvote-btn[data-review="${reviewId}"]`);
 
-            if (!reviewId || !voteCountElement) return;
+        if (!reviewId || !voteCountElement) return;
+        
+        let currentCount = parseInt(voteCountElement.textContent.trim());
+        if (isNaN(currentCount)) currentCount = 0;
+        
+        // --- Determine the vote change ---
+        let voteChange = 0;
+        const alreadyActive = button.classList.contains('active');
+        
+        // Unvote (clicking the active button again)
+        if (alreadyActive) {
+            button.classList.remove('active');
+            voteChange = isUpvote ? -1 : 1; 
+        
+        // Swap vote (clicking the opposite button)
+        } else if ((upvoteBtn && upvoteBtn.classList.contains('active')) || (downvoteBtn && downvoteBtn.classList.contains('active'))) {
+            if (upvoteBtn.classList.contains('active')) {
+                upvoteBtn.classList.remove('active');
+                voteChange = -1; 
+            } else if (downvoteBtn.classList.contains('active')) {
+                downvoteBtn.classList.remove('active');
+                voteChange = 1; 
+            }
+            // Apply new vote
+            button.classList.add('active');
+            voteChange += isUpvote ? 1 : -1;
             
-            let currentCount = parseInt(voteCountElement.textContent.trim());
-            if (isNaN(currentCount)) currentCount = 0;
-            
-            // --- Determine the vote change ---
-            let voteChange = 0;
-            const alreadyActive = button.classList.contains('active');
-            
-            // Unvote (clicking the active button again)
-            if (alreadyActive) {
-                button.classList.remove('active');
-                voteChange = isUpvote ? -1 : 1; 
-            
-            // Swap vote (clicking the opposite button)
-            } else if ((upvoteBtn && upvoteBtn.classList.contains('active')) || (downvoteBtn && downvoteBtn.classList.contains('active'))) {
-                if (upvoteBtn.classList.contains('active')) {
-                    upvoteBtn.classList.remove('active');
-                    voteChange = -1; 
-                } else if (downvoteBtn.classList.contains('active')) {
-                    downvoteBtn.classList.remove('active');
-                    voteChange = 1; 
+        // New vote
+        } else {
+            button.classList.add('active');
+            voteChange = isUpvote ? 1 : -1;
+        }
+
+        // Update count
+        currentCount += voteChange;
+        voteCountElement.textContent = currentCount; 
+
+        // Save vote to localStorage
+        updateReviewVotes(reviewId, isUpvote, currentCount, button.classList.contains('active'));
+
+        // Animation
+        if (voteChange !== 0) {
+            voteCountElement.classList.add('changed');
+            setTimeout(() => {
+                voteCountElement.classList.remove('changed');
+            }, 500);
+        }
+    });
+}
+
+// Add this function to update votes in localStorage
+function updateReviewVotes(reviewId, isUpvote, newCount, isActive) {
+    const STORAGE_KEY = "userReviews";
+    try {
+        const allReviews = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+        const reviewIndex = allReviews.findIndex(review => review.id == reviewId);
+        
+        if (reviewIndex !== -1) {
+            if (isUpvote) {
+                allReviews[reviewIndex].up = isActive ? newCount : 0;
+                // If switching from downvote to upvote, clear downvote
+                if (isActive) {
+                    allReviews[reviewIndex].down = 0;
                 }
-                // Apply new vote
-                button.classList.add('active');
-                voteChange += isUpvote ? 1 : -1;
-                
-            // New vote
             } else {
-                button.classList.add('active');
-                voteChange = isUpvote ? 1 : -1;
+                allReviews[reviewIndex].down = isActive ? newCount : 0;
+                // If switching from upvote to downvote, clear upvote
+                if (isActive) {
+                    allReviews[reviewIndex].up = 0;
+                }
             }
-
-            // Update count
-            currentCount += voteChange;
-            voteCountElement.textContent = currentCount; 
-
-            // Animation
-            if (voteChange !== 0) {
-                voteCountElement.classList.add('changed');
-                setTimeout(() => {
-                    voteCountElement.classList.remove('changed');
-                }, 500);
-            }
-        });
+            
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(allReviews));
+            console.log('Updated votes in localStorage for review:', reviewId, allReviews[reviewIndex]);
+        }
+    } catch (error) {
+        console.error('Error updating votes in localStorage:', error);
     }
+}
 
 });
