@@ -1319,3 +1319,35 @@ body{
   transition: background 0.15s ease, transform 0.08s ease;
 }
 .show-more-btn:hover { background: #8f7a4f; transform: translateY(-2px); }
+
+#undo-toast {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #323232;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transform: translateY(100px);
+  opacity: 0;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  z-index: 9999;
+}
+
+#undo-toast.show {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+#undo-toast button {
+  background: #ff5252;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}

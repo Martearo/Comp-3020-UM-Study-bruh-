@@ -81,20 +81,20 @@ document.addEventListener("DOMContentLoaded", () => {
     ];
 
     // Initialize bookmarkState from localStorage or from roomData
-const bookmarkState = (() => {
-    // Try to load from localStorage first
-    const savedBookmarks = localStorage.getItem('bookmarkState');
-    if (savedBookmarks) {
-        return JSON.parse(savedBookmarks);
-    }
-    
-    // If no saved state, initialize from roomData
-    const initialState = {};
-    roomData.forEach(room => {
-        initialState[room.room] = room.bookmark;
-    });
-    return initialState;
-})();
+    const bookmarkState = (() => {
+        // Try to load from localStorage first
+        const savedBookmarks = localStorage.getItem('bookmarkState');
+        if (savedBookmarks) {
+            return JSON.parse(savedBookmarks);
+        }
+        
+        // If no saved state, initialize from roomData
+        const initialState = {};
+        roomData.forEach(room => {
+            initialState[room.room] = room.bookmark;
+        });
+        return initialState;
+    })();
 
 
     if (viewProfileLink) {
@@ -130,6 +130,25 @@ const bookmarkState = (() => {
                 toast.classList.remove("show");
             }, 3000); // 3 seconds
         }
+    }
+
+    function showUndoToast(undoCallback) {
+        const toast = document.getElementById('undo-toast');
+        const btn = document.getElementById('undo-btn');
+
+        // Show the toast
+        toast.classList.add('show');
+
+        // If clicked, run undo
+        btn.onclick = () => {
+            undoCallback();
+            toast.classList.remove('show');
+        };
+
+        // Auto-hide after 5 seconds
+        setTimeout(() => {
+            toast.classList.remove('show');
+        }, 5000);
     }
 
     function filterAndRender() {
@@ -811,6 +830,16 @@ function renderBookmarkedRooms(rooms) {
 
         // If unbookmarking on bookmark page, remove the card
         if (!newState) {
+            showUndoToast(() => {
+                // Undo callback: restore the bookmark
+                bookmarkState[room.room] = true;
+                saveBookmarkState();
+                bookmarkIconSpan.dataset.bookmarked = "true";
+                bookmarkIconSpan.innerHTML = filledSVG;
+                // Re-render the list if on bookmark page
+                if (IS_BOOKMARK_PAGE) filterAndRender();
+            });
+
             btn.remove();
             
             // Show empty state if no more bookmarks
