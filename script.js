@@ -128,7 +128,7 @@ document.addEventListener("DOMContentLoaded", () => {
             // Hide the toast after 3 seconds
             setTimeout(() => {
                 toast.classList.remove("show");
-            }, 4000); // 3 seconds
+            }, 3000); // 3 seconds
         }
     }
 
@@ -184,9 +184,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     } else if (IS_BOOKMARK_PAGE) {
         let filteredRooms = roomData.filter(room => {
-            const isBookmarked = bookmarkState[room.room];
+            // const isBookmarked = bookmarkState[room.room];
             const matchesSearch = room.room.toLowerCase().includes(searchTerm) || room.building.toLowerCase().includes(searchTerm);
-            return isBookmarked && matchesSearch;
+            return matchesSearch;
         });
 
         filteredRooms = sortBuildingOrRoomData(filteredRooms, currentSortBy, currentSortOrder);
@@ -854,7 +854,7 @@ function renderBookmarkedRooms(rooms) {
             bookmarkIconSpan.dataset.bookmarked = "false";
             bookmarkIconSpan.innerHTML = emptySVG;
 
-            btn.style.display = 'none';
+            filterAndRender();
 
             // Show empty state if no more visible bookmarks
             const remainingVisible = [...roomListContainer.querySelectorAll('.room-btn')]
