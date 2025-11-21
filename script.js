@@ -133,19 +133,24 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function showUndoToast(undoCallback) {
-        const toast = document.getElementById('undo-toast');
-        const btn = document.getElementById('undo-btn');
+        let toast = document.getElementById('undo-toast');
+        let btn = document.getElementById('undo-btn');
 
-        // Show the toast
+        if (!toast) {
+            toast = document.createElement('div');
+            toast.id = 'undo-toast';
+            toast.classList.add('toast');
+            toast.innerHTML = '<span id="undo-message"></span><button id="undo-btn">Undo</button>';
+            document.body.appendChild(toast);
+            btn = toast.querySelector('#undo-btn');
+        }
+
         toast.classList.add('show');
-
-        // If clicked, run undo
         btn.onclick = () => {
             undoCallback();
             toast.classList.remove('show');
         };
 
-        // Auto-hide after 5 seconds
         setTimeout(() => {
             toast.classList.remove('show');
         }, 5000);
