@@ -835,4 +835,196 @@ function saveBookmarkState() {
     localStorage.setItem('bookmarkState', JSON.stringify(bookmarkState));
 }
 
+// ----------------------------------------------------
+        // --- Reviews Page: Data-driven renderer ---
+        // ----------------------------------------------------
+        (function initReviewsModule() {
+            const reviewsGrid = document.querySelector('.reviews-grid');
+            if (!reviewsGrid) return; // nothing to do on other pages
+
+            const reviewSearch = document.getElementById('reviewSearch');
+            const reviewSort = document.getElementById('reviewSort');
+            const minUpInput = document.getElementById('minUp');
+            const showMoreBtn = document.getElementById('showMoreBtn');
+            const VISIBLE_COUNT = 10;
+
+            // Data array for reviews (rendered by JS)
+            const reviewsData = [
+                { location: 'Dafoe', roomId: 'D008', text: 'Great spot for focused studying — minimal distractions and comfy chairs.', date: '2025-11-01', up: 12, down: 2 },
+                { location: 'Engineering', roomId: 'EITC2123', text: 'Good for group work, whiteboards available. Could use better lighting.', date: '2025-10-22', up: 8, down: 1 },
+                { location: 'Tier', roomId: 'T100', text: 'Nice vibe but can be noisy during lunchtime. Power outlets are limited.', date: '2025-09-30', up: 5, down: 4 },
+                { location: 'Agriculture', text: 'Small booths with great acoustics. Booking recommended during finals.', date: '2025-08-14', up: 20, down: 0 },
+                { location: 'Machray Hall', roomId: 'M211', text: 'Peaceful small room with cushions and soft lighting — excellent for short focus sessions.', date: '2025-07-20', up: 7, down: 0 },
+                { location: 'Dafoe', roomId: 'D008', text: 'Individual pods with desks and power outlets; great for concentrated work.', date: '2025-07-02', up: 10, down: 1 },
+                { location: 'Engineering', roomId: 'EITC2123', text: 'Large open hall with many tables; can be noisy but useful when you need space.', date: '2025-06-29', up: 4, down: 2 },
+                { location: 'Tier', roomId: 'T100', text: 'Reserved for grad students; comfy and quiet with a small kitchenette.', date: '2025-06-10', up: 13, down: 0 },
+                { location: 'Agriculture', text: 'Open common area with lab tables; useful when quiet is not required.', date: '2025-05-20', up: 3, down: 1 },
+                { location: 'Machray Hall', roomId: 'M211', text: 'Lovely outdoor spot in warm weather; benches and natural light.', date: '2025-07-02', up: 9, down: 1 },
+                { location: 'Dafoe', roomId: 'D008', text: 'Extremely quiet and focused; great for reading dense material.', date: '2025-06-18', up: 15, down: 0 },
+                { location: 'Engineering', roomId: 'EITC2123', text: 'Open late and well-equipped desks, but can be busy at peak hours.', date: '2025-05-05', up: 11, down: 3 },
+                { location: 'Tier', roomId: 'T100', text: 'Comfortable seating and projector available; booking advised.', date: '2025-04-12', up: 6, down: 0 }
+            ];
+
+            // Keep an original copy for restoring order when search is cleared
+            const originalReviews = reviewsData.slice();
+
+            function createCardElement(review) {
+                const article = document.createElement('article');
+                article.className = 'review-card';
+
+                article.innerHTML = `
+                    <div class="review-content">
+                        <h3 class="review-location">${escapeHtml(review.location)}</h3>
+                        ${review.roomId ? '<div class="review-room">Room: <span class="room-id">' + escapeHtml(review.roomId) + '</span></div>' : ''}
+                        <p class="review-text">${escapeHtml(review.text)}</p>
+                    </div>
+                    <div class="review-footer">
+                        <div class="review-meta">Posted: ${review.date}</div>
+                        <div class="thumbs">
+                            <div class="thumb-display up" aria-hidden="true">👍 <span class="thumb-count">${review.up}</span></div>
+                            <div class="thumb-display down" aria-hidden="true">👎 <span class="thumb-count">${review.down}</span></div>
+                        </div>
+                    </div>
+                `;
+
+                // Make the card clickable and keyboard-accessible.
+                article.style.cursor = 'pointer';
+                article.tabIndex = 0; // allow keyboard focus
+
+                function navigateToTarget() {
+                    if (review.roomId) {
+                        window.location.href = `Rooms/rooms.html?id=${encodeURIComponent(review.roomId)}`;
+                        return;
+                    }
+                    // Fallback to building page if no specific room exists
+                    window.location.href = `Buildings/Buildings.html?building=${encodeURIComponent(review.location)}`;
+                }
+
+                article.addEventListener('click', (e) => {
+                    // If click originated from an interactive element, don't navigate
+                    if (e.target.closest('button, a, input, select, textarea')) return;
+                    navigateToTarget();
+                });
+
+                article.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        navigateToTarget();
+                    }
+                });
+
+                return article;
+            }
+
+            function escapeHtml(str) {
+                return String(str).replace(/[&<>\"']/g, function (s) {
+                    return ({
+                        '&': '&amp;',
+                        '<': '&lt;',
+                        '>': '&gt;',
+                        '\"': '&quot;',
+                        "'": '&#39;'
+                    })[s];
+                });
+            }
+
+            function renderVisibleList(list) {
+                // Clear grid
+                reviewsGrid.innerHTML = '';
+
+                const visible = list.slice(0, VISIBLE_COUNT);
+                visible.forEach(r => reviewsGrid.appendChild(createCardElement(r)));
+
+                const extra = list.slice(VISIBLE_COUNT);
+                if (extra.length > 0) {
+                    const moreDiv = document.createElement('div');
+                    moreDiv.className = 'more-reviews';
+                    // append extra cards (CSS will control visibility)
+                    extra.forEach(r => moreDiv.appendChild(createCardElement(r)));
+                    reviewsGrid.appendChild(moreDiv);
+                    if (showMoreBtn) {
+                        showMoreBtn.style.display = 'inline-block';
+                        showMoreBtn.setAttribute('aria-expanded', 'false');
+                        showMoreBtn.textContent = 'Show more reviews';
+                    }
+                } else {
+                    if (showMoreBtn) showMoreBtn.style.display = 'none';
+                }
+            }
+
+            function applyFiltersAndSort() {
+                const searchTerm = (reviewSearch?.value || '').toLowerCase().trim();
+                const minUp = parseInt(minUpInput?.value || '0', 10) || 0;
+
+                // Start from original array so filtering is deterministic
+                let working = originalReviews.slice();
+
+                // Filter by min up
+                if (minUp > 0) {
+                    working = working.filter(r => r.up >= minUp);
+                }
+
+                // Filter by search term
+                if (searchTerm) {
+                    working = working.filter(r => (
+                        r.location.toLowerCase().includes(searchTerm) ||
+                        r.text.toLowerCase().includes(searchTerm)
+                    ));
+                }
+
+                // Sorting
+                const sortVal = reviewSort?.value || 'date_desc';
+                const [key, dir] = sortVal.split('_');
+
+                // Only perform a sort if user selected something other than default or if searching
+                if (searchTerm || sortVal !== 'date_desc') {
+                    working.sort((a, b) => {
+                        if (key === 'date') {
+                            return dir === 'asc' ? new Date(a.date) - new Date(b.date) : new Date(b.date) - new Date(a.date);
+                        }
+                        if (key === 'up') {
+                            return dir === 'asc' ? a.up - b.up : b.up - a.up;
+                        }
+                        if (key === 'location') {
+                            const la = a.location.toLowerCase();
+                            const lb = b.location.toLowerCase();
+                            if (la < lb) return dir === 'asc' ? -1 : 1;
+                            if (la > lb) return dir === 'asc' ? 1 : -1;
+                            return 0;
+                        }
+                        return 0;
+                    });
+                }
+
+                renderVisibleList(working);
+            }
+
+            function debounce(fn, wait = 150) {
+                let t;
+                return (...args) => {
+                    clearTimeout(t);
+                    t = setTimeout(() => fn(...args), wait);
+                };
+            }
+
+            const debouncedApply = debounce(applyFiltersAndSort, 120);
+
+            if (reviewSearch) reviewSearch.addEventListener('input', debouncedApply);
+            if (reviewSort) reviewSort.addEventListener('change', applyFiltersAndSort);
+            if (minUpInput) minUpInput.addEventListener('input', debouncedApply);
+
+            if (showMoreBtn) {
+                showMoreBtn.addEventListener('click', (e) => {
+                    const more = reviewsGrid.querySelector('.more-reviews');
+                    if (!more) return;
+                    const isShown = more.classList.toggle('show');
+                    showMoreBtn.setAttribute('aria-expanded', isShown ? 'true' : 'false');
+                    showMoreBtn.textContent = isShown ? 'Show fewer reviews' : 'Show more reviews';
+                });
+            }
+
+            // Initial render
+            applyFiltersAndSort();
+        })();
+
 });

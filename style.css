@@ -1048,3 +1048,274 @@ body{
   max-width: 300px;
   margin: 0 auto;
 }
+
+
+/* ----------------------------- */
+/* Reviews page styles (myreviews) */
+/* ----------------------------- */
+.reviews-container {
+  width: 80%;
+  max-width: 1100px;
+  margin: 2.25rem auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.reviews-title-box {
+  /* Modernized title card with subtle glass/gradient using existing palette */
+  background: linear-gradient(180deg, rgba(205,188,168,0.98), rgba(196,178,150,0.95));
+  padding: 1.25rem 1.25rem;
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(76,63,52,0.12), inset 0 -2px 6px rgba(0,0,0,0.03);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(76,63,52,0.08);
+  backdrop-filter: blur(4px);
+}
+
+.reviews-title-box::before {
+  /* Accent bar on the left using brand tones */
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 6px;
+  background: linear-gradient(180deg, #766838, #4C3F34);
+  border-radius: 14px 0 0 14px;
+  transform: translateX(-2px);
+}
+
+.reviews-title-box h1 {
+  margin: 0;
+  color: #4C3F34;
+  font-size: 1.6rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  font-weight: 700;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.06);
+}
+
+@media (max-width: 520px) {
+  .reviews-title-box h1 { font-size: 1.2rem; letter-spacing: 1.5px; }
+}
+
+.reviews-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem;
+}
+
+.reviews-controls {
+  width: 100%;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.reviews-controls input[type="search"], .reviews-controls input[type="number"], .reviews-controls select {
+  padding: 0.45rem 0.6rem;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  font-size: 0.95rem;
+}
+
+.reviews-controls input[type="search"] { flex: 1 1 40%; }
+.reviews-controls select { flex: 0 0 220px; }
+.reviews-controls input[type="number"] { width: 90px; }
+
+.review-card {
+  background: #ffffff;
+  border: 1px solid #e9e4dd;
+  padding: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.06);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 140px;
+  position: relative; /* for absolute-positioned thumbs */
+  /* Reserve vertical space at the top so the top-right thumbs don't overlap the title/text */
+  padding-top: 2.8rem; /* increased to place the start of the content below the thumbs */
+  /* Reserve space on the right so the top-right thumbs don't overlap the content */
+  padding-right: 6rem;
+  transition: transform 0.16s cubic-bezier(.2,.9,.2,1), border-color 0.12s ease;
+  will-change: transform, opacity;
+  transform: translateZ(0); /* promote to its own layer for smoother animation in Chrome */
+  z-index: 1; /* ensure the card sits above its pseudo-element glow */
+}
+
+/* Hover / focus state to make cards feel interactive */
+.review-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 26px rgba(76,63,52,0.12);
+  border-color: rgba(76,63,52,0.10);
+}
+
+.review-card:active {
+  transform: translateY(-2px) scale(0.998);
+}
+
+/* Accessible focus ring */
+.review-card:focus {
+  outline: none;
+  box-shadow: 0 12px 28px rgba(76,63,52,0.12);
+  border-color: rgba(118,104,56,0.16);
+}
+
+/* Use a pseudo-element for the brand glow (opacity-only transition - GPU friendly in Chrome) */
+.review-card::after {
+  content: '';
+  position: absolute;
+  inset: -6px; /* slightly larger than the card to show glow */
+  border-radius: inherit;
+  pointer-events: none;
+  box-shadow: 0 0 18px 6px rgba(118,104,56,0.18);
+  opacity: 0;
+  transition: opacity 200ms ease;
+  z-index: 0;
+}
+
+.review-card:hover::after,
+.review-card:focus::after {
+  opacity: 1;
+}
+
+/* Ensure card contents stay above the pseudo-element glow */
+/* Remove per-child positioning so absolute .thumbs position remains relative to the card
+  (we set .review-card { position: relative } already), and keep the pseudo-element behind
+  the card by using z-index on the card itself. */
+
+.review-card:hover .review-location,
+.review-card:focus .review-location {
+  color: #5a482a; /* slightly darker on hover */
+}
+
+.review-location {
+  margin: 0 0 0.35rem 0;
+  color: #766838;
+  font-size: 1.05rem;
+}
+
+.review-room {
+  margin: 0 0 0.4rem 0;
+  font-size: 0.9rem;
+  color: #5a4b39;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-weight: 600;
+}
+
+.room-id {
+  background: #f3f1e8;
+  color: #766838;
+  padding: 0.12rem 0.45rem;
+  border-radius: 6px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  border: 1px solid rgba(118,104,56,0.06);
+}
+
+.review-text {
+  margin: 0 0 0.6rem 0;
+  color: #333;
+  line-height: 1.4;
+  font-size: 0.97rem;
+}
+
+.review-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: 1.25rem; /* extra space so footer clears the absolute thumbs */
+}
+
+.review-meta {
+  color: #777;
+  font-size: 0.85rem;
+}
+
+.thumbs {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  position: absolute;
+  top: 12px;
+  right: 12px;
+}
+
+.thumb-btn {
+  background: #f6f6f6;
+  border: 1px solid #e0dfdd;
+  padding: 0.35rem 0.6rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: background 0.12s ease, transform 0.08s ease;
+}
+
+.thumb-btn:hover { background: #efefef; transform: translateY(-1px); }
+
+.thumb-count { font-weight: 700; margin-left: 4px; }
+
+.thumb-btn.up { color: #2e7d32; }
+.thumb-btn.down { color: #a33232; }
+
+@media (max-width: 520px) {
+  .reviews-title-box h1 { font-size: 1.4rem; }
+  .reviews-container { width: 94%; }
+}
+
+/* non-interactive thumb display (constant counts) */
+.thumb-display {
+  background: #f6f6f4;
+  border: 1px solid #e7e4df;
+  padding: 0.18rem 0.5rem;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.95rem;
+  color: inherit;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+  font-weight: 700;
+}
+.thumb-display.up { color: #2e7d32; }
+.thumb-display.down { color: #a33232; }
+
+/* Hide extra reviews by default; reveal with `.show` */
+.more-reviews {
+  /* Use display: contents so the review cards inside behave like direct grid children,
+    which preserves the same sizing and spacing as the initially visible cards. */
+  display: contents;
+}
+
+/* Hide additional cards by default (they remain grid items via display: contents)
+  When the container has the .show class, reveal them again with the same
+  display style as the original .review-card (flex). */
+.more-reviews > .review-card { display: none; }
+.more-reviews.show > .review-card { display: flex; }
+
+.reviews-actions { display: flex; justify-content: center; margin-top: 1rem; }
+.show-more-btn {
+  background: #766838;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.12);
+  transition: background 0.15s ease, transform 0.08s ease;
+}
+.show-more-btn:hover { background: #8f7a4f; transform: translateY(-2px); }
