@@ -128,7 +128,7 @@ document.addEventListener("DOMContentLoaded", () => {
             // Hide the toast after 3 seconds
             setTimeout(() => {
                 toast.classList.remove("show");
-            }, 3000); // 3 seconds
+            }, 4000); // 3 seconds
         }
     }
 

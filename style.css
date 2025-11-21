@@ -1323,19 +1323,19 @@ body{
 #undo-toast {
   position: fixed;
   bottom: 20px;
-  right: 20px;
-  background-color: #323232;
-  color: white;
-  padding: 12px 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #333; /* or match your toast background */
+  color: #fff;
+  padding: 10px 20px;
   border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
   display: flex;
   align-items: center;
   gap: 10px;
-  transform: translateY(100px);
-  opacity: 0;
-  transition: transform 0.3s ease, opacity 0.3s ease;
-  z-index: 9999;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  font-family: inherit;
+  font-size: 14px;
+  z-index: 1000;
 }
 
 #undo-toast.show {
@@ -1349,11 +1349,17 @@ body{
     opacity: 0;
 }
 
-#undo-toast button {
-  background: #ff5252;
-  color: white;
+#undo-btn {
+  background-color: #e74c3c; /* red for undo */
+  color: #fff;
   border: none;
-  padding: 5px 10px;
-  border-radius: 5px;
+  border-radius: 6px;
+  padding: 5px 12px;
+  font-weight: 600;
   cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+#undo-btn:hover {
+    background-color: #c0392b; /* darker red on hover */
 }
