@@ -238,7 +238,7 @@ function initializeCarousel() {
         });
     };
     
-    // Event Listeners for arrows (using cloneNode to prevent stacking)
+    // Event Listeners for arrows
     if (nextButton) {
         const newNext = nextButton.cloneNode(true);
         nextButton.parentNode.replaceChild(newNext, nextButton);
@@ -258,7 +258,6 @@ function initializeCarousel() {
 
 
 
-// Add escapeHtml function (put this with your other global functions at the top)
 function escapeHtml(str) {
     if (str === null || str === undefined) return '';
     return String(str).replace(/[&<>\"']/g, function (s) {
@@ -272,7 +271,6 @@ function escapeHtml(str) {
     });
 }
 
-// Add this function to load reviews from localStorage (put with other global functions)
 function loadUserReviewsForRoom(roomId) {
     const STORAGE_KEY = "userReviews";
     try {
@@ -292,13 +290,8 @@ function renderSavedReviews(roomId) {
 
     const savedReviews = loadUserReviewsForRoom(roomId);
     
-    // Clear existing reviews
-    reviewsContainer.innerHTML = '';
     
-    if (savedReviews.length === 0) {
-        reviewsContainer.innerHTML = '<p class="no-reviews">No reviews yet. Be the first to write one!</p>';
-        return;
-    }
+    
 
     // Sort reviews by date (newest first)
     savedReviews.sort((a, b) => new Date(b.date) - new Date(a.date));
@@ -342,12 +335,19 @@ function renderSavedReviews(roomId) {
                 </div>
             </div>
         `;
+
+        
+
+        if (savedReviews.length === 0) {
+            reviewsContainer.innerHTML = '<p class="no-reviews">No reviews yet. Be the first to write one!</p>';
+            return;
+    }
         
         reviewsContainer.insertAdjacentHTML('beforeend', reviewHTML);
     });
 }
 
-// Add this function to save reviews to localStorage (put with other global functions)
+// Save reviews to localStorage (put with other global functions)
 function saveUserReview(review) {
     const STORAGE_KEY = "userReviews";
     try {
@@ -505,7 +505,7 @@ if (form && reviewsContainer) {
         reviewsContainer.insertAdjacentHTML('afterbegin', newReviewHTML);
         reviewsContainer.scrollTop = 0;
 
-        // Save to localStorage with complete information
+        // Save to localStorage
         const reviewData = {
             location: currentRoom.buildingNameForLink,
             roomId: currentRoom.id,
@@ -529,7 +529,7 @@ if (form && reviewsContainer) {
     });
 }
 
-// Add this function to save reviews to localStorage
+// Save reviews to localStorage
 function saveUserReview(review) {
     const STORAGE_KEY = "userReviews";
     try {
@@ -553,7 +553,7 @@ function saveUserReview(review) {
         });
     }
 
-    // Review voting functionality (event delegation) - UPDATED VERSION
+    // Review voting functionality (event delegation)
 if (reviewsContainer) {
     reviewsContainer.addEventListener('click', function(e) {
         const button = e.target.closest('.vote-btn');
@@ -619,7 +619,7 @@ if (reviewsContainer) {
     });
 }
 
-// Add this function to update votes in localStorage
+//  update votes in localStorage
 function updateReviewVotes(reviewId, isUpvote, newCount, isActive) {
     const STORAGE_KEY = "userReviews";
     try {

@@ -6,17 +6,11 @@
 
 body{
     background-image: url('../Images/BG.png'); 
-    
-    /* These three lines ensure the image covers the whole screen, 
-       doesn't repeat, and stays fixed when the user scrolls. */
     background-size: cover;
     background-attachment: fixed;
     background-repeat: no-repeat;
-    
-    /* This color overlay will ensure the image remains subtle */
-    background-color: rgba(28, 27, 26, 0.211); /* #CDBCA8 with 40% transparency */
+    background-color: rgba(28, 27, 26, 0.211); 
     background-blend-mode: overlay;
-    /* min-height: 500vh; */
 }
 
 .navbar-custom{
@@ -31,7 +25,7 @@ body{
   /* Navbar styling INSIDE*/
   background-color: #CDBCA8;
   backdrop-filter: blur(4px);
-  box-shadow: 0 3px 8px rgba(222, 221, 221, 0.6); /* 👈 visible under-shadow */
+  box-shadow: 0 3px 8px rgba(222, 221, 221, 0.6); 
   z-index: 1000; /* ensure navbar is above other content */
 
   display: flex;
@@ -55,8 +49,7 @@ body{
     display: flex;             /* places image and text side-by-side */
     align-items: center;       /* centers them vertically */
     color: inherit;
-    gap: 8px;                  /* 👈 adds 5px space between image and text */
-
+    gap: 8px;                 
     transition: transform 0.3s ease; /* smooth scaling effect */
     margin: 0%;
 }
@@ -80,8 +73,7 @@ body{
     text-decoration: none;
 
     font-family: 'Brush Script MT', cursive;
-    /*backdrop-filter: blur(4px);*/
-    text-shadow: 0 3px 8px rgba(155, 155, 155, 0.851); /* 👈 visible under-shadow */
+    text-shadow: 0 3px 8px rgba(155, 155, 155, 0.851); 
 }
 
 .navbar-Logo:hover {
@@ -96,8 +88,6 @@ body{
     align-items: center;
     width: 50%; /* total width of search + button */
     position: relative;
-    
-    /* NEW: Add a small gap between the search input and the sort button */
     gap: 10px;
 }
 
@@ -106,14 +96,12 @@ body{
 /* --- Rooms Page: Search Input Group FIX --- */
 /* ---------------------------------------------------- */
 
-/* ⭐ NEW RULE: Style the container for the icon and input */
 .search-input-group {
     position: relative; 
     flex-grow: 1; 
     order: 1; 
 }
 
-/* ⭐ NEW RULE: Target the input inside the new group */
 .search-input-group input { 
     width: 100%; /* Fill parent group width */
     padding: 10px 12px 10px 36px; 
@@ -140,7 +128,6 @@ body{
     box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     min-width: 180px; /* Ensure enough width for text */
     
-    /* CRITICAL: Hides the list by default */
     display: none; 
     z-index: 950; /* Ensure it appears above other elements */
 }
@@ -166,14 +153,12 @@ body{
     background-color: #f0f0f0;
 }
 
-/* ⭐ NEW RULE: Style the sort wrapper to position it correctly */
 .sort-dropdown-wrapper {
     position: relative;
     z-index: 900;
     order: 2;
 }
 
-/* ⭐ NEW RULE: Style the sort button as a standalone, fully rounded button */
 .sort-btn {
     background-color: #766838;
     color: #fff;
@@ -216,12 +201,10 @@ body{
 
 .profile-wrapper {
     position: relative;
-    /* Ensure the wrapper respects the size of the image, 
-       and that the card doesn't get clipped by nearby elements */
     z-index: 1000; 
 }
 
-/* 2. The Card itself */
+/* The Card itself */
 .profile-info-card {
     /* Positioning */
     position: absolute;
@@ -248,7 +231,7 @@ body{
     z-index: 1000; 
 }
 
-/* 3. Card content styling */
+/* Card content styling */
 .profile-info-card p, .profile-info-card a {
     margin: 0;
     padding: 0;
@@ -258,7 +241,7 @@ body{
 
 .profile-info-card .card-name {
     font-weight: bold;
-    color: #766838; /* Use your brand color */
+    color: #766838; /* Use brand color */
     margin-bottom: 5px;
     font-size: 1.1rem;
 }
@@ -285,7 +268,7 @@ body{
     color: #d32f2f; /* Red for logout */
 }
 
-/* 4. Display the card on hover (CSS-only approach for simplicity) */
+/* Display the card on hover (CSS-only approach for simplicity) */
 .profile-wrapper:hover .profile-info-card {
     opacity: 1;
     visibility: visible;
@@ -355,7 +338,7 @@ body{
 /* ===== Secondary Navbar ===== */
 .navbar-secondary {
   position: fixed;
-  top: var(--navbar-height); /* 👈 sits right below the primary navbar */
+  top: var(--navbar-height); /* sits right below the primary navbar */
   left: 0;
   width: 100%;
   height: var(--secondary-height);
@@ -443,7 +426,6 @@ body{
   left: -250px; /* hidden off-screen */
   width: 250px;
   
-  /* FIX: Calculate the height from the bottom of the secondary navbar to the bottom of the screen (100vh) */
   height: calc(100vh - (var(--navbar-height) + var(--secondary-height))); 
   
   background-color: #f7f7f7;
@@ -452,7 +434,6 @@ body{
   transition: left 0.3s ease;
   z-index: 998;
   
-  /* These two are correct for positioning the button: */
   display: flex;
   flex-direction: column;
 }
@@ -478,7 +459,6 @@ body{
 
 }
 
-/* Optional animation for hamburger toggle */
 .hamburger.active.active {
   transform: rotate(45deg) translateY(8px);
 }
@@ -489,14 +469,8 @@ body{
   font-size: 1.5rem;
   color: #333;
   cursor: pointer;
-  
-  /* CRITICAL: Pushes the button down to the bottom */
-  margin-top: auto; 
-  
-  /* Keeps the button aligned to the right */
+  margin-top: auto;   
   align-self: flex-end; 
-  
-  /* Adds space around the button at the bottom right corner */
   margin-right: 1rem; 
   margin-bottom: 2rem; 
   
@@ -508,10 +482,11 @@ body{
     transform: scale(1.1);
 }
 
+
+
 /*-----------------*/
 /* Main Content */
 /*-----------------*/
-
 
 .map-container {
     display: flex;
@@ -519,25 +494,18 @@ body{
     align-items: center;
     margin-bottom: 2rem;
 
-    position: relative; /* or absolute, if you want it over the page */
-    /* top: calc(var(--navbar-height) + var(--secondary-height)); */
+    position: relative; 
 }
 
 
 .map-content {
-    /* Critical: Ensures absolute children (pins) are positioned relative to this block */
     position: relative; 
-    
-    /* Critical: Makes the container shrink-wrap around the map-image's true size, 
-       even when scaled, so 100% width/height is the image size. */
     display: inline-block;
     
     /* Apply initial scaling/transformation, driven by JS variable */
     transform: scale(var(--current-zoom, 1.2)); 
     transform-origin: center center; /* Ensure scaling centers on the map */
-    transition: transform 0.3s ease; /* Smooth zoom animation */
-    
-    /* Optional: Ensure nothing overflows and messes up placement */
+    transition: transform 0.3s ease; /* Smooth zoom animation */    
     overflow: hidden; 
     
     /* Use the same sizing as the map-image for boundaries */
@@ -546,32 +514,26 @@ body{
     max-height: 600px;
 }
 
-/* 2. The image inside the map-content */
-/* Change your existing .map-image to this: */
+/* The image inside the map-content */
 .map-content .map-image {
     width: 100%;
     height: auto; 
-    /* Remove redundant transform properties that are now on .map-content */
-    /* Remove border/box-shadow if they are wanted on the .map-content instead */
     border: 2px solid #ccc;
     border-radius: 10px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 
-/* 3. The pin container (positioned relative to .map-content) */
+/* The pin container (positioned relative to .map-content) */
 .map-pin-container, .room-pin-container {
     position: absolute;
-    /* This centers the pin icon's bottom edge on the X,Y coordinate */
-    transform: translate(-50%, -100%); 
-    
-    /* Define the size of the clickable area */
+    transform: translate(-50%, -100%);     
     width: 30px; 
     height: 30px; 
     cursor: pointer;
     z-index: 10; /* Make sure it sits above the map image */
 }
 
-/* 4. The actual icon image inside the container */
+/* The actual icon image inside the container */
 .map-pin-icon {
     width: 100%;
     height: 100%;
@@ -580,7 +542,7 @@ body{
 
 /* --- Floating Info Card (for hover) --- */
 #pin-popup-root {
-    position: fixed; /* Fixed relative to the viewport, above all else */
+    position: fixed; 
     top: 0;
     left: 0;
     width: 100vw;
@@ -651,22 +613,20 @@ body{
 /* --- New Rule for Room Pin Hover Effect --- */
 /* ---------------------------------------------------- */
 
-/* 1. Ensure the pin container has a smooth transition */
+/* Ensure the pin container has a smooth transition */
 .map-pin-container, .room-pin-container {
-    /* ... existing properties ... */
-    
     /* Ensure transition is applied to the pin container */
     transition: transform 0.2s ease; 
 }
 
-/* 2. Apply the scale transform on hover specifically to room pins */
+/* Apply the scale transform on hover specifically to room pins */
 /* Using .room-pin-container ensures we target only the pins on the rooms map */
 .room-pin-container:hover {
     transform: translate(-50%, -100%) scale(1.2); /* Keep the positioning transform, and add scale */
-    z-index: 15; /* Optional: Raise the z-index slightly to ensure it overlaps nearby elements */
+    z-index: 15; 
 }
 
-/* 3. If you want ALL pins (index page and room page) to scale similarly: */
+/* If you want ALL pins (index page and room page) to scale similarly: */
 /* If you want the scale to apply to ALL pin containers, use this rule: */
 .map-pin-container:hover {
     transform: translate(-50%, -100%) scale(1.2); 
@@ -675,6 +635,7 @@ body{
 
 /*-----------------*/
 /* Room Buttons */
+/*-----------------*/
 
 .room-content {
   display: flex;
@@ -768,11 +729,18 @@ body{
 }
 
 .room-bookmark {
-  position: absolute;
-  top: 0;
-  right: 0.2rem;
-  cursor: pointer;
-  
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    cursor: pointer;
+    padding: 4px;            /* space so the border doesn't touch the icon */
+    border-radius: 4px;      /* optional: make the hover box rounded */
+    transition: all 0.2s ease;
+}
+
+.room-bookmark:hover {
+    background-color: rgba(0, 0, 0, 0.1); /* optional subtle highlight */
+    transform: scale(1.05);    /* small pop effect */
 }
 
 .room-number{

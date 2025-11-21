@@ -37,7 +37,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const viewProfileLink = document.getElementById('viewProfileLink');
 
-    // --- NEW: Sort State ---
     let currentSortBy = 'rating'; // Default sort key
     let currentSortOrder = 'desc'; // Default sort order
 
@@ -101,7 +100,7 @@ document.addEventListener("DOMContentLoaded", () => {
         viewProfileLink.addEventListener('click', (e) => {
             e.preventDefault(); 
             
-            // 2. Display the alert message
+            // Display the alert message
             alert("Profile page is currently unimplemented. Not Part of Primary or Secondary Tasks!"); 
             
             // Hide the profile card immediately after clicking the link
@@ -126,7 +125,7 @@ document.addEventListener("DOMContentLoaded", () => {
             // Set the message
             toastMessage.textContent = message;
             
-            // Show the toast (applies the 'show' class which triggers the slide-down)
+            // Show the toast 
             toast.classList.add("show");
             
             // Hide the toast after 3 seconds
@@ -147,15 +146,15 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        // 1. Clear any existing timer AND the previous button listener
+        // Clear any existing timer AND the previous button listener
         clearTimeout(toast.hideTimeout);
-        btn.onclick = null; // <-- CRITICAL CHANGE: Reliably clear old click handler
+        btn.onclick = null; 
 
         // Set the message and show the toast
         toastMessage.textContent = message;
         toast.classList.add('show');
 
-        // 2. Attach the NEW undo logic
+        // Attach the NEW undo logic
         btn.onclick = () => { 
             // 🚨 This MUST be called when 'Undo' is pressed
             clearTimeout(toast.hideTimeout);
@@ -163,7 +162,7 @@ document.addEventListener("DOMContentLoaded", () => {
             undoCallback();
         };
 
-        // 3. Start a new timer and store its ID on the toast element
+        // Start a new timer and store its ID on the toast element
         toast.hideTimeout = setTimeout(() => {
             toast.classList.remove('show');
             
@@ -561,7 +560,6 @@ if (IS_BUILDINGS_PAGE) {
     initializeSortDropdown(roomSortBtn, roomSortDropdown);
 
 
-    // **NEW FUNCTION: Render Map Pins for Buildings**
     function renderMapPins(spots) {
         if (!mapContent || IS_BUILDINGS_PAGE) return; 
 
@@ -651,7 +649,7 @@ if (IS_BUILDINGS_PAGE) {
                 currentPopup = null;
             });
 
-            // Make the pin container clickable, linking to the Rooms page (UNCHANGED)
+            // Make the pin container clickable, linking to the Rooms page
             pinContainer.addEventListener('click', (event) => {
                 window.location.href = `Buildings/Buildings.html?building=${encodeURIComponent(spot.name)}`;
             });
@@ -667,7 +665,7 @@ if (IS_BUILDINGS_PAGE) {
         // Remove existing pins from the map content before adding new ones
         document.querySelectorAll('.map-content .room-pin-container').forEach(pin => pin.remove());
         
-        // Check if the pin popup root exists and clear it (if you are using the same popup logic)
+        // Check if the pin popup root exists and clear it
         if (pinPopupRoot) {
             pinPopupRoot.innerHTML = ''; 
         }
@@ -685,18 +683,18 @@ if (IS_BUILDINGS_PAGE) {
             // Skip rendering if coordinates are missing
             if (room.x === undefined || room.y === undefined) return; 
 
-            // 1. Create Pin Container
+            // Create Pin Container
             const pinContainer = document.createElement("div"); 
             pinContainer.classList.add("map-pin-container", "room-pin-container");
             pinContainer.setAttribute('data-name', room.room); 
 
-            // 2. Create Pin Icon
+            // Create Pin Icon
             const pinImage = document.createElement("img");
             pinImage.src = defaultRoomPin;
             pinImage.alt = `${room.room} location pin`;
             pinImage.classList.add("map-pin-icon", "room-pin-icon"); 
 
-            // 3. Position the pin (relative to the building map image)
+            // Position the pin (relative to the building map image)
             pinContainer.style.left = `${room.x}%`;
             pinContainer.style.top = `${room.y}%`;
             pinContainer.prepend(pinImage);
@@ -786,7 +784,6 @@ function renderBookmarkedRooms(rooms) {
     }
 
     rooms.forEach(room => {
-        // --- EXISTING CODE TO CREATE BUTTON ---
         const btn = document.createElement("button");
         btn.classList.add("room-btn");
 
@@ -818,7 +815,6 @@ function renderBookmarkedRooms(rooms) {
                 </span>
             </div>
         `;
-        // --- END OF EXISTING CODE TO CREATE BUTTON ---
 
         // --- NEW CLICK HANDLER FOR BOOKMARK PAGE ---
         btn.addEventListener("click", (e) => {
@@ -833,17 +829,17 @@ function renderBookmarkedRooms(rooms) {
                 // --- UNBOOKMARKING LOGIC (Only runs on Bookmark page and when changing state to false) ---
                 if (!newState && IS_BOOKMARK_PAGE) {
 
-                    // 2. Add class for visual effect (Optional: You'll need CSS for 'pending-removal')
+                    // Add class for visual effect 
                     btn.classList.add('pending-removal'); 
-                    btn.style.display = 'none'; // <--- ADD THIS LINE
+                    btn.style.display = 'none'; 
 
-                    // 3. Update the button's icon immediately
+                    // Update the button's icon immediately
                     bookmarkIconSpan.dataset.bookmarked = newState.toString();
                     bookmarkIconSpan.innerHTML = emptySVG;
 
                     const message = `Room ${room.room} unbookmarked.`;
                     
-                    // Action to undo: reset state and re-render
+                    // reset state and re-render
                     const undoAction = () => {
                         bookmarkState[room.room] = true;
                         saveBookmarkState();
@@ -1019,13 +1015,11 @@ function saveBookmarkState() {
             return 0;
         });
 
-        // Render all reviews (no pagination for my reviews)
+        // Render all reviews
         filteredReviews.forEach(review => {
             reviewsGrid.appendChild(createCardElement(review));
         });
 
-        // Hide show more button since we're showing all reviews
-        if (showMoreBtn) showMoreBtn.style.display = 'none';
     }
 
     function debounce(fn, wait = 150) {

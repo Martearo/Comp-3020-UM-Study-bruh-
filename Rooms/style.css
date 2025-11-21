@@ -434,7 +434,6 @@ body{
 }
 
 .card:hover {
-    /* transform: translateY(-5px); */
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
 }
 
@@ -530,14 +529,6 @@ body{
     color: #2c3e50;
 }
 
-/* --- Info Items (used in both cards) --- */
-
-
-
-
-
-
-/* --- Reviews Card Specifics --- */
 
 
 /* Image Carousel Styles */
@@ -580,8 +571,6 @@ body{
     top: 50%;           /* Move down 50% */
     transform: translateY(-50%); /* Center vertically */
     z-index: 20;        /* Ensure it's on top of images */
-    
-    /* Visual Styles (Kept from your original) */
     background: rgba(255, 255, 255, 0.7);
     border: none;
     width: 40px;
@@ -606,7 +595,7 @@ body{
     left: 10px;
 }
 
-/* 4. Pin Next Button to Right */
+/* Pin Next Button to Right */
 #nextBtn {
     right: 10px;
 }
@@ -663,7 +652,7 @@ body{
 .reviews-container {
     flex: 1;
     overflow-y: auto;
-    max-height: 500px; /* Increased height to match larger card */
+    max-height: 500px; 
     padding-right: 10px;
     margin-bottom: 15px;
 }
@@ -815,7 +804,7 @@ body{
     transform: translateY(-1px);
 }
 
-/* Add a subtle pulse animation to attract attention */
+/* subtle pulse animation to attract attention */
 @keyframes pulse {
     0% {
         box-shadow: 0 6px 15px rgba(52, 152, 219, 0.4);
