@@ -956,7 +956,8 @@ body{
   transition: all 0.2s ease;
 }
 
-.room-btn:hover {
+.room-btn:hover .room-info,
+.room-info:hover {
   background-color: #b09c5e;
   transform: scale(1.02);
 }

@@ -292,13 +292,11 @@ function renderSavedReviews(roomId) {
 
     const savedReviews = loadUserReviewsForRoom(roomId);
     
-    // Clear existing reviews
-    reviewsContainer.innerHTML = '';
     
-    if (savedReviews.length === 0) {
-        reviewsContainer.innerHTML = '<p class="no-reviews">No reviews yet. Be the first to write one!</p>';
-        return;
-    }
+    // Clear existing reviews
+   // reviewsContainer.innerHTML = '';
+    
+    
 
     // Sort reviews by date (newest first)
     savedReviews.sort((a, b) => new Date(b.date) - new Date(a.date));
@@ -342,6 +340,13 @@ function renderSavedReviews(roomId) {
                 </div>
             </div>
         `;
+
+        
+
+        if (savedReviews.length === 0) {
+            reviewsContainer.innerHTML = '<p class="no-reviews">No reviews yet. Be the first to write one!</p>';
+            return;
+    }
         
         reviewsContainer.insertAdjacentHTML('beforeend', reviewHTML);
     });
