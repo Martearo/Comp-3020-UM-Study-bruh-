@@ -131,7 +131,7 @@ body{
     /* Visibility Control */
     opacity: 0;
     visibility: hidden;
-    transform: translateY(-5px); /* Start slightly above its final position */
+    /* transform: translateY(-5px); Start slightly above its final position */
     transition: opacity 0.3s ease, transform 0.3s ease;
     
     /* Font */
@@ -434,7 +434,7 @@ body{
 }
 
 .card:hover {
-    transform: translateY(-5px);
+    /* transform: translateY(-5px); */
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
 }
 

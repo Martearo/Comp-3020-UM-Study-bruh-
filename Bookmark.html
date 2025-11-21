@@ -80,8 +80,8 @@
             
             <!-- Sidebar Menu -->
             <div class="sidebar" id="sidebar">
-                <a href="../index.html">🏠 Home</a>
-                <a href="myreviews.html">📑 My Reviews</a>
+                <a href="index.html">🏠 Home</a>
+                <a href="myreviews.html">📚 My Reviews</a>
                 <a href="Bookmark.html">📑 Bookmarks</a>
                 <a href="../Login/login.html">🔒 Login / SignUp</a>
 
@@ -106,15 +106,19 @@
         <!-- This should contain your bookmarked rooms -->
         <!-- Add structure like this: -->
         
+        <div id="undo-toast" class="toast">
+            <span id="undo-message">Undo Action?</span>
+            <button id="undo-btn">Undo</button>
+        </div>
         <!-- Example room card (you'll generate these dynamically in JavaScript) -->
       
 
         <!-- More room cards would go here -->
         <div class="bookmarks-empty-state" id="empty-state" style="display: none;">
-        <div class="bookmarks-empty-icon">📑</div>
-        <p class="bookmarks-empty-text">No bookmarked rooms yet</p>
-        <p class="bookmarks-empty-subtext">Start exploring rooms and click the bookmark icon to save your favourites!</p>
-    </div>
+            <div class="bookmarks-empty-icon">📑</div>
+            <p class="bookmarks-empty-text">No bookmarked rooms yet</p>
+            <p class="bookmarks-empty-subtext">Start exploring rooms and click the bookmark icon to save your favourites!</p>
+        </div>
     </div>
 
    

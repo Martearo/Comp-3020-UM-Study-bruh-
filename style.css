@@ -1319,3 +1319,47 @@ body{
   transition: background 0.15s ease, transform 0.08s ease;
 }
 .show-more-btn:hover { background: #8f7a4f; transform: translateY(-2px); }
+
+#undo-toast {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #333; /* or match your toast background */
+  color: #fff;
+  padding: 12px 16px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  font-family: inherit;
+  font-size: 16px;
+  z-index: 1000;
+}
+
+#undo-toast.show {
+  transform: translate(-50%, 0);
+  opacity: 1;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+#undo-toast.hide {
+  transform: translate(-50%, 100px);
+  opacity: 0;
+}
+
+#undo-btn {
+  background-color: #e74c3c; /* red for undo */
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 5px 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+#undo-btn:hover {
+  background-color: #c0392b; /* darker red on hover */
+}
