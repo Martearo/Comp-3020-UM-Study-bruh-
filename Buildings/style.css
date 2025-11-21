@@ -729,11 +729,18 @@ body{
 }
 
 .room-bookmark {
-  position: absolute;
-  top: 0;
-  right: 0.2rem;
-  cursor: pointer;
-  
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    cursor: pointer;
+    padding: 4px;            /* space so the border doesn't touch the icon */
+    border-radius: 4px;      /* optional: make the hover box rounded */
+    transition: all 0.2s ease;
+}
+
+.room-bookmark:hover {
+    background-color: rgba(0, 0, 0, 0.1); /* optional subtle highlight */
+    transform: scale(1.05);    /* small pop effect */
 }
 
 .room-number{
