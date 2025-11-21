@@ -6,17 +6,11 @@
 
 body{
     background-image: url('../Images/BG.png'); 
-    
-    /* These three lines ensure the image covers the whole screen, 
-       doesn't repeat, and stays fixed when the user scrolls. */
     background-size: cover;
     background-attachment: fixed;
     background-repeat: no-repeat;
-    
-    /* This color overlay will ensure the image remains subtle */
     background-color: rgba(28, 27, 26, 0.211); /* #CDBCA8 with 40% transparency */
     background-blend-mode: overlay;
-    /* min-height: 500vh; */
 }
 
 .navbar-custom{
@@ -31,7 +25,7 @@ body{
     /* Navbar styling INSIDE*/
     background-color: #CDBCA8;
     backdrop-filter: blur(4px);
-    box-shadow: 0 3px 8px rgba(222, 221, 221, 0.6); /* 👈 visible under-shadow */
+    box-shadow: 0 3px 8px rgba(222, 221, 221, 0.6); 
     z-index: 1000; /* ensure navbar is above other content */
 
     display: flex;
@@ -55,7 +49,7 @@ body{
     display: flex;             /* places image and text side-by-side */
     align-items: center;       /* centers them vertically */
     color: inherit;
-    gap: 8px;                  /* 👈 adds 5px space between image and text */
+    gap: 8px;                  /* adds 5px space between image and text */
 
     transition: transform 0.3s ease; /* smooth scaling effect */
     margin: 0%;
@@ -80,8 +74,7 @@ body{
     text-decoration: none;
 
     font-family: 'Brush Script MT', cursive;
-    /*backdrop-filter: blur(4px);*/
-    text-shadow: 0 3px 8px rgba(155, 155, 155, 0.851); /* 👈 visible under-shadow */
+    text-shadow: 0 3px 8px rgba(155, 155, 155, 0.851); 
 }
 
 .navbar-Logo:hover {
@@ -112,7 +105,6 @@ body{
     z-index: 1000; 
 }
 
-/* 2. The Card itself */
 .profile-info-card {
     /* Positioning */
     position: absolute;
@@ -139,7 +131,7 @@ body{
     z-index: 1000; 
 }
 
-/* 3. Card content styling */
+/* Card content styling */
 .profile-info-card p, .profile-info-card a {
     margin: 0;
     padding: 0;
@@ -149,7 +141,7 @@ body{
 
 .profile-info-card .card-name {
     font-weight: bold;
-    color: #766838; /* Use your brand color */
+    color: #766838; /* Use brand color */
     margin-bottom: 5px;
     font-size: 1.1rem;
 }
@@ -176,17 +168,12 @@ body{
     color: #d32f2f; /* Red for logout */
 }
 
-/* 4. Display the card on hover (CSS-only approach for simplicity) */
+/* Display the card on hover */
 .profile-wrapper:hover .profile-info-card {
     opacity: 1;
     visibility: visible;
     transform: translateY(0); /* Move to final position */
 }
-
-/* 
-.navbar-profile:hover {
-  transform: scale(1.1);
-} */
 
 
 /*---------------------------*/
@@ -251,7 +238,7 @@ body{
 /* ===== Secondary Navbar ===== */
 .navbar-secondary {
   position: fixed;
-  top: var(--navbar-height); /* 👈 sits right below the primary navbar */
+  top: var(--navbar-height); /* sits right below the primary navbar */
   left: 0;
   width: 100%;
   height: var(--secondary-height);
@@ -339,7 +326,6 @@ body{
   left: -250px; /* hidden off-screen */
   width: 250px;
   
-  /* FIX: Calculate the height from the bottom of the secondary navbar to the bottom of the screen (100vh) */
   height: calc(100vh - (var(--navbar-height) + var(--secondary-height))); 
   
   background-color: #f7f7f7;
@@ -385,17 +371,10 @@ body{
   font-size: 1.5rem;
   color: #333;
   cursor: pointer;
-  
-  /* CRITICAL: Pushes the button down to the bottom */
   margin-top: auto; 
-  
-  /* Keeps the button aligned to the right */
   align-self: flex-end; 
-  
-  /* Adds space around the button at the bottom right corner */
   margin-right: 1rem; 
-  margin-bottom: 2rem; 
-  
+  margin-bottom: 2rem;   
   font-family: 'Brush Script MT', cursive;
   transition: transform 0.2s ease;
 }
@@ -406,32 +385,25 @@ body{
 
 
 
-/* --- Help Page Specific Styles (MODIFICATIONS) --- */
 
-/* 1. Adjust the main content wrapper for the 20/80 split */
+/* Adjust the main content wrapper for the 20/80 split */
 .help-content-wrapper {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 20px 40px;
-    
-    /* Grid Layout: Sidebar (fixed width) + Main Content (flex) */
+    padding: 0 20px 40px;    
     display: flex;
     gap: 30px;
     align-items: flex-start;
-    
-    /* Ensure content starts below the navigation bars */
     margin-top: calc(var(--navbar-height) + var(--secondary-height) + 1.5rem); 
 }
 
-/* 2. Modify the Sidebar (20% width and remove sticky) */
+/* Modify the Sidebar (20% width and remove sticky) */
 help-side-card {
     flex: 0 0 260px; /* Fixed width */
     background-color: #ffffff;
     border-radius: 12px;
     padding: 20px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    
-    /* Sticky Positioning: Stays visible while you scroll */
     position: sticky;
     top: calc(var(--navbar-height) + var(--secondary-height) + 20px);
     
@@ -476,7 +448,7 @@ help-side-card {
     transform: translateX(5px);
 }
 
-/* 3. Modify the Main Article (80% width) */
+/* Modify the Main Article (80% width) */
 .help-main-article {
     flex: 1; /* Takes up all remaining width */
     
@@ -484,11 +456,7 @@ help-side-card {
     background-color: #ffffff;
     border-radius: 15px;
     padding: 40px; /* Spacious padding */
-    
-    /* Deep shadow to make it pop off the background */
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-    
-    /* 🔑 The "Color": A nice thick top border in your brand color */
     border-top: 8px solid #766838;
 }
 
@@ -499,7 +467,7 @@ help-side-card {
     margin-bottom: 25px;
 }
 
-/* 4. Retain Card Button Styling (from previous step, but ensure no sticky conflict) */
+/* Retain Card Button Styling (from previous step, but ensure no sticky conflict) */
 /* The buttons themselves retain their card look and lift-on-hover */
 .help-side-card ul {
     list-style: none;
@@ -507,32 +475,28 @@ help-side-card {
     display: flex; 
     flex-direction: column;
     gap: 10px;
-    
-    /* Add padding/margin to make the 20% area look neat */
     padding: 10px;
 }
 
-/* Ensure the button links are properly styled cards */
 .help-side-card li a {
     display: flex;
     align-items: center;
     gap: 10px;
     padding: 12px 15px;
-    /* ... other appearance styles remain ... */
     background-color: #D3C19F; 
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-/* 5. Lift-on-Hover Effect */
+/* Lift-on-Hover Effect */
 .help-side-card li a:hover {
     background-color: #d8c8a8;
-    transform: translateY(-3px); /* 🔑 LIFT UP EFFECT 🔑 */
+    transform: translateY(-3px); 
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
-/* 6. Content Section Cards (Remain the same) */
+/* Content Section Cards */
 
 .help-nav-buttons {
     display: flex;
@@ -560,7 +524,7 @@ help-side-card {
     transform: translateY(-2px);
 }
 
-/* 4. Inner Section Styling */
+/* Inner Section Styling */
 .help-section-card {
     background-color: #fcfcfc; /* Slightly off-white to distinguish sections */
     border: 1px solid #f0f0f0;
@@ -596,7 +560,7 @@ html {
     scroll-behavior: smooth;
 }
 
-/* Responsive Design (Mobile) */
+/* Responsive Design */
 @media (max-width: 900px) {
     .help-content-wrapper {
         flex-direction: column;

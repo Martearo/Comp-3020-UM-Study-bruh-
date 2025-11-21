@@ -7,9 +7,6 @@
 body{
     margin: 0;
     background-image: url('../Images/BG.png'); 
-    
-    /* These three lines ensure the image covers the whole screen, 
-       doesn't repeat, and stays fixed when the user scrolls. */
     background-size: cover;
     background-attachment: fixed;
     background-repeat: no-repeat;
@@ -32,7 +29,7 @@ body{
     /* Navbar styling INSIDE*/
     background-color: #CDBCA8;
     backdrop-filter: blur(4px);
-    box-shadow: 0 3px 8px rgba(222, 221, 221, 0.6); /* 👈 visible under-shadow */
+    box-shadow: 0 3px 8px rgba(222, 221, 221, 0.6); /* visible under-shadow */
     z-index: 1000; /* ensure navbar is above other content */
 
     display: flex;
@@ -56,7 +53,7 @@ body{
     display: flex;             /* places image and text side-by-side */
     align-items: center;       /* centers them vertically */
     color: inherit;
-    gap: 8px;                  /* 👈 adds 5px space between image and text */
+    gap: 8px;                  /* adds 5px space between image and text */
 
     transition: transform 0.3s ease; /* smooth scaling effect */
     margin: 0%;
@@ -82,7 +79,7 @@ body{
 
     font-family: 'Brush Script MT', cursive;
     /*backdrop-filter: blur(4px);*/
-    text-shadow: 0 3px 8px rgba(155, 155, 155, 0.851); /* 👈 visible under-shadow */
+    text-shadow: 0 3px 8px rgba(155, 155, 155, 0.851); /* visible under-shadow */
 }
 
 .navbar-Logo:hover {
@@ -184,11 +181,10 @@ body{
   display: block;
 }
 
-/* --- New Class for grouping right-side navbar elements --- */
 .nav-right {
     display: flex;
     align-items: center;
-    gap: 1.5rem; /* Add spacing between language selector and profile picture */
+    gap: 1.5rem; /* spacing between language selector and profile picture */
 }
 
 
@@ -251,7 +247,6 @@ body{
   left: -250px; /* hidden off-screen */
   width: 250px;
   
-  /* FIX: Calculate the height from the bottom of the secondary navbar to the bottom of the screen (100vh) */
   height: calc(100vh - (var(--navbar-height) + var(--secondary-height))); 
   
   background-color: #f7f7f7;
@@ -286,7 +281,7 @@ body{
 
 }
 
-/* Optional animation for hamburger toggle */
+/* animation for hamburger toggle */
 .hamburger.active.active {
   transform: rotate(45deg) translateY(8px);
 }
@@ -297,14 +292,8 @@ body{
   font-size: 1.5rem;
   color: #333;
   cursor: pointer;
-  
-  /* CRITICAL: Pushes the button down to the bottom */
   margin-top: auto; 
-  
-  /* Keeps the button aligned to the right */
   align-self: flex-end; 
-  
-  /* Adds space around the button at the bottom right corner */
   margin-right: 1rem; 
   margin-bottom: 2rem; 
   
@@ -387,13 +376,9 @@ body{
 }
 
 .spot-status {
-  /* Fix: Add min-width and center text for consistent size and alignment */
   min-width: 4rem; 
   text-align: center;
-  
-  /* Use auto margin to push the element to the far right */
   margin-left: auto; 
-  
   padding: 0.3rem 0.6rem;
   border-radius: 4px;
   font-size: 0.85rem;
@@ -402,12 +387,11 @@ body{
   color: white;
   margin-right: 1rem; /* Spacing from the right edge */
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
-  /* Remove existing text shadow to make the background color pop */
   text-shadow: none; 
 }
 
 .spot-status.open {
-  background-color: #4CAF50; /* Green (Visible/Ready) */
+  background-color: #4CAF50; /* Green (Available) */
 }
 
 .spot-status.closed {

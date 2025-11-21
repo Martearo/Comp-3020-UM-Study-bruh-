@@ -6,17 +6,12 @@
 
 body{
     background-image: url('Images/BG.png'); 
-    
-    /* These three lines ensure the image covers the whole screen, 
-       doesn't repeat, and stays fixed when the user scrolls. */
     background-size: cover;
     background-attachment: fixed;
     background-repeat: no-repeat;
     
-    /* This color overlay will ensure the image remains subtle */
     background-color: rgba(28, 27, 26, 0.211); /* #CDBCA8 with 40% transparency */
     background-blend-mode: overlay;
-    /* min-height: 500vh; */
 }
 
 .navbar-custom{
@@ -31,7 +26,7 @@ body{
     /* Navbar styling INSIDE*/
     background-color: #CDBCA8;
     backdrop-filter: blur(4px);
-    box-shadow: 0 3px 8px rgba(222, 221, 221, 0.6); /* 👈 visible under-shadow */
+    box-shadow: 0 3px 8px rgba(222, 221, 221, 0.6); /* visible under-shadow */
     z-index: 1000; /* ensure navbar is above other content */
 
     display: flex;
@@ -55,7 +50,7 @@ body{
     display: flex;             /* places image and text side-by-side */
     align-items: center;       /* centers them vertically */
     color: inherit;
-    gap: 8px;                  /* 👈 adds 5px space between image and text */
+    gap: 8px;                  /* adds 5px space between image and text */
 
     transition: transform 0.3s ease; /* smooth scaling effect */
     margin: 0%;
@@ -70,7 +65,7 @@ body{
     cursor: pointer;
     display: flex;
     align-items: center;
-    text-decoration: none; /* remove underline from link */
+    text-decoration: none; 
 }
 
 .navbar-LogoText {
@@ -80,8 +75,7 @@ body{
     text-decoration: none;
 
     font-family: 'Brush Script MT', cursive;
-    /*backdrop-filter: blur(4px);*/
-    text-shadow: 0 3px 8px rgba(155, 155, 155, 0.851); /* 👈 visible under-shadow */
+    text-shadow: 0 3px 8px rgba(155, 155, 155, 0.851); /* visible under-shadow */
 }
 
 .navbar-Logo:hover {
@@ -92,11 +86,10 @@ body{
 
 
 /* ---------------------------------------------------- */
-/* --- NEW: Sort Dropdown Wrapper and List Styling --- */
+/* --- Sort Dropdown Wrapper and List Styling --- */
 /* ---------------------------------------------------- */
 
 .sort-dropdown-wrapper {
-    /* Critical: Allows the dropdown to be positioned absolutely relative to the wrapper */
     position: relative; 
     z-index: 900;
 
@@ -121,15 +114,13 @@ body{
     width: 200px; /* Fixed width for readability */
     box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     
-    /* Visibility Control */
     opacity: 0;
     visibility: hidden;
     transform: translateY(-5px);
     transition: opacity 0.2s ease, transform 0.2s ease;
-    pointer-events: none; /* Crucial: Prevents hidden list from blocking clicks */
+    pointer-events: none; 
 }
 
-/* Class applied by JavaScript to show the dropdown */
 .sort-btn {
   background-color: #766838;
   color: #fff;
@@ -185,7 +176,6 @@ body{
     border: 1px solid #ccc;
     outline: none;
     font-size: 0.95rem;
-    /* REMOVE 'order' property here */
 }
 
 
@@ -218,12 +208,10 @@ body{
 
 .profile-wrapper {
     position: relative;
-    /* Ensure the wrapper respects the size of the image, 
-       and that the card doesn't get clipped by nearby elements */
     z-index: 1000; 
 }
 
-/* 2. The Card itself */
+/* The Card itself */
 .profile-info-card {
     /* Positioning */
     position: absolute;
@@ -237,8 +225,6 @@ body{
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     padding: 15px;
-    
-    /* Visibility Control */
     opacity: 0;
     visibility: hidden;
     transform: translateY(-5px); /* Start slightly above its final position */
@@ -250,7 +236,7 @@ body{
     z-index: 1000; 
 }
 
-/* 3. Card content styling */
+/* Card content styling */
 .profile-info-card p, .profile-info-card a {
     margin: 0;
     padding: 0;
@@ -260,7 +246,7 @@ body{
 
 .profile-info-card .card-name {
     font-weight: bold;
-    color: #766838; /* Use your brand color */
+    color: #766838; /* Use brand color */
     margin-bottom: 5px;
     font-size: 1.1rem;
 }
@@ -287,17 +273,13 @@ body{
     color: #d32f2f; /* Red for logout */
 }
 
-/* 4. Display the card on hover (CSS-only approach for simplicity) */
+/* Display the card on hover */
 .profile-wrapper:hover .profile-info-card {
     opacity: 1;
     visibility: visible;
     transform: translateY(0); /* Move to final position */
 }
 
-/* 
-.navbar-profile:hover {
-  transform: scale(1.1);
-} */
 
 
 /*---------------------------*/
@@ -362,7 +344,7 @@ body{
 /* ===== Secondary Navbar ===== */
 .navbar-secondary {
   position: fixed;
-  top: var(--navbar-height); /* 👈 sits right below the primary navbar */
+  top: var(--navbar-height); /* sits right below the primary navbar */
   left: 0;
   width: 100%;
   height: var(--secondary-height);
@@ -449,8 +431,6 @@ body{
   top: calc((var(--navbar-height) + var(--secondary-height))); /* below both navbars */
   left: -250px; /* hidden off-screen */
   width: 250px;
-  
-  /* FIX: Calculate the height from the bottom of the secondary navbar to the bottom of the screen (100vh) */
   height: calc(100vh - (var(--navbar-height) + var(--secondary-height))); 
   
   background-color: #f7f7f7;
@@ -458,8 +438,6 @@ body{
   padding-top: 2rem;
   transition: left 0.3s ease;
   z-index: 998;
-  
-  /* These two are correct for positioning the button: */
   display: flex;
   flex-direction: column;
 }
@@ -485,7 +463,6 @@ body{
 
 }
 
-/* Optional animation for hamburger toggle */
 .hamburger.active.active {
   transform: rotate(45deg) translateY(8px);
 }
@@ -496,14 +473,8 @@ body{
   font-size: 1.5rem;
   color: #333;
   cursor: pointer;
-  
-  /* CRITICAL: Pushes the button down to the bottom */
   margin-top: auto; 
-  
-  /* Keeps the button aligned to the right */
   align-self: flex-end; 
-  
-  /* Adds space around the button at the bottom right corner */
   margin-right: 1rem; 
   margin-bottom: 2rem; 
   
@@ -530,23 +501,21 @@ body{
 
 .map-container {
     position: relative; 
-    overflow: hidden; /* CRITICAL: Hides the non-rounded part of the scaled content */
+    overflow: hidden; 
     cursor: default; 
     width: 100%;
     height: calc(100vh - var(--navbar-height) - var(--secondary-height) - 4rem);
     max-width: 750px;
-    /*max-height: 500px;*/
     margin: 0 auto;
     border-radius: 12px;
 }
 
-/* 🔑 NEW: The element that gets scaled and holds the map/pins */
 .map-content {
     position: relative; /* Allows scaling from the center without affecting layout */
     width: 100%;
     border-radius: 12px;
     
-    padding-bottom: 62.5%; /* Example: For a 800px wide x 500px tall map (500/800 = 0.625) */
+    padding-bottom: 62.5%; 
     height: 0; /* Necessary for padding-bottom to work */
 
     /* CRITICAL: This ensures pins and map scale from the center together */
@@ -555,7 +524,7 @@ body{
     left: 0;
     
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    transition: transform 0.3s ease-in-out; /* Add animation to the content wrapper */
+    transition: transform 0.3s ease-in-out; 
 }
 
 .map-image {
@@ -579,7 +548,7 @@ body{
 }
 
 
-/* --- Map Controls Styling (NEW) --- */
+/* --- Map Controls Styling --- */
 .map-controls {
     position: absolute;
     top: 10px;
@@ -616,7 +585,6 @@ body{
 }
 
 
-/* NEW: Icon for legend */
 .legend-control-icon {
     width: 25px;
     height: 25px;
@@ -632,14 +600,10 @@ body{
 }
 
 
-/* --- NEW PIN CONTAINER --- */
 .map-pin-container {
-    /* Critical positioning for the parent */
     position: absolute;
     cursor: pointer;
     z-index: 10;
-    
-    /* Center the pin container tip exactly on the coordinates */
     transform: translate(-50%, -50%); 
 }
 
@@ -661,12 +625,10 @@ body{
     z-index: 11;
 }
 
-/* --- INFO CARD STYLING (The Pop-up) --- */
 
 
 
 
-/* Ensure the hovered pin container is on top of ALL other pins */
 .map-pin-container:hover {
     z-index: 101; /* Higher than the info card's z-index (100) and other pins (10) */
 }
@@ -702,7 +664,6 @@ body{
     font-weight: 700;
     align-self: flex-start; /* Only take the space needed */
     color: white;
-    /* Use the existing status colors from your button list */
 }
 
 .info-action {
@@ -716,22 +677,19 @@ body{
 }
 
 
-/* NEW: Root container for floating popups */
 #pin-popup-root {
     position: fixed; /* Fixed position relative to the viewport */
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    pointer-events: none; /* Crucial: Allows clicks to pass through when empty */
+    pointer-events: none; 
     z-index: 1001; /* Ensure it's above everything, including navbars (z-index: 1000) */
 }
 
-/* NEW: Style for the floating info card */
 .floating-pin-info-card {
     position: absolute; /* Positioned relative to #pin-popup-root (i.e., the viewport) */
     
-    /* Appearance (copied from your old .pin-info-card) */
     background-color: white;
     border: 1px solid #766838;
     border-radius: 8px;
@@ -754,30 +712,21 @@ body{
 .floating-pin-info-card.visible {
     opacity: 1;
     visibility: visible;
-    /* Optional: Keep a slight movement effect for hover */
     transform: translate(0, -50%); 
 }
 
 
 
-/* NEW: Styles for the Map Legend */
 .map-legend {
-    /* Set a fixed maximum width to make it less wide */
     max-width: 250px; 
     height: 100%;
-
-    /* Remove the 'flex: 1' line if it still exists, and use flex-shrink: 0 */
     flex-shrink: 0; /* Ensures the guide respects its max-width and doesn't try to shrink */
-    
     background-color: #f8f8f8;
     border: 1px solid #e0e0e0;
     border-radius: 8px;
     padding: 1.5rem;
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    
-    /* CRITICAL: This property ensures the height matches the map (flex item height) */
-    align-self: stretch; 
-    
+    align-self: stretch;   
     display: flex;
     flex-direction: column;
     gap: 0.8rem;
@@ -786,7 +735,7 @@ body{
 }
 
 .map-legend h3 {
-    color: #766838; /* Match your brand color */
+    color: #766838; /* Use brand color */
     margin-top: 0;
     margin-bottom: 1rem;
     font-size: 1.4rem;
@@ -825,7 +774,6 @@ body{
     margin-bottom: 2rem; /* Consistent spacing below the wrapper */
 }
 
-/*-----------------*/
 
 
 
@@ -864,7 +812,6 @@ body{
   object-fit: cover;
   border-radius: 5px;
 
-  /* Make the right side fade out */
   -webkit-mask-image: linear-gradient(to right, rgba(0,0,0,1), rgba(0,0,0,0));
   -webkit-mask-repeat: no-repeat;
   -webkit-mask-size: cover;
@@ -886,7 +833,6 @@ body{
 }
 
 .spot-status {
-  /* Fix: Add min-width and center text for consistent size and alignment */
   min-width: 4rem; 
   text-align: center;
   
@@ -901,12 +847,11 @@ body{
   color: white;
   margin-right: 1rem; /* Spacing from the right edge */
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
-  /* Remove existing text shadow to make the background color pop */
   text-shadow: none; 
 }
 
 .spot-status.open {
-  background-color: #4CAF50; /* Green (Visible/Ready) */
+  background-color: #4CAF50; /* Green (Available) */
 }
 
 .spot-status.closed {
@@ -1064,7 +1009,6 @@ body{
 }
 
 .reviews-title-box {
-  /* Modernized title card with subtle glass/gradient using existing palette */
   background: linear-gradient(180deg, rgba(205,188,168,0.98), rgba(196,178,150,0.95));
   padding: 1.25rem 1.25rem;
   border-radius: 14px;
@@ -1142,9 +1086,7 @@ body{
   justify-content: space-between;
   min-height: 140px;
   position: relative; /* for absolute-positioned thumbs */
-  /* Reserve vertical space at the top so the top-right thumbs don't overlap the title/text */
-  padding-top: 2.8rem; /* increased to place the start of the content below the thumbs */
-  /* Reserve space on the right so the top-right thumbs don't overlap the content */
+  padding-top: 2.8rem; 
   padding-right: 6rem;
   transition: transform 0.16s cubic-bezier(.2,.9,.2,1), border-color 0.12s ease;
   will-change: transform, opacity;
@@ -1170,7 +1112,6 @@ body{
   border-color: rgba(118,104,56,0.16);
 }
 
-/* Use a pseudo-element for the brand glow (opacity-only transition - GPU friendly in Chrome) */
 .review-card::after {
   content: '';
   position: absolute;
@@ -1188,10 +1129,6 @@ body{
   opacity: 1;
 }
 
-/* Ensure card contents stay above the pseudo-element glow */
-/* Remove per-child positioning so absolute .thumbs position remains relative to the card
-  (we set .review-card { position: relative } already), and keep the pseudo-element behind
-  the card by using z-index on the card itself. */
 
 .review-card:hover .review-location,
 .review-card:focus .review-location {
@@ -1297,14 +1234,9 @@ body{
 
 /* Hide extra reviews by default; reveal with `.show` */
 .more-reviews {
-  /* Use display: contents so the review cards inside behave like direct grid children,
-    which preserves the same sizing and spacing as the initially visible cards. */
   display: contents;
 }
 
-/* Hide additional cards by default (they remain grid items via display: contents)
-  When the container has the .show class, reveal them again with the same
-  display style as the original .review-card (flex). */
 .more-reviews > .review-card { display: none; }
 .more-reviews.show > .review-card { display: flex; }
 
@@ -1326,15 +1258,11 @@ body{
   bottom: 20px;
   left: 50%;
   
-  /* --- CRITICAL: Initial Hidden State & Transition --- */
-  /* Start it below the screen and invisible */
   transform: translate(-50%, 100px); /* 100px down */
   opacity: 0; 
   
-  /* Add transition property to the base element */
   transition: transform 0.3s ease-out, opacity 0.3s ease-out;
 
-  /* --- Existing Styles (keep these) --- */
   background-color: #333;
   color: #fff;
   padding: 12px 16px;
