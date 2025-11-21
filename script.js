@@ -878,7 +878,7 @@ function renderBookmarkedRooms(rooms) {
             }
 
             // Logic for handling the navigation click (if not bookmark icon)
-            window.location.href = `../Rooms/Rooms.html?id=${encodeURIComponent(room.room)}`;
+            window.location.href = `Rooms/Rooms.html?id=${encodeURIComponent(room.room)}`;
         });
         
         roomListContainer.appendChild(btn); 
